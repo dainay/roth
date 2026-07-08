@@ -4,7 +4,7 @@ import { useTexture } from '@react-three/drei'
 import * as THREE from 'three'
 
 
-export default function Bath({ showVipanelLeft, showVipanelRight, paroi, metalColor, vipanel, receveur, ...props }) {
+export default function Bath({  wallColor, wall2Color, showVipanelLeft, showVipanelRight, paroi, metalColor, vipanel, receveur, ...props }) {
     const { nodes, materials } = useGLTF('/sb4.glb')
 
     const textures = useTexture([
@@ -69,6 +69,39 @@ export default function Bath({ showVipanelLeft, showVipanelRight, paroi, metalCo
         normalMap.needsUpdate = true
         }, [receveurTexture, normalMap, materials])
 
+ 
+
+    useLayoutEffect(() => { 
+        const wall = materials['08 - Default.001']
+        if (!wall || !wallColor) return
+
+        console.log('wallColor', wallColor)
+
+        wall.map = null
+        wall.color.set(wallColor) 
+        // wall.roughness = 0.8
+        // wall.metalness = 0
+        wall.needsUpdate = true
+         
+    }, [wallColor, materials])
+
+   
+    
+     useLayoutEffect(() => { 
+        const wall = materials['kafel.001']
+        if (!wall || !wall2Color) return
+
+        console.log('wall2Color', wall2Color)
+
+        wall.map = null
+        wall.color.set(wall2Color) 
+        wall.roughness = 0.3
+        // wall.metalness = 0
+        wall.needsUpdate = true
+         
+    }, [wall2Color, materials])  
+
+
     useLayoutEffect(() => {
         if (!selectedTexture || !materials.vipanel) return
 
@@ -78,7 +111,7 @@ export default function Bath({ showVipanelLeft, showVipanelRight, paroi, metalCo
         selectedTexture.repeat.set(1, -1)
         selectedTexture.offset.set(0, 1)
 
-         materials.vipanel.color.set('#ffffff')
+        materials.vipanel.color.set('#ffffff')
         materials.vipanel.map = selectedTexture
         materials.vipanel.needsUpdate = true
         selectedTexture.needsUpdate = true
@@ -150,8 +183,13 @@ export default function Bath({ showVipanelLeft, showVipanelRight, paroi, metalCo
                 castShadow
                 receiveShadow
                 geometry={nodes.Box004.geometry}
-                material={materials['08 - Default']}
-            />
+                material={materials['08 - Default.001']}
+            >
+                
+            </mesh>
+
+
+
             <mesh
                 castShadow
                 receiveShadow
@@ -189,7 +227,7 @@ export default function Bath({ showVipanelLeft, showVipanelRight, paroi, metalCo
                 castShadow
                 receiveShadow
                 geometry={nodes.Rectangle006001.geometry}
-                material={materials.kafel}
+                material={materials['kafel.001']}
             />
             <mesh
                 castShadow

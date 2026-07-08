@@ -11,7 +11,7 @@ import Fixe from "./Fixe";
 
 
 
-export default function Scene({ showVipanelLeft, showVipanelRight, paroi, metalColor, vipanel, receveur }) {
+export default function Scene({ wallColor, wall2Color, showVipanelLeft, showVipanelRight, paroi, metalColor, vipanel, receveur }) {
     return (
         <Canvas
             camera={{ position: [-10, 4, 10], fov: 50 }}
@@ -24,7 +24,7 @@ export default function Scene({ showVipanelLeft, showVipanelRight, paroi, metalC
         >
             <color attach="background" args={["#1b1b1b"]} />
 
-            <Bath showVipanelLeft={showVipanelLeft} showVipanelRight={showVipanelRight} paroi={paroi} receveur={receveur} vipanel={vipanel} metalColor={metalColor} rotation={[0, Math.PI, 0]} />
+            <Bath wallColor={wallColor} wall2Color={wall2Color} showVipanelLeft={showVipanelLeft} showVipanelRight={showVipanelRight} paroi={paroi} receveur={receveur} vipanel={vipanel} metalColor={metalColor} rotation={[0, Math.PI, 0]} />
             
             {paroi === '2' && <Fixe metalColor={metalColor}  rotation={[0, Math.PI, 0]} scale={[0.1, 0.1, 0.1]} position={[1, -1.7, 0.7]}></Fixe>}
 

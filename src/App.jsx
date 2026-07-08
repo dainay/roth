@@ -11,14 +11,13 @@ function App() {
     const [paroi, setParoi] = useState("1");
     const [showVipanelLeft, setShowVipanelLeft] = useState(true);
     const [showVipanelRight, setShowVipanelRight] = useState(true);
-
-    console.log("showVipanelLeft", showVipanelLeft);
-    console.log("showVipanelRight", showVipanelRight);
-
+    const [wallColor, setWallColor] = useState("#4f7a8c");
+      const [wall2Color, setWall2Color] = useState("#b7b495");
+ 
     return (
         <div className="wrapper">
             <div className="app">
-                <Scene showVipanelLeft={showVipanelLeft} showVipanelRight={showVipanelRight} paroi={paroi} metalColor={metalColor} vipanel={vipanel} receveur={receveur} />
+                <Scene showVipanelLeft={showVipanelLeft} showVipanelRight={showVipanelRight} paroi={paroi} metalColor={metalColor} vipanel={vipanel} receveur={receveur} wallColor={wallColor} wall2Color={wall2Color} />
             </div>
             <div className="text">
                 <div>
@@ -34,6 +33,10 @@ function App() {
 <br />
                     <button data-full= "VIPANEL Gauche" data-short= "VP G" onClick={() => setShowVipanelLeft(prev => !prev)}></button>
                     <button data-full="VIPANEL Droit" data-short= "VP D" onClick={() => setShowVipanelRight(prev => !prev)}></button> 
+
+                      <input value={wall2Color} type="color" onChange={(e) => setWall2Color(e.target.value)} />
+
+                    <input value={wallColor} type="color" onChange={(e) => setWallColor(e.target.value)} />
                 </div>
          
 
