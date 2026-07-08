@@ -69,10 +69,11 @@ canvas {
     .vipanel-buttons {
         display: flex;
         gap: 5px;
-        position: absolute;
-        bottom: 20px;
+        position: fixed;
+        bottom: 40px;
         overflow-x: auto;
         width: 100%;
+        right: 0;
     }
 
 }
