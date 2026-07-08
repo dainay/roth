@@ -1,8 +1,40 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect, useLayoutEffect, useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
+import { useTexture } from '@react-three/drei'
+import * as THREE from 'three'
 
-export default function Bath({ metalColor, ...props }) {
-  const { nodes, materials } = useGLTF('/sb4.glb')
+export default function Bath({ metalColor, vipanel, ...props }) {
+     const { nodes, materials } = useGLTF('/sb4.glb')
+
+     const textures = useTexture([
+        '/textures/1.webp',
+        '/textures/2.webp',
+        '/textures/3.webp',
+        '/textures/4.webp',
+        '/textures/5.webp',
+        '/textures/6.webp',
+        '/textures/7.webp',
+        '/textures/8.webp',
+    ])
+
+     const selectedTexture = useMemo(() => {
+        return textures[Number(vipanel) - 1]
+    }, [textures, vipanel])
+
+    useLayoutEffect(() => {
+        if (!selectedTexture || !materials.vipanel) return
+
+        selectedTexture.flipY = true
+        selectedTexture.colorSpace = THREE.SRGBColorSpace
+
+          selectedTexture.repeat.set(1, -1)
+  selectedTexture.offset.set(0, 1)
+
+        materials.vipanel.map = selectedTexture
+        materials.vipanel.needsUpdate = true 
+        selectedTexture.needsUpdate = true
+    }, [selectedTexture, materials])
+
   return (
      <group {...props} dispose={null}>
       <mesh
@@ -77,7 +109,13 @@ export default function Bath({ metalColor, ...props }) {
         geometry={nodes.Box002.geometry}
         material={nodes.Box002.material}
       />
-      <mesh castShadow receiveShadow geometry={nodes.Plane.geometry} material={materials.vipanel} />
+
+        <mesh receiveShadow
+              geometry={nodes.Plane.geometry} 
+              material={materials.vipanel} 
+        />
+
+
       <mesh
         castShadow
         receiveShadow

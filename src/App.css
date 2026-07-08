@@ -1,68 +1,121 @@
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body,
-#root, canvas {
-  width: 100%;
-  height: 100%;
-  margin: 0;
+#root,
+canvas {
+    width: 100%;
+    height: 100%;
+    margin: 0;
     background: #ffffff;
 }
 
 .app {
-  width: 70%;
-  height: 100vh;
-  background: #111;
+    width: 70%;
+    height: 100vh;
+    background: #111;
 }
+
 
 .wrapper {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
 
 }
 
-p, h2 {
-  width: 100%;
-    text-align: right !important;
-  color: black !important;
+
+.vipanel-buttons {
+    display: flex;
+    gap: 8px; 
+    flex-wrap: wrap;
+    /* width: 100%; */
+    justify-content: flex-end;
+    margin-block: 30px;
+}
+
+@media(max-width: 768px) {
+    .app {
+        width: 100%;
+    }
+
+    .wrapper {
+        position: relative;
+        display: block;
+    }
+
+    .text {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: fit-content;
+        display: flex;
+        padding: 5px 10px !important;
+        margin-block: 0;
+        justify-content: space-between;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+
+    }
+
+    .buttons {
+        margin-top: 0 !important;
+    }
+
+    .vipanel-buttons {
+        display: flex;
+        gap: 5px;
+        position: absolute;
+        bottom: 20px;
+        overflow-x: auto;
+        width: 100%;
+    }
+
+}
+
+p,
+h2 {
+    width: 100%;
+    color: black !important;
+    text-align: left;
 }
 
 h2 {
-  font-size: 40px;
-  font-weight: 700;
-  margin: 0;
+    font-size: 40px;
+    font-weight: 700;
+    margin: 0;
 }
 
 .text {
-  display: flex;
-  flex-direction: column;
-  /* justify-content: flex-end; */
- 
-  align-items: flex-end;
-  width: 30%;
-  padding: 40px
+    display: flex;
+    flex-direction: column;
+    /* justify-content: flex-end; */
+
+    align-items: flex-end;
+    width: 30%;
+    padding: 40px
 }
 
 .buttons {
-  margin-top: 20px;
-  z-index: 10;
-  display: flex;
-  gap: 8px;
+    margin-top: 20px;
+    z-index: 10;
+    display: flex;
+    gap: 8px;
 }
 
-.buttons button {
-  padding: 10px 15px;
-  cursor: pointer;
-  background-color: #fff;
-  border: 2px solid #0d0d0d;
-  color: black;
+ button {
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #fff;
+    border: 2px solid #0d0d0d;
+    color: black;
 }
 
-.buttons button:hover {
-  background-color: #0d0d0d;
-  color: #fff;
+ button:hover {
+    background-color: #0d0d0d;
+    color: #fff;
 }
