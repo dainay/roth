@@ -9,11 +9,16 @@ function App() {
     const [vipanel, setVipanel] = useState("1");
     const [receveur, setReceveur] = useState("1");
     const [paroi, setParoi] = useState("1");
+    const [showVipanelLeft, setShowVipanelLeft] = useState(true);
+    const [showVipanelRight, setShowVipanelRight] = useState(true);
+
+    console.log("showVipanelLeft", showVipanelLeft);
+    console.log("showVipanelRight", showVipanelRight);
 
     return (
         <div className="wrapper">
             <div className="app">
-                <Scene paroi={paroi} metalColor={metalColor} vipanel={vipanel} receveur={receveur} />
+                <Scene showVipanelLeft={showVipanelLeft} showVipanelRight={showVipanelRight} paroi={paroi} metalColor={metalColor} vipanel={vipanel} receveur={receveur} />
             </div>
             <div className="text">
                 <div>
@@ -26,6 +31,9 @@ function App() {
                     <button  onClick={() => setMetalColor("#896340")}>Bronze</button>
                     <button  onClick={() => setMetalColor("#ffffff")}>Blanc Mat</button>
                     <button onClick={() => setMetalColor("#1b1b1b")}>Noir Mat</button>
+<br />
+                    <button data-full= "VIPANEL Gauche" data-short= "VP G" onClick={() => setShowVipanelLeft(prev => !prev)}></button>
+                    <button data-full="VIPANEL Droit" data-short= "VP D" onClick={() => setShowVipanelRight(prev => !prev)}></button> 
                 </div>
          
 

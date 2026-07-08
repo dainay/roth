@@ -4,7 +4,7 @@ import { useTexture } from '@react-three/drei'
 import * as THREE from 'three'
 
 
-export default function Bath({ paroi, metalColor, vipanel, receveur, ...props }) {
+export default function Bath({ showVipanelLeft, showVipanelRight, paroi, metalColor, vipanel, receveur, ...props }) {
     const { nodes, materials } = useGLTF('/sb4.glb')
 
     const textures = useTexture([
@@ -158,19 +158,21 @@ export default function Bath({ paroi, metalColor, vipanel, receveur, ...props })
                 geometry={nodes.Box002.geometry}
                 material={nodes.Box002.material}
             />
-
+ {showVipanelLeft && (
             <mesh receiveShadow
                 geometry={nodes.Plane.geometry}
                 material={materials.vipanel}
             />
+             )}
 
-
-            <mesh
-                castShadow
+            {showVipanelRight && (
+             <mesh 
                 receiveShadow
                 geometry={nodes.Plane001.geometry}
                 material={materials.vipanel}
-            />
+            /> 
+
+            )}
             <mesh
                 castShadow
                 receiveShadow
