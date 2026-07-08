@@ -27,6 +27,10 @@ canvas {
 
 }
 
+.buttons {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
 
 .vipanel-buttons {
     display: flex;
@@ -36,6 +40,9 @@ canvas {
     justify-content: flex-end;
     margin-block: 30px;
 }
+button::before {
+        content: attr(data-full);
+    }
 
 @media(max-width: 768px) {
     .app {
@@ -64,16 +71,38 @@ canvas {
 
     .buttons {
         margin-top: 0 !important;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    button::before {
+        content: attr(data-short);
     }
 
     .vipanel-buttons {
         display: flex;
         gap: 5px;
+        flex-wrap: wrap;
         position: fixed;
-        bottom: 40px;
+        
         overflow-x: auto;
         width: 100%;
         right: 0;
+    }
+
+    .vb1 {
+        bottom: 10vh;
+        margin: 0 !important;
+    }
+
+    .vb2 {
+        bottom: 5vh;
+        margin: 0 !important;
+    } 
+
+    .vb3 {
+        bottom: 0vh;
+        margin: 0 !important;
     }
 
 }
@@ -109,7 +138,7 @@ h2 {
 }
 
  button {
-    padding: 10px 15px;
+    padding: 5px 10px;
     cursor: pointer;
     background-color: #fff;
     border: 2px solid #0d0d0d;
