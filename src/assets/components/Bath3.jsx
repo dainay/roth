@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 export default function Bath3(props) {
-  const { nodes, materials } = useGLTF('/bath__compressed.glb')
+  const { nodes, materials } = useGLTF('./files/bath__compressed.glb')
   return (
     <group {...props} dispose={null}>
       <mesh
@@ -23,4 +23,4 @@ export default function Bath3(props) {
   )
 }
 
-useGLTF.preload('/bath__compressed.glb')
+useGLTF.preload('./files/bath__compressed.glb')

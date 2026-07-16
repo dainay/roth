@@ -8,6 +8,8 @@ import { PointerLockControls } from "@react-three/drei";
 import { useEffect } from "react";
 import { useThree } from "@react-three/fiber";
 import Fixe from "./Fixe";
+import Decors from "./Decors";
+import Plants from "./Plants";
 
 
 
@@ -23,6 +25,10 @@ export default function Scene({ wallColor, wall2Color, showVipanelLeft, showVipa
 
         >
             <color attach="background" args={["#1b1b1b"]} />
+
+            <Plants scale={[1, 1, 1]} rotation={[0, Math.PI, 0]} position={[0, 0, 0]}></Plants>
+
+            <Decors scale={[1, 1, 1]} rotation={[0, Math.PI, 0]} position={[0, 0, 0]}></Decors>
 
             <Bath wallColor={wallColor} wall2Color={wall2Color} showVipanelLeft={showVipanelLeft} showVipanelRight={showVipanelRight} paroi={paroi} receveur={receveur} vipanel={vipanel} metalColor={metalColor} rotation={[0, Math.PI, 0]} />
             

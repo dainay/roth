@@ -5,31 +5,31 @@ import * as THREE from 'three'
 
 
 export default function Bath({  wallColor, wall2Color, showVipanelLeft, showVipanelRight, paroi, metalColor, vipanel, receveur, ...props }) {
-    const { nodes, materials } = useGLTF('/sb4.glb')
+    const { nodes, materials } = useGLTF('./files/sb4.glb')
 
     const textures = useTexture([
-        '/textures/1.webp',
-        '/textures/2.webp',
-        '/textures/3.webp',
-        '/textures/4.webp',
-        '/textures/5.webp',
-        '/textures/6.webp',
-        '/textures/7.webp',
-        '/textures/8.webp',
-        '/textures/9.webp',
-        '/textures/10.webp',
-        '/textures/11.webp',
-        '/textures/12.webp',
-        '/textures/13.webp', 
+        './files/textures/1.webp',
+        './files/textures/2.webp',
+        './files/textures/3.webp',
+        './files/textures/4.webp',
+        './files/textures/5.webp',
+        './files/textures/6.webp',
+        './files/textures/7.webp',
+        './files/textures/8.webp',
+        './files/textures/9.webp',
+        './files/textures/10.webp',
+        './files/textures/11.webp',
+        './files/textures/12.webp',
+        './files/textures/13.webp', 
     ])
 
     const texturesReceveur = useTexture([ 
-        '/textures/rec1.webp',
-        '/textures/rec2.webp',
-        '/textures/rec3.jpg',
+        './files/textures/rec1.webp',
+        './files/textures/rec2.webp',
+        './files/textures/rec3.jpg',
     ])
 
-    const normalMap = useTexture('/textures/np.png')
+    const normalMap = useTexture('./files/textures/np.png')
 
     const selectedTexture = useMemo(() => {
         return textures[Number(vipanel) - 1]
@@ -119,30 +119,30 @@ export default function Bath({  wallColor, wall2Color, showVipanelLeft, showVipa
 
     return (
         <group {...props} dispose={null}>
-            <mesh
+            {/* <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Box2131645049.geometry}
                 material={materials['Material #2147483646']}
-            />
-            <mesh
+            /> */}
+            {/* <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Object400.geometry}
                 material={materials['Material #-2147483648']}
-            />
+            /> */}
             <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Rectangle003.geometry}
                 material={materials['kafel.001']}
             />
-            <mesh
+            {/* <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Box2131645084.geometry}
                 material={materials['10 - Default']}
-            />
+            /> */}
             <mesh
                 castShadow
                 receiveShadow
@@ -173,12 +173,12 @@ export default function Bath({  wallColor, wall2Color, showVipanelLeft, showVipa
                 geometry={nodes.Rectangle004.geometry}
                 material={materials['kafel.001']}
             />
-            <mesh
+            {/* <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Object.geometry}
                 material={materials['11 - Default']}
-            />
+            /> */}
             <mesh
                 castShadow
                 receiveShadow
@@ -197,14 +197,15 @@ export default function Bath({  wallColor, wall2Color, showVipanelLeft, showVipa
                 material={nodes.Box002.material}
             />
  {showVipanelLeft && (
-            <mesh receiveShadow
+            <mesh scale={[1, 1.1, 1]}
+                receiveShadow
                 geometry={nodes.Plane.geometry}
                 material={materials.vipanel}
             />
              )}
 
             {showVipanelRight && (
-             <mesh 
+             <mesh scale={[1, 1.1, 1]}
                 receiveShadow
                 geometry={nodes.Plane001.geometry}
                 material={materials.vipanel}
@@ -361,19 +362,19 @@ export default function Bath({  wallColor, wall2Color, showVipanelLeft, showVipa
                 geometry={nodes.Mesh046.geometry}
                 material={materials['Material #53']}
             />
-            <mesh
+            {/* <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Mesh046_1.geometry}
                 material={materials['Material #53.002']}
-            />
-            <mesh
+            /> */}
+            {/* <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Mesh016.geometry}
                 material={materials['Material #44']}
-            />
-            <mesh
+            /> */}
+            {/* <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Mesh016_1.geometry}
@@ -390,24 +391,24 @@ export default function Bath({  wallColor, wall2Color, showVipanelLeft, showVipa
                 receiveShadow
                 geometry={nodes.Mesh030.geometry}
                 material={materials.ytetfrrt122}
-            />
-            <mesh
+            /> */}
+            {/* <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Mesh030_1.geometry}
                 material={materials.ytetfrrt1223}
-            />
-            <mesh castShadow receiveShadow geometry={nodes.Mesh019.geometry} material={materials.tbz} />
+            /> */}
+            {/* <mesh castShadow receiveShadow geometry={nodes.Mesh019.geometry} material={materials.tbz} />
 
             <mesh castShadow receiveShadow geometry={nodes.Mesh019_1.geometry} material={materials.tb} />
-           
-            <mesh
+            */}
+            {/* <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Mesh019_2.geometry}
                 material={materials.tb_2}
-            />
-            <mesh
+            /> */}
+            {/* <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Mesh015.geometry}
@@ -418,8 +419,8 @@ export default function Bath({  wallColor, wall2Color, showVipanelLeft, showVipa
                 receiveShadow
                 geometry={nodes.Mesh015_1.geometry}
                 material={materials['Material #799']}
-            />
-            <mesh
+            /> */}
+            {/* <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Mesh015_2.geometry}
@@ -430,7 +431,7 @@ export default function Bath({  wallColor, wall2Color, showVipanelLeft, showVipa
                 receiveShadow
                 geometry={nodes.Mesh015_3.geometry}
                 material={materials['Material #-2147483648']}
-            />
+            /> */}
             <mesh
                 castShadow
                 receiveShadow
@@ -572,4 +573,4 @@ export default function Bath({  wallColor, wall2Color, showVipanelLeft, showVipa
     )
 }
 
-useGLTF.preload('/sb4.glb')
+useGLTF.preload('./files/sb4.glb')

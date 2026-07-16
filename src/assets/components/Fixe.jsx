@@ -3,7 +3,7 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 export default function Fixe({ metalColor, ...props }) {
-  const { nodes, materials } = useGLTF('/fixe_compressed.glb')
+  const { nodes, materials } = useGLTF('./files/fixe_compressed.glb')
   return (
     <group {...props} dispose={null}>
       <mesh
@@ -38,4 +38,4 @@ export default function Fixe({ metalColor, ...props }) {
   )
 }
 
-useGLTF.preload('/fixe_compressed.glb')
+useGLTF.preload('./files/fixe_compressed.glb')

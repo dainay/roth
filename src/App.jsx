@@ -5,14 +5,14 @@ import './App.css'
 
 function App() {
     const [count, setCount] = useState(0)
-    const [metalColor, setMetalColor] = useState("#d0d0d0");
+    const [metalColor, setMetalColor] = useState("#896340");
     const [vipanel, setVipanel] = useState("1");
     const [receveur, setReceveur] = useState("1");
     const [paroi, setParoi] = useState("1");
     const [showVipanelLeft, setShowVipanelLeft] = useState(true);
     const [showVipanelRight, setShowVipanelRight] = useState(true);
-    const [wallColor, setWallColor] = useState("#4f7a8c");
-      const [wall2Color, setWall2Color] = useState("#b7b495");
+    const [wallColor, setWallColor] = useState("#b9b4b1");
+      const [wall2Color, setWall2Color] = useState("#453d3a");
  
     return (
         <div className="wrapper">
