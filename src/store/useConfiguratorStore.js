@@ -2,15 +2,15 @@ import { create } from 'zustand';
 
 const useConfiguratorStore = create((set) => ({
   finition: 'or-brosse',
-  profile: 'white',
+  profile: 'or',
   niche: true,
   wall: false,
-  vipanelleft: 'marble',
-  vipanelright: 'marble',
-  vipanelniche: 'marble',
+  vipanelleft: 'CAR5AF',
+  vipanelright: 'CARP5B',
+  vipanelniche: 'CARP5B',
   shower: 'f',
   serigraphie: false,
-  receveur: 'black',
+  receveur: 'soft-white',
 
   setFinition: (finition) => set({ finition }), 
   setProfile: (profile) => set({ profile }), 

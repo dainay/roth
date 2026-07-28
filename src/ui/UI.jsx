@@ -1,6 +1,6 @@
 import React from 'react';
 import useConfiguratorStore from '../store/useConfiguratorStore';
-import { VIPANEL_TEXTURES, RECEVEUR_TEXTURES, SHOWER_TYPES, FINITIONS } from '../conf/textures'
+import { VIPANEL_TEXTURES, RECEVEUR_TEXTURES, SHOWER_TYPES, FINITIONS, PROFILES } from '../conf/textures'
 
 import Button from './components/Button';
 
@@ -39,8 +39,7 @@ export default function UI() {
     const setFinitions = useConfiguratorStore((state) => state.setFinitions);
 
     return (
-        <div>
-            <h1>UI Component</h1>
+        <div> 
             <div>
                 <h2>Receveur</h2>
 
@@ -63,7 +62,7 @@ export default function UI() {
                         active={vipanelleft === item.id}
                         onClick={() => setVipanelLeft(item.id)}
                     >
-                        {item.label}
+                        {item.name}
                     </Button>
                 ))}
             </div>
@@ -77,7 +76,21 @@ export default function UI() {
                         active={vipanelright === item.id}
                         onClick={() => setVipanelRight(item.id)}
                     >
-                        {item.label}
+                        {item.name}
+                    </Button>
+                ))}
+            </div>
+
+            <div>
+                <h2>Vipanel niche</h2>
+
+                {VIPANEL_TEXTURES.map((item) => (
+                    <Button
+                        key={item.id}
+                        active={vipanelniche === item.id}
+                        onClick={() => setVipanelNiche(item.id)}
+                    >
+                        {item.name}
                     </Button>
                 ))}
             </div>
@@ -152,6 +165,20 @@ export default function UI() {
                         key={item.id}
                         active={finition === item.id}
                         onClick={() => setFinition(item.id)}
+                    >
+                        {item.label}
+                    </Button>
+                ))}
+            </div> 
+
+            <div>
+                <h2>Profile</h2>
+
+                {PROFILES.map((item) => (
+                    <Button
+                        key={item.id}
+                        active={profile === item.id}
+                        onClick={() => setProfile(item.id)}
                     >
                         {item.label}
                     </Button>

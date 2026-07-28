@@ -2,7 +2,7 @@ import React, { useRef, useLayoutEffect } from 'react'
 import { useGLTF, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
 
-import { VIPANEL_TEXTURES, RECEVEUR_TEXTURES, SHOWER_TYPES, FINITIONS } from '../conf/textures'
+import { VIPANEL_TEXTURES, RECEVEUR_TEXTURES, SHOWER_TYPES, FINITIONS, PROFILES } from '../conf/textures'
 import useConfiguratorStore from '../store/useConfiguratorStore'; 
 
 export function Ambiance(props) { 
@@ -21,7 +21,9 @@ export function Ambiance(props) {
 
 console.log('STORE', 'serigraphie:', serigraphie, 'finition:', finition, 'profile:', profile, 'niche:', niche, 'wall:', wall, 'vipanelleft:', vipanelleft, 'vipanelright:', vipanelright, 'vipanelniche:', vipanelniche, 'receveur:', receveur, 'shower:', shower);
  
-      //CHANGE FINITION MATERIAL
+      //************************************* */
+    //CHANGE Finition MATERIAL
+    //************************************* */
       useLayoutEffect(() => {
         const mFinition = materials['+FINITION']
         const finitionData = FINITIONS.find(item => item.id === finition)
@@ -35,6 +37,23 @@ console.log('STORE', 'serigraphie:', serigraphie, 'finition:', finition, 'profil
 
         mFinition.needsUpdate = true
       }, [materials, finition])
+
+           //************************************* */
+    //CHANGE profile MATERIAL
+    //************************************* */
+      useLayoutEffect(() => {
+        const mProfile = materials['+PROFILE']
+        const profileData = PROFILES.find(item => item.id === profile)
+        // console.log('PROFILE DATA', profileData)
+
+        if (!mProfile || !profileData) return
+
+        mProfile.roughness = profileData.roughness
+        mProfile.metalness = profileData.metalness
+        mProfile.color.set(profileData.color)
+
+        mProfile.needsUpdate = true
+      }, [materials, profile])
 
       useLayoutEffect(() => {
       const mGlass = materials['+GLASS']
@@ -51,6 +70,10 @@ console.log('STORE', 'serigraphie:', serigraphie, 'finition:', finition, 'profil
       mGlass.needsUpdate = true
     }, [])
 
+    //************************************* */
+    //CHANGE RECEVEUR MATERIAL
+    //************************************* */
+
     const receveurTextureArray = useTexture(
       RECEVEUR_TEXTURES.map((item) => item.url)
     )
@@ -60,46 +83,111 @@ console.log('STORE', 'serigraphie:', serigraphie, 'finition:', finition, 'profil
         receveurTextureArray[index],
       ])
     ) 
-
-    //CHANGE RECEVEUR MATERIAL
-      useLayoutEffect(() => {
-        const mReceveur = materials['+RECEVUER'] 
  
 
-        if (!mReceveur || !receveurData) return
+useLayoutEffect(() => {
+  const mReceveur = materials['+RECEVUER']
+  const tReceveur = receveurTexturesById[receveur]
 
-        const receveurTexture = receveurTexturesById[receveur]
-        if (!receveurTexture) return
+  if (!mReceveur || !tReceveur) return
 
-        receveurTexture.flipY = true
-        receveurTexture.colorSpace = THREE.SRGBColorSpace
+  tReceveur.flipY = false
 
-        normalMap.flipY = true
-        normalMap.colorSpace = THREE.NoColorSpace
+  // like Blender Mapping Scale X/Y
+  tReceveur.repeat.set(1, 1)
 
-        normalMap.wrapS = THREE.RepeatWrapping
-        normalMap.wrapT = THREE.RepeatWrapping
-        normalMap.repeat.set(1.2, 1.4)
+  mReceveur.map = tReceveur
+  mReceveur.color.set('#ffffff')
+  mReceveur.roughness = 0.9
+  mReceveur.metalness = 0
 
-        material.roughness = 0.4
-        material.metalness = 0
-        material.color.set('#ffffff')
-
-        material.map = receveurTexture
-        material.normalMap = normalMap
-        material.normalScale = new THREE.Vector2(0.2, 0.2)
- 
-
-        material.needsUpdate = true
-        receveurTexture.needsUpdate = true
-        normalMap.needsUpdate = true
-        
-        
-      }, [materials, receveur])
+  mReceveur.needsUpdate = true
+  tReceveur.needsUpdate = true
+}, [materials, receveur, receveurTexturesById])
 
 
-     return (
+    //************************************* */
+    //CHANGE left VIPANEL MATERIAL
+    //************************************* */
+
+     const  vipanelTextureArray = useTexture(
+      VIPANEL_TEXTURES.map((item) => item.url)
+    )
+    const vipanelTexturesById = Object.fromEntries(
+      VIPANEL_TEXTURES.map((item, index) => [
+        item.id,
+        vipanelTextureArray[index],
+      ])
+    ) 
+
+useLayoutEffect(() => {
+  const mVipanel = materials['VIPANEL-BIG-left']
+  const tVipanel = vipanelTexturesById[vipanelleft]
+  const vipanelData = VIPANEL_TEXTURES.find(item => item.id === vipanelleft)
+
+  if (!mVipanel || !tVipanel) return
+
+  tVipanel.flipY = false
+
+  // like Blender Mapping Scale X/Y
+  tVipanel.repeat.set(1, 1)
+
+  mVipanel.map = tVipanel
+  mVipanel.color.set('#ffffff')
+  mVipanel.roughness = vipanelData.roughness
+  mVipanel.metalness = vipanelData.metalness
+
+  mVipanel.needsUpdate = true
+  tVipanel.needsUpdate = true
+}, [materials, vipanelleft, vipanelTexturesById])
+
+useLayoutEffect(() => {
+  const mVipanel = materials['VIPANEL-BIG-right']
+  const tVipanel = vipanelTexturesById[vipanelright]
+  const vipanelData = VIPANEL_TEXTURES.find(item => item.id === vipanelright)
+
+  if (!mVipanel || !tVipanel) return
+
+  tVipanel.flipY = false
+
+  // like Blender Mapping Scale X/Y
+  tVipanel.repeat.set(1, 1)
+
+  mVipanel.map = tVipanel
+  mVipanel.color.set('#ffffff')
+  mVipanel.roughness = vipanelData.roughness
+  mVipanel.metalness = vipanelData.metalness
+
+  mVipanel.needsUpdate = true
+  tVipanel.needsUpdate = true
+}, [materials, vipanelright, vipanelTexturesById])
+
+useLayoutEffect(() => {
+  const mVipanel = materials['VIPANEL-BIG']
+  const tVipanel = vipanelTexturesById[vipanelniche]
+  const vipanelData = VIPANEL_TEXTURES.find(item => item.id === vipanelniche)
+
+  if (!mVipanel || !tVipanel) return
+
+  tVipanel.flipY = false
+
+  // like Blender Mapping Scale X/Y
+  tVipanel.repeat.set(1, 1)
+
+  mVipanel.map = tVipanel
+  mVipanel.color.set('#ffffff')
+  mVipanel.roughness = vipanelData.roughness
+  mVipanel.metalness = vipanelData.metalness
+
+  mVipanel.needsUpdate = true
+  tVipanel.needsUpdate = true
+}, [materials, vipanelniche, vipanelTexturesById])
+
+
+    return (
     <group {...props} dispose={null}>
+       
+
       <mesh
         receiveShadow
         geometry={nodes.Cube001.geometry}
@@ -294,9 +382,7 @@ console.log('STORE', 'serigraphie:', serigraphie, 'finition:', finition, 'profil
       </group>
 
       {serigraphie && shower === 'f' && (
-      <mesh
-        castShadow
-        receiveShadow
+      <mesh  
         geometry={nodes.Serographie.geometry}
         material={materials['GLASS.002']}
         position={[-0.949, 0.685, -1.664]}
@@ -435,14 +521,14 @@ console.log('STORE', 'serigraphie:', serigraphie, 'finition:', finition, 'profil
           castShadow
           receiveShadow
           geometry={nodes['vp-r1'].geometry}
-          material={materials['VIPANEL-BIG']}
+          material={materials['VIPANEL-BIG-right']}
           position={[-0.041, 0.917, -0.314]}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes['vp-r2'].geometry}
-          material={materials['VIPANEL-BIG']}
+          material={materials['VIPANEL-BIG-right']}
           position={[0.041, 0.917, -0.817]}
           rotation={[0, 1.571, 0]}
         />
@@ -893,29 +979,29 @@ console.log('STORE', 'serigraphie:', serigraphie, 'finition:', finition, 'profil
       )}
       <mesh 
         receiveShadow
-        geometry={nodes['vp-l1'].geometry}
-        material={materials['VIPANEL-BIG']}
+         geometry={nodes['vp-l1'].geometry}
+        material={materials['VIPANEL-BIG-left']}
         position={[-1.944, 0.921, 0.691]}
       />
       <mesh 
         receiveShadow
         geometry={nodes['vp-l2'].geometry}
-        material={materials['VIPANEL-BIG']}
+        material={materials['VIPANEL-BIG-left']}
         position={[-1.943, 0.917, -0.806]}
         rotation={[0, Math.PI / 2, 0]}
         scale={[1, 1, 0.1]}
       />
-      <mesh 
+      <mesh  
         receiveShadow
         geometry={nodes['vp-l3'].geometry}
-        material={materials['VIPANEL-BIG']}
+        material={materials['VIPANEL-BIG-left']}
         position={[-2.199, 0.917, -1.558]}
         scale={[1, 1, 0.1]}
       />
       <mesh 
         receiveShadow
         geometry={nodes['vp-n1'].geometry}
-        material={materials['VIPANEL-BIG']}
+         material={materials['VIPANEL-BIG']}
         position={[-1.446, 0.917, -2.311]}
       />
       {(!niche || shower === 'p')  && (
@@ -930,13 +1016,13 @@ console.log('STORE', 'serigraphie:', serigraphie, 'finition:', finition, 'profil
       <mesh 
         receiveShadow
         geometry={nodes['vp-r3'].geometry}
-        material={materials['VIPANEL-BIG']}
+         material={materials['VIPANEL-BIG-right']}
         position={[0.44, 0.917, -2.554]}
       />
       <mesh 
         receiveShadow
         geometry={nodes['vp-r4'].geometry}
-        material={materials['VIPANEL-BIG']}
+        material={materials['VIPANEL-BIG-right']}
         position={[1.682, 0.917, -2.554]}
         scale={[1, 1, 0.1]}
       />
