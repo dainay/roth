@@ -322,19 +322,39 @@ export const VIPANEL_TEXTURES = [
 
 export const RECEVEUR_TEXTURES = [
   {
-    id: 'rec-white',
-    label: 'Blanc mat',
-    url: '/textures/rec1.webp',
+    id: 'ardoxyde',
+    label: 'Ardoxyde',
+    url: '/textures/receveurs/Receveur_Ardoxyde.webp',
+    category: 'dark',
+    recommendedFor: ['noir-mat', 'bronze', 'canon-fusil'],
   },
   {
-    id: 'rec-anthracite',
-    label: 'Anthracite',
-    url: '/textures/rec2.webp',
+    id: 'greyge',
+    label: 'Greyge',
+    url: '/textures/receveurs/Receveur_Greyge.webp',
+    category: 'clair',
+    recommendedFor: ['or-brosse', 'or-rose', 'or-brillant', 'argent-poli'],
   },
   {
-    id: 'rec-stone',
-    label: 'Pierre',
-    url: '/textures/rec3.jpg',
+    id: 'gris-veine',
+    label: 'Gris veiné',
+    url: '/textures/receveurs/Receveur_Gris-veine.webp',
+    category: 'gris',
+    recommendedFor: ['noir-mat', 'canon-fusil', 'argent-poli'],
+  },
+  {
+    id: 'soft-grey',
+    label: 'Soft grey',
+    url: '/textures/receveurs/Receveur_Soft-grey.webp',
+    category: 'gris',
+    recommendedFor: ['argent-poli', 'or-rose', 'canon-fusil'],
+  },
+  {
+    id: 'soft-white',
+    label: 'Soft white',
+    url: '/textures/receveurs/Receveur_Soft-White.webp',
+    category: 'clair',
+    recommendedFor: ['or-brosse', 'or-brillant', 'argent-poli', 'or-rose'],
   },
 ]
 

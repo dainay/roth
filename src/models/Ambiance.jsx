@@ -36,20 +36,66 @@ console.log('STORE', 'serigraphie:', serigraphie, 'finition:', finition, 'profil
         mFinition.needsUpdate = true
       }, [materials, finition])
 
-       useLayoutEffect(() => {
-        const mGlass = materials['+GLASS']
+      useLayoutEffect(() => {
+      const mGlass = materials['+GLASS']
 
-        if (!mGlass ) return
+      if (!mGlass ) return
 
-        mGlass.roughness = 0.08
-        mGlass.metalness = 1
-        mGlass.depthWrite = false
-        mGlass.transparent
-        mGlass.opacity = 0.2
-        mGlass.color.set(new THREE.Color("#ffffff"))
+      mGlass.roughness = 0.08
+      mGlass.metalness = 1
+      mGlass.depthWrite = false
+      mGlass.transparent
+      mGlass.opacity = 0.2
+      mGlass.color.set(new THREE.Color("#ffffff"))
 
-        mGlass.needsUpdate = true
-      }, [])
+      mGlass.needsUpdate = true
+    }, [])
+
+    const receveurTextureArray = useTexture(
+      RECEVEUR_TEXTURES.map((item) => item.url)
+    )
+    const receveurTexturesById = Object.fromEntries(
+      RECEVEUR_TEXTURES.map((item, index) => [
+        item.id,
+        receveurTextureArray[index],
+      ])
+    ) 
+
+    //CHANGE RECEVEUR MATERIAL
+      useLayoutEffect(() => {
+        const mReceveur = materials['+RECEVUER'] 
+ 
+
+        if (!mReceveur || !receveurData) return
+
+        const receveurTexture = receveurTexturesById[receveur]
+        if (!receveurTexture) return
+
+        receveurTexture.flipY = true
+        receveurTexture.colorSpace = THREE.SRGBColorSpace
+
+        normalMap.flipY = true
+        normalMap.colorSpace = THREE.NoColorSpace
+
+        normalMap.wrapS = THREE.RepeatWrapping
+        normalMap.wrapT = THREE.RepeatWrapping
+        normalMap.repeat.set(1.2, 1.4)
+
+        material.roughness = 0.4
+        material.metalness = 0
+        material.color.set('#ffffff')
+
+        material.map = receveurTexture
+        material.normalMap = normalMap
+        material.normalScale = new THREE.Vector2(0.2, 0.2)
+ 
+
+        material.needsUpdate = true
+        receveurTexture.needsUpdate = true
+        normalMap.needsUpdate = true
+        
+        
+      }, [materials, receveur])
 
 
      return (
