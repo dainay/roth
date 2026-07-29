@@ -10,18 +10,30 @@ import { Ambiance } from "../models/Ambiance";
 export default function Scene() {
     return (
         <Canvas
-            camera={{ position: [1, 1, 1], fov: 50 }}
+            camera={{ position: [2, 1, 2], fov: 60 }}
             shadows={{ type: THREE.PCFShadowMap }}
             gl={{ antialias: true }}
             linear={false} 
         >
-            <color attach="background" args={["#1b1b1b"]} /> 
+            <color attach="background" args={["#e9d19e"]} /> 
             <Lighting /> 
 
             <Ambiance />
          
-            <OrbitControls target={[0, 1, 0]} makeDefault  />
-   {/* <GizmoHelper
+            <OrbitControls target={[-0.5, 1, -1]}  enablePan={false}
+              enableZoom={true}
+              minDistance={0}
+              maxDistance={2.6}
+              minPolarAngle={Math.PI /2.6}
+              maxPolarAngle={Math.PI / 1.6}
+              minAzimuthAngle={Math.PI / 8}
+              maxAzimuthAngle={Math.PI / 2.5}
+                enableDamping
+                rotateSpeed={0.1}
+                zoomSpeed={3}
+              dampingFactor={0.08}
+            />
+   <GizmoHelper
         alignment="bottom-right"
         margin={[80, 80]}
       >
@@ -29,7 +41,7 @@ export default function Scene() {
           axisColors={['#ff3653', '#8adb00', '#2c8fff']}
           labelColor="white"
         />
-      </GizmoHelper> */}
+      </GizmoHelper>
         </Canvas>
     );
 }

@@ -110,14 +110,7 @@ export const VIPANEL_TEXTURES = [
     url: '/textures/vipanel/FLRZ9V-Jardin-secret-1500x2550x3MM.webp',
     metalness: 0,
     roughness: 0.82,
-  },
-  {
-    id: 'MAR3PB',
-    label: 'Reflet nocturne PB',
-    url: '/textures/vipanel/MAR3PB-Reflet-nocturne-1500x2550x3MM.webp',
-    metalness: 0.03,
-    roughness: 0.62,
-  },
+  }, 
   {
     id: 'MAR3PP',
     label: 'Reflet nocturne PP',
@@ -454,5 +447,23 @@ export const PROFILES = [
     metalness: 0.6,
     roughness: 0.45,
   },
+]
+
+export const NICHES = [
+  {
+    id: 'white',
+    label: 'Blanc',
+    color: '#f2f2ef'
+  },
+  {
+    id: 'black',
+    label: 'Noir',
+    color: '#222222'
+  },
+  {
+    id: 'grey',
+    label: 'Gris',
+    color: '#bfc0bd'
+  }
 ]
 

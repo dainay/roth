@@ -95,7 +95,7 @@ export default function Lighting() {
                         intensity={11}
                         position={[-4, -0.5, 5]}
                         rotation={[0, Math.PI, 0]}
-                        scale={[15, 2, 2]}
+                        scale={[10, 2, 2]}
                         color="#ffccaa"
                     />
  
@@ -104,7 +104,7 @@ export default function Lighting() {
                     intensity={10}
                     position={[4, 0, 6]}
                     rotation={[0, Math.PI , 0]}
-                    scale={[10, 2, 3]}
+                    scale={[5, 2, 3]}
                     color="#fdd5a8"
                 />
  

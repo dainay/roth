@@ -11,6 +11,7 @@ const useConfiguratorStore = create((set) => ({
   shower: 'f',
   serigraphie: false,
   receveur: 'soft-white',
+  nicheColor: 'white',
 
   setFinition: (finition) => set({ finition }), 
   setProfile: (profile) => set({ profile }), 
@@ -24,6 +25,7 @@ const useConfiguratorStore = create((set) => ({
   setShower: (shower) => set({ shower }),
   setSerigraphie: (serigraphie) => set({ serigraphie }),
   setReceveur: (receveur) => set({ receveur }),
+  setNicheColor: (nicheColor) => set({ nicheColor }),
 
   reset: () =>
     set({
@@ -36,7 +38,8 @@ const useConfiguratorStore = create((set) => ({
       vipanelniche: 'marble',
       shower: 'f',
       serigraphie: false,
-      receveur: 'black',
+      receveur: 'black',  
+      nicheColor: 'white',
     }),
 }));
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react'
 import s from './UI.module.scss'
 import useConfiguratorStore from '../store/useConfiguratorStore';
-import { VIPANEL_TEXTURES, RECEVEUR_TEXTURES, SHOWER_TYPES, FINITIONS, PROFILES } from '../conf/textures'
+import { NICHES, VIPANEL_TEXTURES, RECEVEUR_TEXTURES, SHOWER_TYPES, FINITIONS, PROFILES } from '../conf/textures'
 
 import Button from './components/Button';
 
@@ -42,28 +42,31 @@ export default function UI() {
     const finitions = useConfiguratorStore((state) => state.finitions);
     const setFinitions = useConfiguratorStore((state) => state.setFinitions);
 
+    const nicheColor = useConfiguratorStore((state) => state.nicheColor);
+    const setNicheColor = useConfiguratorStore((state) => state.setNicheColor);
+
     const vipanelZones = [
         {
             id: 'left',
-            label: 'Gauche', 
+            label: 'Gauche',
             value: vipanelleft,
             setValue: setVipanelLeft,
         },
         {
             id: 'right',
-            label: 'Droite', 
+            label: 'Droite',
             value: vipanelright,
             setValue: setVipanelRight,
         },
         {
             id: 'niche',
-            label: 'Espace douche', 
+            label: 'Espace douche',
             value: vipanelniche,
             setValue: setVipanelNiche,
         },
-        ]
+    ]
 
-        const activeZone = vipanelZones.find((zone) => zone.id === activeVipanelZone)
+    const activeZone = vipanelZones.find((zone) => zone.id === activeVipanelZone)
 
     return (
         <div className={s.uiWrapper}>
@@ -130,6 +133,20 @@ export default function UI() {
                 </Button>
             </div>
 
+             <div className={s.blockButtons}>
+                <h2>Couleur de la niche</h2>
+
+                {NICHES.map((item) => (
+                    <Button
+                        key={item.id}
+                        active={nicheColor === item.id}
+                        onClick={() => setNicheColor(item.id)}
+                    >
+                        {item.label}
+                    </Button>
+                ))}
+            </div>
+
             <div className={s.blockButtons}>
                 <h2>Serigraphie</h2>
                 <Button
@@ -162,51 +179,47 @@ export default function UI() {
             </div>
 
 
-            <div></div>
-
 
             <div className={`${s.blockButtons} ${s.blockButtonsVipanel}`}>
-  <h2>Vipanel</h2>
+                <h2>Vipanel</h2>
 
-  <div className={s.vipanelTabs}>
-    {vipanelZones.map((zone) => (
-      <button
-        key={zone.id}
-        type="button"
-        className={`${s.vipanelTab} ${
-          activeVipanelZone === zone.id ? s.vipanelTabActive : ''
-        }`}
-        onClick={() => setActiveVipanelZone(zone.id)}
-      >
-        {zone.label}
-      </button>
-    ))}
-  </div>
+                <div className={s.vipanelTabs}>
+                    {vipanelZones.map((zone) => (
+                        <button
+                            key={zone.id}
+                            type="button"
+                            className={`${s.vipanelTab} ${activeVipanelZone === zone.id ? s.vipanelTabActive : ''
+                                }`}
+                            onClick={() => setActiveVipanelZone(zone.id)}
+                        >
+                            {zone.label}
+                        </button>
+                    ))}
+                </div>
 
 
-  <div className={s.vipanelGrid}>
-    {VIPANEL_TEXTURES.map((item) => (
-      <Button
-        className={`${s.vipanelButton} ${
-    activeZone.value === item.id ? s.vipanelButtonActive : ''
-  }`}
-        key={item.id}
-        active={activeZone.value === item.id}
-        onClick={() => activeZone.setValue(item.id)}
-      >
-        <div className={s.imgVipanelWrapper}>
-          <img
-            className={s.imgVipanel}
-            src={item.url}
-            alt={item.label}
-          />
-        </div>
+                <div className={s.vipanelGrid}>
+                    {VIPANEL_TEXTURES.map((item) => (
+                        <Button
+                            className={`${s.vipanelButton} ${activeZone.value === item.id ? s.vipanelButtonActive : ''
+                                }`}
+                            key={item.id}
+                            active={activeZone.value === item.id}
+                            onClick={() => activeZone.setValue(item.id)}
+                        >
+                            <div className={s.imgVipanelWrapper}>
+                                <img
+                                    className={s.imgVipanel}
+                                    src={item.url}
+                                    alt={item.label}
+                                />
+                            </div>
 
-        <span>{item.label}</span>
-      </Button>
-    ))}
-  </div>
-</div>
+                            <span>{item.label}</span>
+                        </Button>
+                    ))}
+                </div>
+            </div>
 
 
 
@@ -223,6 +236,8 @@ export default function UI() {
                     </Button>
                 ))}
             </div>
+
+           
 
 
         </div>
