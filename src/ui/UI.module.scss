@@ -1,0 +1,110 @@
+.uiWrapper {
+  width: 400px;
+  height: 100vh; 
+  overflow-y: auto;
+  padding: 20px;
+}
+ 
+.imgVipanel {
+    display: block;
+    width: 300%;
+}
+
+.blockButtons {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  overflow-x: auto;
+  
+  h2 {
+    display: block;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+}
+
+button.vipanelButton {
+    width: 60px;
+    height: 60px;
+    border: none;
+    padding: 0 !important;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    overflow: hidden;
+    position: relative;
+  
+
+     &:hover span {
+            opacity: 1;
+    }
+}
+
+
+.vipanelButton span {
+      opacity: 0;
+    position: absolute;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    // bottom: -100%;
+    width: 100%;
+    background-image: linear-gradient(to bottom, rgba(219, 219, 219, 0.233), rgba(59, 59, 59, 0.7)) !important;
+    font-size: 10px;
+    transition: all 0.3s ease;
+    color: #f7f4f4;
+    line-height: 11px;
+    font-weight: 400;
+}
+
+
+
+.vipanelTabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.vipanelTab {
+  border: 1px solid #ddd;
+  background: white;
+  padding: 5px 10px;
+  border-radius: 999px; 
+    font-size: 12px;
+  cursor: pointer; 
+}
+
+.vipanelTabActive {
+  background: #111;
+  color: white;
+  border-color: #111;
+}
+
+.vipanelGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5px;
+}
+
+button.vipanelButtonActive { 
+    span {
+        bottom: 0px;
+    }
+
+ &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #111111;
+    box-sizing: border-box;
+  }
+}

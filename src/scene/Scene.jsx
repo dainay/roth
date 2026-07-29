@@ -1,5 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import s from './Scene.module.scss'
 import * as THREE from "three";
 import '../helpers/preload'
 

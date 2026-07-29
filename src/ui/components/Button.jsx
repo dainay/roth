@@ -1,10 +1,12 @@
+import s from './Button.module.scss'
 
-export default function Button({ children, active, onClick }) {
+export default function Button({  className = '', children, active, onClick,  ...props }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={active ? 'button active' : 'button'}
+      className={`${s.button} ${active ? s.active : ''} ${className}`}
+      {...props}
     >
       {children}
     </button>
