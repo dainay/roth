@@ -1,5 +1,5 @@
 import React, { useRef, useLayoutEffect } from 'react'
-import { useGLTF, useTexture } from '@react-three/drei'
+import { useGLTF, useTexture, Bounds } from '@react-three/drei'
 import * as THREE from 'three'
 
 import { VIPANEL_TEXTURES, RECEVEUR_TEXTURES, SHOWER_TYPES, FINITIONS, PROFILES } from '../conf/textures'
@@ -718,7 +718,7 @@ useLayoutEffect(() => {
           material={materials.Plant_Dali}
         />
       </group>
-
+       
       <mesh
         geometry={nodes.profile.geometry}
         material={materials['+PROFILE']}
@@ -764,19 +764,22 @@ useLayoutEffect(() => {
         position={[-1.968, 0.922, -2.597]}
       />
       <mesh
-        castShadow
+        // castShadow
         receiveShadow
         geometry={nodes.Ceiling.geometry}
         material={materials['+CEILING']}
         position={[-2.063, 2.21, -2.614]}
       />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Corner.geometry}
-        material={nodes.Corner.material}
-        position={[-1.696, 0.922, -2.555]}
-      />
+      
+      <Bounds fit clip observe margin={1}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Corner.geometry}
+            material={nodes.Corner.material}
+            position={[-1.696, 0.922, -2.555]}
+          />
+      </Bounds>
       <mesh 
         receiveShadow
         geometry={nodes.Floor.geometry}
@@ -966,15 +969,21 @@ useLayoutEffect(() => {
               material={materials.Bathroom_set_2_Label}
             />
           </group>
-          <mesh
-            castShadow
-            receiveShadow
+          <mesh 
             geometry={nodes.Soap.geometry}
             material={materials['+CEILING']}
             position={[0.141, -0.047, -0.005]}
             scale={0.744}
           />
         </group>
+
+        <mesh 
+            geometry={nodes.Soap.geometry}
+            material={materials['+CEILING']}
+            position={[-0.15, 1.24, 5.5]}
+            scale={[1,1,10]}
+          />
+        
       </mesh>
       )}
       <mesh 
