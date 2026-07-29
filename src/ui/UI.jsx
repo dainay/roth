@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react'
 import s from './UI.module.scss'
 import useConfiguratorStore from '../store/useConfiguratorStore';
-import { NICHES, VIPANEL_TEXTURES, RECEVEUR_TEXTURES, SHOWER_TYPES, FINITIONS, PROFILES } from '../conf/textures'
+import { TRYPTICH_TEXTURES, NICHES, VIPANEL_TEXTURES, RECEVEUR_TEXTURES, SHOWER_TYPES, FINITIONS, PROFILES } from '../conf/textures'
 
 import Button from './components/Button';
 
@@ -45,6 +45,11 @@ export default function UI() {
     const nicheColor = useConfiguratorStore((state) => state.nicheColor);
     const setNicheColor = useConfiguratorStore((state) => state.setNicheColor);
 
+    const setTryptichLeft = useConfiguratorStore((state) => state.setTryptichLeft);
+    const setTryptichRight = useConfiguratorStore((state) => state.setTryptichRight);
+    const tryptichLeft = useConfiguratorStore((state) => state.tryptichLeft);
+    const tryptichRight = useConfiguratorStore((state) => state.tryptichRight);
+
     const vipanelZones = [
         {
             id: 'left',
@@ -53,16 +58,20 @@ export default function UI() {
             setValue: setVipanelLeft,
         },
         {
-            id: 'right',
-            label: 'Droite',
-            value: vipanelright,
-            setValue: setVipanelRight,
-        },
-        {
             id: 'niche',
             label: 'Espace douche',
             value: vipanelniche,
             setValue: setVipanelNiche,
+        },
+        {
+            id: 'right',
+            label: 'Droite',
+            value: vipanelright,
+            setValue: setVipanelRight,
+        }, 
+        {
+            id: 'tryptich',
+            label: 'Tryptich' 
         },
     ]
 
@@ -197,28 +206,75 @@ export default function UI() {
                     ))}
                 </div>
 
+                {activeVipanelZone === 'tryptich' ? (
+                    <div  >
+                        <div>
+                            {TRYPTICH_TEXTURES.map((item) => (
+                            <Button
+                                className={`${s.vipanelButton} ${tryptichLeft === item.id ? s.vipanelButtonActive : ''
+                                    }`}
+                                key={item.id}
+                                active={tryptichLeft === item.id}
+                                onClick={() => setTryptichLeft(item.id)}
+                            >
+                                <div className={s.imgVipanelWrapper}>
+                                    <img
+                                        className={s.imgVipanel}
+                                        src={item.url}
+                                        alt={item.label}
+                                    />
+                                </div>
 
-                <div className={s.vipanelGrid}>
-                    {VIPANEL_TEXTURES.map((item) => (
-                        <Button
-                            className={`${s.vipanelButton} ${activeZone.value === item.id ? s.vipanelButtonActive : ''
-                                }`}
-                            key={item.id}
-                            active={activeZone.value === item.id}
-                            onClick={() => activeZone.setValue(item.id)}
-                        >
-                            <div className={s.imgVipanelWrapper}>
-                                <img
-                                    className={s.imgVipanel}
-                                    src={item.url}
-                                    alt={item.label}
-                                />
-                            </div>
+                                <span>{item.label}</span>
+                            </Button>
+                        ))}
+                        </div>
+                        <div>
+                            {TRYPTICH_TEXTURES.map((item) => (
+                            <Button
+                                className={`${s.vipanelButton} ${tryptichLeft === item.id ? s.vipanelButtonActive : ''
+                                    }`}
+                                key={item.id}
+                                active={tryptichLeft === item.id}
+                                onClick={() => setTryptichLeft(item.id)}
+                            >
+                                <div className={s.imgVipanelWrapper}>
+                                    <img
+                                        className={s.imgVipanel}
+                                        src={item.url}
+                                        alt={item.label}
+                                    />
+                                </div>
 
-                            <span>{item.label}</span>
-                        </Button>
-                    ))}
-                </div>
+                                <span>{item.label}</span>
+                            </Button>
+                        ))}
+                        </div>
+                        
+                    </div>
+                ) : (
+                    <div className={s.vipanelGrid}>
+                        {VIPANEL_TEXTURES.map((item) => (
+                            <Button
+                                className={`${s.vipanelButton} ${activeZone.value === item.id ? s.vipanelButtonActive : ''
+                                    }`}
+                                key={item.id}
+                                active={activeZone.value === item.id}
+                                onClick={() => activeZone.setValue(item.id)}
+                            >
+                                <div className={s.imgVipanelWrapper}>
+                                    <img
+                                        className={s.imgVipanel}
+                                        src={item.url}
+                                        alt={item.label}
+                                    />
+                                </div>
+
+                                <span>{item.label}</span>
+                            </Button>
+                        ))}
+                    </div>
+                )}
             </div>
 
 

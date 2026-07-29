@@ -12,6 +12,8 @@ const useConfiguratorStore = create((set) => ({
   serigraphie: false,
   receveur: 'soft-white',
   nicheColor: 'white',
+  tryptichLeft: '',
+  tryptichRight: '',
 
   setFinition: (finition) => set({ finition }), 
   setProfile: (profile) => set({ profile }), 
@@ -26,6 +28,11 @@ const useConfiguratorStore = create((set) => ({
   setSerigraphie: (serigraphie) => set({ serigraphie }),
   setReceveur: (receveur) => set({ receveur }),
   setNicheColor: (nicheColor) => set({ nicheColor }),
+  
+  setTryptichLeft:  (tryptichLeft) => set({ tryptichLeft }),
+  setTryptichRight:  (tryptichRight) => set({ tryptichRight }),
+  toggleTryptichLeft: () => set((state) => ({ tryptichLeft: state.tryptichLeft === 'palms' ? 'WLD4HV' : 'palms' })),
+  toggleTryptichRight: () => set((state) => ({ tryptichRight: state.tryptichRight === 'palms' ? 'WLD4HV' : 'palms' })),
 
   reset: () =>
     set({
@@ -40,6 +47,8 @@ const useConfiguratorStore = create((set) => ({
       serigraphie: false,
       receveur: 'black',  
       nicheColor: 'white',
+      tryptichLeft: '',
+      tryptichRight: '',
     }),
 }));
 

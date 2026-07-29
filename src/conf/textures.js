@@ -1,5 +1,12 @@
 export const VIPANEL_TEXTURES = [
     {
+      id: 'Uni_blanc',
+      label: 'Blanc',
+      url: '/textures/vipanel/blanc.webp',
+      metalness: 0,
+      roughness: 0.92,
+    },
+    {
     id: 'CAR5AF',
     label: 'Travertine tiles',
     url: '/textures/vipanel/CAR5AF-Travertine-tiles-1500x2550x3MM.webp',
@@ -467,3 +474,12 @@ export const NICHES = [
   }
 ]
 
+export const TRYPTICH_TEXTURES = [
+  {
+    id: 'WLD4HV',
+    label: 'Voile tropical',
+    url: '/textures/vipanel/WLD4HV-Voile-tropical-3-1250x2550x3MM.webp',
+    metalness: 0,
+    roughness: 0.6,
+  },
+]
