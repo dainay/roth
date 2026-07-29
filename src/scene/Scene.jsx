@@ -21,7 +21,7 @@ export default function Scene() {
             <Ambiance />
          
             <OrbitControls target={[0, 1, 0]} makeDefault  />
-   <GizmoHelper
+   {/* <GizmoHelper
         alignment="bottom-right"
         margin={[80, 80]}
       >
@@ -29,7 +29,7 @@ export default function Scene() {
           axisColors={['#ff3653', '#8adb00', '#2c8fff']}
           labelColor="white"
         />
-      </GizmoHelper>
+      </GizmoHelper> */}
         </Canvas>
     );
 }
