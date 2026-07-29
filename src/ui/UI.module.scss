@@ -94,7 +94,7 @@ button.vipanelButton {
 
 button.vipanelButtonActive { 
     span {
-        bottom: 0px;
+        opacity: 1;
     }
 
  &::after {
