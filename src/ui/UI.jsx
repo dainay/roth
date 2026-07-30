@@ -182,10 +182,10 @@ export default function UI() {
 
                     <Button
                         data-receveur={item.id}
-                        className={`${s.vipanelButton} ${receveur.value === item.id ? s.vipanelButtonActive : ''}`}
+                        className={`${s.vipanelButton} ${receveur  === item.id ? s.vipanelButtonActive : ''}`}
                         key={item.id}
-                        active={receveur.value === item.id}
-                        onClick={() => setReceveur({ value: item.id })}
+                        active={receveur === item.id}
+                        onClick={() => setReceveur(item.id)}
                     >
                         <div className={s.imgVipanelWrapper}>
                             <img

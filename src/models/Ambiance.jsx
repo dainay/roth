@@ -49,7 +49,7 @@ export function Ambiance(props) {
     if (!mNiche || !nicheData) return 
 
     mNiche.color.set(nicheData.color)
-    mNiche.metalness = 0.8
+    mNiche.metalness = 0.4
     mNiche.roughness = 0.5
 
     mNiche.needsUpdate = true

@@ -431,9 +431,9 @@ export const FINITIONS = [
   {
     id: 'bronze',
     label: 'Profilé Bronze',
-    color: '#7A5A43',
+    color: '#5b4c41',
     metalness: 1,
-    roughness: 0.32,
+    roughness: 0.1,
     url: './img/finitions/Bronze.jpg',
   },
 ]
