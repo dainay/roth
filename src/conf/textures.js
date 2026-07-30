@@ -475,6 +475,12 @@ export const NICHES = [
 ]
 
 export const TRYPTICH_TEXTURES = [
+  
+   {
+      id: 'None',
+      label: 'None',
+       url: '/textures/img/None.svg',
+    },
   {
     id: 'WLD4HV',
     label: 'Voile tropical',

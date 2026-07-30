@@ -75,6 +75,8 @@ export default function UI() {
         },
     ]
 
+    console.log('TRYPTICH LOG', tryptichLeft, tryptichRight)
+
     const activeZone = vipanelZones.find((zone) => zone.id === activeVipanelZone)
 
     return (
@@ -209,6 +211,7 @@ export default function UI() {
                 {activeVipanelZone === 'tryptich' ? (
                     <div  >
                         <div>
+                            <h3>Mur gauche</h3>
                             {TRYPTICH_TEXTURES.map((item) => (
                             <Button
                                 className={`${s.vipanelButton} ${tryptichLeft === item.id ? s.vipanelButtonActive : ''
@@ -230,13 +233,14 @@ export default function UI() {
                         ))}
                         </div>
                         <div>
+                            <h3>Mur droit</h3>
                             {TRYPTICH_TEXTURES.map((item) => (
                             <Button
-                                className={`${s.vipanelButton} ${tryptichLeft === item.id ? s.vipanelButtonActive : ''
+                                className={`${s.vipanelButton} ${tryptichRight === item.id ? s.vipanelButtonActive : ''
                                     }`}
                                 key={item.id}
-                                active={tryptichLeft === item.id}
-                                onClick={() => setTryptichLeft(item.id)}
+                                active={tryptichRight === item.id}
+                                onClick={() => setTryptichRight(item.id)}
                             >
                                 <div className={s.imgVipanelWrapper}>
                                     <img
