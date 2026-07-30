@@ -23,7 +23,7 @@ export default function Triptych(props) {
         />
         )}
 
-         {triptychRight !== 'None' && nicheColor !== 'None' && (
+         {triptychRight !== 'None' && nicheColor === 'None' && (
             <mesh 
             receiveShadow
             geometry={nodes.tryptich.geometry}
@@ -33,7 +33,7 @@ export default function Triptych(props) {
         />
         )}
     
-            {triptychRight !== 'None' && nicheColor === 'None' && shower !== 'p' && (
+            {triptychRight !== 'None' && nicheColor !== 'None' && shower !== 'p' && (
           <mesh 
             receiveShadow
             geometry={nodes.tryptich001.geometry}

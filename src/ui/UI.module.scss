@@ -1,20 +1,20 @@
 .uiWrapper {
   width: 400px;
-  height: 100vh; 
+  height: 100vh;
   overflow-y: auto;
-  padding: 20px;
+  padding-inline: 20px;
   min-width: 400px;
   max-width: 400px;
-  height: 100vh; 
+  height: 100vh;
 }
- 
+
 .imgVipanel {
-    display: block;
-    width: 200%;
+  display: block;
+  width: 200%;
 }
 
 .nicheWrapper {
-  display: flex; 
+  display: flex;
   gap: 5px;
   margin-bottom: 10px;
 
@@ -29,7 +29,7 @@
   flex-wrap: wrap;
   overflow-x: auto;
   justify-content: flex-end;
-  
+
   h2 {
     display: block;
     width: 100%;
@@ -39,54 +39,54 @@
     margin-top: 25px;
     text-align: right;
     text-transform: uppercase;
-  } 
-   
+  }
+
 }
 
-.blockButtons:first-of-type { 
-  
+.blockButtons:first-of-type {
+
   h2 {
     margin-top: 0px;
-  } 
-   
+  }
+
 }
 
 button.vipanelButton {
-    width: 60px;
-    height: 60px;
-    border: none;
-    padding: 0 !important;
-    justify-content: center;
-    flex-direction: column;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    overflow: hidden;
-    position: relative; 
+  width: 60px;
+  height: 60px;
+  border: none;
+  padding: 0 !important;
+  justify-content: center;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow: hidden;
+  position: relative;
 
-     &:hover span {
-            opacity: 1;
-    }
+  &:hover span {
+    opacity: 1;
+  }
 }
 
 
 .vipanelButton span {
-      opacity: 0;
-    position: absolute; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    // bottom: -100%;
-    width: 100%;
-     background: rgb(27, 27, 27);
-     padding: 2px 0;
-    // background-image: linear-gradient(to bottom, rgba(219, 219, 219, 0.233), rgba(59, 59, 59, 0.7)) !important;
-    font-size: 10px;
-    transition: all 0.3s ease;
-    color: #f7f4f4;
-    line-height: 11px;
-    font-weight: 400; 
+  opacity: 0;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  // bottom: -100%;
+  width: 100%;
+  background: rgb(27, 27, 27);
+  padding: 2px 0;
+  // background-image: linear-gradient(to bottom, rgba(219, 219, 219, 0.233), rgba(59, 59, 59, 0.7)) !important;
+  font-size: 10px;
+  transition: all 0.3s ease;
+  color: #f7f4f4;
+  line-height: 11px;
+  font-weight: 400;
 }
 
 
@@ -101,11 +101,11 @@ button.vipanelButton {
   border: 1px solid #ddd;
   background: white;
   padding: 5px 10px;
-  border-radius:  5px 5px 0 0; 
+  border-radius: 5px 5px 0 0;
   border-bottom: none;
-    font-size: 12px;
-    line-height: 14px;
-  cursor: pointer; 
+  font-size: 12px;
+  line-height: 14px;
+  cursor: pointer;
   background: #f7f4f4;
 }
 
@@ -132,12 +132,12 @@ button.vipanelButton {
   overflow-y: auto;
 }
 
-button.vipanelButtonActive { 
-    span {
-        opacity: 1;
-    }
+button.vipanelButtonActive {
+  span {
+    opacity: 1;
+  }
 
- &::after {
+  &::after {
     content: '';
     position: absolute;
     top: 0;
@@ -150,16 +150,18 @@ button.vipanelButtonActive {
 }
 
 .triptychWrapper {
-  display: flex; 
-  width: 100%; 
+  display: flex;
+  width: 100%;
   border: 1px solid #ddd;
   border-top: none;
   background: #f7f4f4;
   padding: 5px;
-    gap: 5px;
+  gap: 5px;
+  
+  height: 230px;
 
   button {
-    width: 100%;  
+    width: 100%;
   }
 
   h3 {
@@ -182,16 +184,17 @@ button.vipanelButtonActive {
 .triptychGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 5px
+  gap: 5px;
 }
 
 button[data-niche='None'],
 button[data-triptych='None'],
 button[data-serigraphie='None'] {
-  background-color: white; 
+  background-color: white;
+
   img {
-    width: 42px !important;  
-    margin: auto; 
+    width: 42px !important;
+    margin: auto;
   }
 }
 
@@ -203,10 +206,10 @@ button:has(.finitionImage) {
   position: relative;
   overflow: hidden;
   display: flex;
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-  img  {
+  img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -214,7 +217,7 @@ button:has(.finitionImage) {
 
   span {
     opacity: 0;
-    position: absolute; 
+    position: absolute;
     text-align: center;
     width: 100%;
     // background-image: linear-gradient(to bottom, rgba(247, 244, 244, 0), rgba(22, 22, 22, 0.486), rgba(247, 244, 244, 0)) !important;
@@ -227,7 +230,7 @@ button:has(.finitionImage) {
   }
 
   &:hover span {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
@@ -252,28 +255,28 @@ button:has(.finitionImage) {
 .profileButton {
 
   img {
-    width: 200% !important; 
+    width: 200% !important;
   }
 }
 
 button.showerIcon {
-   width: 75px;
-   height: 105px;
-   display: flex;
-   justify-content: flex-start;
-   align-items: center;
-   flex-direction: column;
-   padding: 0; 
+  width: 75px;
+  height: 105px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  padding: 0;
   border: none;
   font-size: 10px;
   line-height: 12px;
 
-   img {
-    max-width: 60px;  
+  img {
+    max-width: 60px;
     min-width: 60px;
     opacity: 0.4;
-   }
-} 
+  }
+}
 
 button.showerIconActive {
   background-color: #ffffff;
@@ -281,14 +284,14 @@ button.showerIconActive {
   box-sizing: border-box;
   pointer-events: none;
   color: #111111;
-   img { 
-    opacity: 1;
-   }
-  
-}
 
+  img {
+    opacity: 1;
+  }
+
+} 
 
 .buttonNormal {
-     height: 36px;
-    margin: 7px 0;
+  height: 36px;
+  margin: 7px 0;
 }

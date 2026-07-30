@@ -80,7 +80,7 @@ export default function UI() {
     return (
         <div className={s.uiWrapper}>
             <div className={s.blockButtons}>
-                <h2>Type d’installation</h2>
+                <h2>Type de paroi</h2>
 
                 {SHOWER_TYPES.map((item) => (
                     <Button
