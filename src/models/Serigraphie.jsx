@@ -7,7 +7,7 @@ import useConfiguratorStore from '../store/useConfiguratorStore';
 export default function Serigraphie(props) {
     const shower = useConfiguratorStore((state) => state.shower);
     const serigraphie = useConfiguratorStore((state) => state.serigraphie);
-    const { nodes, materials } = useGLTF('/models/Serigraphie.glb')
+    const { nodes, materials } = useGLTF('./models/Serigraphie.glb')
     
     return (
         <group {...props} dispose={null}>
@@ -35,4 +35,4 @@ export default function Serigraphie(props) {
     )
 }
 
-useGLTF.preload('/models/Serigraphie.glb')
+useGLTF.preload('./models/Serigraphie.glb')

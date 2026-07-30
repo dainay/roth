@@ -3,7 +3,7 @@ import { useGLTF } from '@react-three/drei'
 import useConfiguratorStore from '../store/useConfiguratorStore';
 
 export default function Triptych(props) {
-  const { nodes, materials } = useGLTF('/models/Triptych.glb')
+  const { nodes, materials } = useGLTF('./models/Triptych.glb')
 
   const triptychLeft = useConfiguratorStore((state) => state.triptychLeft);
     const triptychRight = useConfiguratorStore((state) => state.triptychRight);
@@ -46,4 +46,4 @@ export default function Triptych(props) {
   )
 }
 
-useGLTF.preload('/models/Triptych.glb')
+useGLTF.preload('./models/Triptych.glb')

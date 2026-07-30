@@ -6,7 +6,7 @@ import {  SERIGRAPHIE, NICHES, VIPANEL_TEXTURES, RECEVEUR_TEXTURES, SHOWER_TYPES
 import useConfiguratorStore from '../store/useConfiguratorStore';
 
 export function Ambiance(props) {
-  const { nodes, materials } = useGLTF('/models/Ambiance_compressed.glb')
+  const { nodes, materials } = useGLTF('./models/Ambiance_compressed.glb')
 
   const finition = useConfiguratorStore((state) => state.finition);
   const profile = useConfiguratorStore((state) => state.profile); 
@@ -1080,5 +1080,5 @@ export function Ambiance(props) {
   )
 }
 
-useGLTF.preload('/models/Ambiance_compressed.glb')
+useGLTF.preload('./models/Ambiance_compressed.glb')
 

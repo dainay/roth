@@ -70,7 +70,7 @@ export default function Lighting() {
             background={true}
             backgroundBlurriness={0}
                 backgroundRotation={[Math.PI / 4, Math.PI / 7, 0]}
-                files="/textures/studio.hdr"
+                files="./textures/studio.hdr"
 
 
                 preset="apartment"
