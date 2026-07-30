@@ -37,7 +37,7 @@ export default function Scene() {
         zoomSpeed={3}
         dampingFactor={0.08}
       />
-      <GizmoHelper
+      {/* <GizmoHelper
         alignment="bottom-right"
         margin={[80, 80]}
       >
@@ -45,7 +45,7 @@ export default function Scene() {
           axisColors={['#ff3653', '#8adb00', '#2c8fff']}
           labelColor="white"
         />
-      </GizmoHelper>
+      </GizmoHelper> */}
     </Canvas>
   );
 }
