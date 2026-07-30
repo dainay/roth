@@ -134,7 +134,7 @@ export default function UI() {
                     </Button>
                 ))}
             </div>
-
+            { shower !== 'p' && (
             <div className={s.blockButtons}>
                 <h2>Niche dans l'espace douche</h2>
 
@@ -154,6 +154,7 @@ export default function UI() {
                     </Button>
                 ))}
             </div>
+            )}
 
             {shower === 'f' && (
                 <div className={s.blockButtons}>
