@@ -51,7 +51,7 @@ export const VIPANEL_TEXTURES = [
   {
     id: 'CNC25P',
     label: 'Béton anthracite',
-    url: '../textures/vipanel/CNC25P-Beton-anthracite-1500x2550x3MM.webp',
+    url: './textures/vipanel/CNC25P-Beton-anthracite-1500x2550x3MM.webp',
     metalness: 0,
     roughness: 0.88,
   },
