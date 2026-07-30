@@ -318,6 +318,13 @@ export const VIPANEL_TEXTURES = [
 
 export const RECEVEUR_TEXTURES = [
   {
+    id: 'soft-white',
+    label: 'Soft white',
+    url: '/textures/receveurs/Receveur_Soft-White.webp',
+    category: 'clair',
+    recommendedFor: ['or-brosse', 'or-brillant', 'argent-poli', 'or-rose'],
+  },
+  {
     id: 'ardoxyde',
     label: 'Ardoxyde',
     url: '/textures/receveurs/Receveur_Ardoxyde.webp',
@@ -345,31 +352,29 @@ export const RECEVEUR_TEXTURES = [
     category: 'gris',
     recommendedFor: ['argent-poli', 'or-rose', 'canon-fusil'],
   },
-  {
-    id: 'soft-white',
-    label: 'Soft white',
-    url: '/textures/receveurs/Receveur_Soft-White.webp',
-    category: 'clair',
-    recommendedFor: ['or-brosse', 'or-brillant', 'argent-poli', 'or-rose'],
-  },
+  
 ]
 
 export const SHOWER_TYPES = [
   {
     id: 'f',
-    label: 'Walk-in', 
+    label: 'Walk-in',
+    icon: '/img/icons/f.svg',
   },
   {
     id: 'c',
     label: 'Coulissante',
+    icon: '/img/icons/c.svg',
   },
   { 
     id: 'p',
     label: 'Pivotante',
+    icon: '/img/icons/p.svg',
   },
   {
     id: 'pp',
-    label: 'Pivotante avec prolongation',
+    label: 'Pivotante prolongée',
+    icon: '/img/icons/pp.svg',
   }
 ]
 
@@ -380,6 +385,7 @@ export const FINITIONS = [
     color: '#caa649',
     metalness: 1,
     roughness: 0.1,
+    url: '/img/finitions/Or_brosse.jpg',
   },
   {
     id: 'canon-fusil',
@@ -387,6 +393,8 @@ export const FINITIONS = [
     color: '#4B4A45',
     metalness: 1,
     roughness: 0.28,
+    url: '/img/finitions/Canon.jpg',
+
   },
   {
     id: 'or-brillant',
@@ -394,6 +402,7 @@ export const FINITIONS = [
     color: '#D9B85F',
     metalness: 1,
     roughness: 0,
+    url: '/img/finitions/Or_brillant.jpg',
   },
   {
     id: 'argent-poli',
@@ -401,6 +410,7 @@ export const FINITIONS = [
     color: '#E8E8E4',
     metalness: 1,
     roughness: 0.08,
+      url: '/img/finitions/Argent.jpg',
   },
   {
     id: 'or-rose',
@@ -408,6 +418,7 @@ export const FINITIONS = [
     color: '#C9A283',
     metalness: 1,
     roughness: 0.28,
+    url: '/img/finitions/Or_rose.jpg',
   },
   {
     id: 'noir-mat',
@@ -415,6 +426,7 @@ export const FINITIONS = [
     color: '#1F1F1F',
     metalness: 1,
     roughness: 0.65,
+    url: '/img/finitions/Noir_mat.jpg',
   },
   {
     id: 'bronze',
@@ -422,6 +434,7 @@ export const FINITIONS = [
     color: '#7A5A43',
     metalness: 1,
     roughness: 0.32,
+    url: '/img/finitions/Bronze.jpg',
   },
 ]
 
@@ -432,6 +445,7 @@ export const PROFILES = [
     color: '#b89a45',
     metalness: 1,
     roughness: 0.18,
+    url: '/img/finitions/Or_brillant.jpg',
   },
   {
     id: 'blanc',
@@ -439,6 +453,7 @@ export const PROFILES = [
     color: '#f2f2ef',
     metalness: 0.3,
     roughness: 0.35,
+    url: '/img/niches/Acier_white.jpg',
   },
   {
     id: 'argent',
@@ -446,6 +461,7 @@ export const PROFILES = [
     color: '#bfc0bd',
     metalness: 1,
     roughness: 0.12,
+    url: '/img/finitions/Argent.jpg',
   },
   {
     id: 'noir',
@@ -453,24 +469,33 @@ export const PROFILES = [
     color: '#1f1f1f',
     metalness: 0.6,
     roughness: 0.45,
+     url: '/img/niches/Acier_black.jpg',
   },
 ]
 
 export const NICHES = [
   {
+    id: 'None',
+    label: 'None', 
+    url: '/img/None.svg',
+  },
+  {
     id: 'white',
     label: 'Blanc',
-    color: '#f2f2ef'
+    color: '#f2f2ef',
+    url: '/img/niches/Acier_white.jpg',
   },
   {
     id: 'black',
     label: 'Noir',
-    color: '#222222'
+    color: '#222222',
+    url: '/img/niches/Acier_black.jpg',
   },
   {
     id: 'grey',
     label: 'Gris',
-    color: '#bfc0bd'
+    color: '#bfc0bd',
+    url: '/img/niches/Acier_grey.jpg',
   }
 ]
 
@@ -479,7 +504,7 @@ export const TRYPTICH_TEXTURES = [
    {
       id: 'None',
       label: 'None',
-       url: '/textures/img/None.svg',
+       url: '/img/None.svg',
     },
   {
     id: 'WLD4HV',
@@ -488,4 +513,22 @@ export const TRYPTICH_TEXTURES = [
     metalness: 0,
     roughness: 0.6,
   },
+]
+
+export const SERIGRAPHIE = [
+  {
+    id: 'None',
+    label: 'None',
+      url: '/img/None.svg',
+  },
+  {
+    id: 'chevrons',
+    label: 'Mini chevrons',
+    url: '/img/serigraphie/Chevrons.jpg',
+  },
+  {
+    id: 'geometrie',
+    label: 'Géométrie',
+    url: '/img/serigraphie/Geometrie.jpg',
+  }
 ]

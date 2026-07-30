@@ -6,7 +6,8 @@ import { Bounds, GizmoHelper, GizmoViewport, OrbitControls, } from "@react-three
 
 import Lighting from "./Lighting";
 import { Ambiance } from "../models/Ambiance";
-import Tryptich from "../models/Tryptich";
+import Triptych from "../models/Triptych";
+import Serigraphie from "../models/Serigraphie";
 
 export default function Scene() {
   return (
@@ -20,7 +21,8 @@ export default function Scene() {
       <Lighting />
 
       <Ambiance />
-      <Tryptich></Tryptich>
+      <Triptych></Triptych>
+      <Serigraphie />
 
       <OrbitControls target={[-0.5, 1, -1]} enablePan={false}
         enableZoom={true}

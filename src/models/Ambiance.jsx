@@ -2,15 +2,14 @@ import React, { useRef, useLayoutEffect } from 'react'
 import { useGLTF, useTexture, Bounds } from '@react-three/drei'
 import * as THREE from 'three'
 
-import { NICHES, VIPANEL_TEXTURES, RECEVEUR_TEXTURES, SHOWER_TYPES, FINITIONS, PROFILES } from '../conf/textures'
+import {  SERIGRAPHIE, NICHES, VIPANEL_TEXTURES, RECEVEUR_TEXTURES, SHOWER_TYPES, FINITIONS, PROFILES } from '../conf/textures'
 import useConfiguratorStore from '../store/useConfiguratorStore';
 
 export function Ambiance(props) {
   const { nodes, materials } = useGLTF('/models/Ambiance_compressed.glb')
 
   const finition = useConfiguratorStore((state) => state.finition);
-  const profile = useConfiguratorStore((state) => state.profile);
-  const niche = useConfiguratorStore((state) => state.niche);
+  const profile = useConfiguratorStore((state) => state.profile); 
   const wall = useConfiguratorStore((state) => state.wall);
   const vipanelleft = useConfiguratorStore((state) => state.vipanelleft);
   const vipanelright = useConfiguratorStore((state) => state.vipanelright);
@@ -20,7 +19,7 @@ export function Ambiance(props) {
   const serigraphie = useConfiguratorStore((state) => state.serigraphie);
   const nicheColor = useConfiguratorStore((state) => state.nicheColor);
 
-  console.log('STORE', 'nich color:', nicheColor, 'serigraphie:', serigraphie, 'finition:', finition, 'profile:', profile, 'niche:', niche, 'wall:', wall, 'vipanelleft:', vipanelleft, 'vipanelright:', vipanelright, 'vipanelniche:', vipanelniche, 'receveur:', receveur, 'shower:', shower, 'niche:', niche  );
+  console.log('STORE', 'nich color:', nicheColor, 'serigraphie:', serigraphie, 'finition:', finition, 'profile:', profile, 'wall:', wall, 'vipanelleft:', vipanelleft, 'vipanelright:', vipanelright, 'vipanelniche:', vipanelniche, 'receveur:', receveur, 'shower:', shower  );
 
   //************************************* */
   //CHANGE Finition MATERIAL
@@ -50,6 +49,8 @@ export function Ambiance(props) {
     if (!mNiche || !nicheData) return 
 
     mNiche.color.set(nicheData.color)
+    mNiche.metalness = 0.8
+    mNiche.roughness = 0.5
 
     mNiche.needsUpdate = true
   }, [materials, nicheColor])
@@ -86,14 +87,43 @@ export function Ambiance(props) {
     mGlass.needsUpdate = true
   }, [])
 
+   //************************************* */
+  //CHANGE SERIGRAPHIE MATERIAL
+  //************************************* */ 
 
+  const serigraphieTextureArray = useTexture(
+    SERIGRAPHIE.map((item) => item.url)
+  )
+  const serigraphieTexturesById = Object.fromEntries(
+    SERIGRAPHIE.map((item, index) => [
+      item.id,
+      serigraphieTextureArray[index],
+    ])
+  ) 
 
+  useLayoutEffect(() => {
+  const mSerigraphie = materials['GLASS.002']
+    const tSerigraphie = serigraphieTexturesById[serigraphie]
+
+    if (!mSerigraphie || !tSerigraphie) return
+
+    tSerigraphie.flipY = false
+
+    // like Blender Mapping Scale X/Y
+    tSerigraphie.repeat.set(0.75, 1)
+
+    mSerigraphie.map = tSerigraphie
+    mSerigraphie.color.set('#ffffff') 
+
+    mSerigraphie.needsUpdate = true
+    tSerigraphie.needsUpdate = true
+  }, [materials, serigraphie, serigraphieTexturesById])
+
+ 
 
   //************************************* */
   //CHANGE RECEVEUR MATERIAL
-  //************************************* */
-
-  
+  //************************************* */ 
 
   const receveurTextureArray = useTexture(
     RECEVEUR_TEXTURES.map((item) => item.url)
@@ -115,7 +145,7 @@ export function Ambiance(props) {
     tReceveur.flipY = false
 
     // like Blender Mapping Scale X/Y
-    tReceveur.repeat.set(1, 1)
+    tReceveur.repeat.set(0.75, 1)
 
     mReceveur.map = tReceveur
     mReceveur.color.set('#ffffff')
@@ -400,14 +430,7 @@ export function Ambiance(props) {
             material={materials['+GLASS VOLUME']}
           />
         </group>
-      </group>
-
-      {serigraphie && shower === 'f' && (
-        <mesh
-          geometry={nodes.Serographie.geometry}
-          material={materials['GLASS.002']}
-          position={[-0.949, 0.685, -1.664]}
-        />)}
+      </group> 
 
       {shower === 'pp' && wall && (
         //pivotante en niche
@@ -810,7 +833,7 @@ export function Ambiance(props) {
         receiveShadow
         geometry={nodes.Right_wall.geometry}
         material={nodes.Right_wall.material}
-        position={[-2.003, 0.927, -2.58]}
+        position={[-2.003, 0.91, -2.58]}
       />
       <mesh
         castShadow
@@ -875,17 +898,16 @@ export function Ambiance(props) {
         material={materials['+TOWEL-BROWN']}
       />
 
-      {(niche && shower !== 'p') && (
+      {( nicheColor !== 'None' && shower !== 'p') && (
         <mesh
           castShadow
           receiveShadow
           geometry={nodes['Vipanel-niche'].geometry}
           material={materials['VIPANEL-BIG']}
-          position={[-0.809, 0.932, -2.554]}
+          position={[-0.809, 0.917, -2.554]}
           scale={[1, 1, 0.1]}>
-          <mesh
-            castShadow
-            receiveShadow
+          <mesh 
+            receiveShadow 
             geometry={nodes.Niche_910x305x68.geometry}
             material={materials['+NICHE']}
             position={[-0.018, 0.136, -0.211]}
@@ -938,7 +960,7 @@ export function Ambiance(props) {
             </group>
             <group position={[-0.111, 0.013, -0.005]}>
               <mesh
-                castShadow
+               
                 receiveShadow
                 geometry={nodes.Bottle_3002_1.geometry}
                 material={materials['+ETIQUETTE1']}
@@ -950,8 +972,6 @@ export function Ambiance(props) {
                 material={materials['+BROWB GLASS']}
               />
               <mesh
-                castShadow
-                receiveShadow
                 geometry={nodes.Bottle_3002_3.geometry}
                 material={materials['+GEL']}
               />
@@ -962,7 +982,7 @@ export function Ambiance(props) {
                 material={materials['+PLASTIC BLACK']}
               />
             </group>
-            <group position={[0.321, 0.015, 0.003]}>
+            <group position={[0.321, 0.01, 0.003]}>
               <mesh
                 castShadow
                 receiveShadow
@@ -996,20 +1016,22 @@ export function Ambiance(props) {
             />
           </group>
 
-          <mesh
-            geometry={nodes.Soap.geometry}
-            material={materials['+CEILING']}
-            position={[-0.15, 1.24, 5.5]}
-            scale={[1, 1, 10]}
-          />
+         
 
         </mesh>
       )}
+
+       <mesh
+            geometry={nodes.Soap.geometry}
+            material={materials['+CEILING']}
+            position={[-1, 2.17,-2]}
+            scale={[1.5, 1, 1.5]}
+          />
       <mesh
         receiveShadow
         geometry={nodes['vp-l1'].geometry}
         material={materials['VIPANEL-BIG-left']}
-        position={[-1.944, 0.921, 0.691]}
+        position={[-1.944, 0.917, 0.691]}
       />
       <mesh
         receiveShadow
@@ -1032,12 +1054,12 @@ export function Ambiance(props) {
         material={materials['VIPANEL-BIG']}
         position={[-1.446, 0.917, -2.311]}
       />
-      {(!niche || shower === 'p') && (
+      {(nicheColor === 'None' || shower === 'p') && (
         <mesh
           receiveShadow
           geometry={nodes['vp-n2'].geometry}
           material={materials['VIPANEL-BIG']}
-          position={[-0.81, 0.899, -2.546]}
+          position={[-0.81, 0.917, -2.555]}
           scale={[1, 1, 0.1]}
         />
       )}

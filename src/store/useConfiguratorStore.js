@@ -12,8 +12,8 @@ const useConfiguratorStore = create((set) => ({
   serigraphie: false,
   receveur: 'soft-white',
   nicheColor: 'white',
-  tryptichLeft: '',
-  tryptichRight: '',
+  triptychLeft: '',
+  triptychRight: '',
 
   setFinition: (finition) => set({ finition }), 
   setProfile: (profile) => set({ profile }), 
@@ -29,10 +29,10 @@ const useConfiguratorStore = create((set) => ({
   setReceveur: (receveur) => set({ receveur }),
   setNicheColor: (nicheColor) => set({ nicheColor }),
   
-  setTryptichLeft:  (tryptichLeft) => set({ tryptichLeft }),
-  setTryptichRight:  (tryptichRight) => set({ tryptichRight }),
-  toggleTryptichLeft: () => set((state) => ({ tryptichLeft: state.tryptichLeft === 'palms' ? 'WLD4HV' : 'palms' })),
-  toggleTryptichRight: () => set((state) => ({ tryptichRight: state.tryptichRight === 'palms' ? 'WLD4HV' : 'palms' })),
+  setTriptychLeft:  (triptychLeft) => set({ triptychLeft }),
+  setTriptychRight:  (triptychRight) => set({ triptychRight }),
+  toggleTriptychLeft: () => set((state) => ({ triptychLeft: state.triptychLeft === 'palms' ? 'WLD4HV' : 'palms' })),
+  toggleTriptychRight: () => set((state) => ({ triptychRight: state.triptychRight === 'palms' ? 'WLD4HV' : 'palms' })),
 
   reset: () =>
     set({
@@ -47,8 +47,8 @@ const useConfiguratorStore = create((set) => ({
       serigraphie: false,
       receveur: 'black',  
       nicheColor: 'white',
-      tryptichLeft: '',
-      tryptichRight: '',
+      triptychLeft: '',
+      triptychRight: '',
     }),
 }));
 
