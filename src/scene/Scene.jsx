@@ -3,11 +3,13 @@ import s from './Scene.module.scss'
 import * as THREE from "three";
 import '../helpers/preload'
 import { Bounds, GizmoHelper, GizmoViewport, OrbitControls, } from "@react-three/drei";
+import { EffectComposer, SMAA } from '@react-three/postprocessing'
 
 import Lighting from "./Lighting";
 import { Ambiance } from "../models/Ambiance";
 import Triptych from "../models/Triptych";
 import Serigraphie from "../models/Serigraphie";
+import Switcher from "../models/Switcher";
 
 export default function Scene() {
   return (
@@ -24,20 +26,24 @@ export default function Scene() {
       <Triptych></Triptych>
       <Serigraphie />
 
-      <OrbitControls target={[-0.5, 1, -1]} enablePan={false}
+      <Switcher />
+
+
+      <OrbitControls target={[-0.5, 1, -1]} 
+      enablePan={true}
         enableZoom={true}
-        minDistance={0}
-        maxDistance={2.6}
-        minPolarAngle={Math.PI / 2.6}
-        maxPolarAngle={Math.PI / 1.6}
-        minAzimuthAngle={Math.PI / 8}
-        maxAzimuthAngle={Math.PI / 2.5}
+        // minDistance={0}
+        // maxDistance={2.6}
+        // minPolarAngle={Math.PI / 2.6}
+        // maxPolarAngle={Math.PI / 1.6}
+        // minAzimuthAngle={Math.PI / 8}
+        // maxAzimuthAngle={Math.PI / 2.5}
         enableDamping
         rotateSpeed={0.1}
         zoomSpeed={3}
         dampingFactor={0.08}
       />
-      {/* <GizmoHelper
+      <GizmoHelper
         alignment="bottom-right"
         margin={[80, 80]}
       >
@@ -45,7 +51,7 @@ export default function Scene() {
           axisColors={['#ff3653', '#8adb00', '#2c8fff']}
           labelColor="white"
         />
-      </GizmoHelper> */}
+      </GizmoHelper>
     </Canvas>
   );
 }
