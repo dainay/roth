@@ -1,6 +1,9 @@
 import { create } from 'zustand';
 
 const useConfiguratorStore = create((set) => ({
+
+   data: null,
+
   finition: 'or-brosse',
   profile: 'or',
   niche: true,

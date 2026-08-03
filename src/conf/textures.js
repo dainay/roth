@@ -382,26 +382,26 @@ export const FINITIONS = [
   {
     id: 'or-brosse',
     label: 'Profilé Or Brossé',
-    color: '#caa649',
+    color: '#b89e5d',
     metalness: 1,
-    roughness: 0.1,
+    roughness: 0.4,
     url: './img/finitions/Or_brosse.jpg',
   },
   {
     id: 'canon-fusil',
     label: 'Profilé Canon Fusil',
-    color: '#4B4A45',
+    color: '#7a7876',
     metalness: 1,
-    roughness: 0.28,
+    roughness: 0.2,
     url: './img/finitions/Canon.jpg',
 
   },
   {
     id: 'or-brillant',
     label: 'Profilé Or Brillant',
-    color: '#D9B85F',
+    color: '#a88e47',
     metalness: 1,
-    roughness: 0,
+    roughness: 0.02,
     url: './img/finitions/Or_brillant.jpg',
   },
   {
@@ -409,13 +409,13 @@ export const FINITIONS = [
     label: 'Profilé Argent POLI',
     color: '#E8E8E4',
     metalness: 1,
-    roughness: 0.08,
+    roughness: 0,
       url: './img/finitions/Argent.jpg',
   },
   {
     id: 'or-rose',
     label: 'Profilé Or Rosé',
-    color: '#C9A283',
+    color: '#aa7c61',
     metalness: 1,
     roughness: 0.28,
     url: './img/finitions/Or_rose.jpg',
@@ -423,18 +423,26 @@ export const FINITIONS = [
   {
     id: 'noir-mat',
     label: 'Profilé Noir Mat',
-    color: '#1F1F1F',
+    color: '#4d4d4d',
     metalness: 1,
-    roughness: 0.65,
+    roughness: 0.4,
     url: './img/finitions/Noir_mat.jpg',
   },
   {
     id: 'bronze',
     label: 'Profilé Bronze',
-    color: '#5b4c41',
+    color: '#997f4e',
     metalness: 1,
     roughness: 0.1,
     url: './img/finitions/Bronze.jpg',
+  },
+   {
+    id: 'argent-brosse',
+    label: 'Profilé Argent Brossé',
+    color: '#8b8d88',
+    metalness: 1,
+    roughness: 0.3,
+    url: './img/finitions/Argent_brosse.jpg',
   },
 ]
 
@@ -496,6 +504,18 @@ export const NICHES = [
     label: 'Gris',
     color: '#bfc0bd',
     url: './img/niches/Acier_grey.jpg',
+  },
+  {
+    id: 'or',
+    label: 'Or',
+    color: '#b89a45',
+    url: './img/niches/Acier_or.jpg',
+  },
+  {
+    id: 'bronze',
+    label: 'Bronze',
+    color: '#997f4e',
+    url: './img/niches/Acier_bronze.jpg',
   }
 ]
 

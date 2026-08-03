@@ -5,41 +5,41 @@ import { useRef } from "react";
 import useSceneStore from "../store/useSceneStore";
 
 const lightingSchemas = [
-  {
-    id: 'evening',
-    label: 'Warm evening',
-    dIntensity: 0.5,
-    dColor: '#cfaf62',
-    dPosition: [2, 1, 2],
-    lfColor: '#ffccaa',
-    lfIntensity: 11,
-    lfScale: [10, 2, 2],
-  },
-  {
-    id: 'daylight',
-    label: 'Natural daylight',
-    dIntensity: 1.5,
-    dColor: '#f8f0e0',
-    dPosition: [6, 5, 4],
-     lfColor: '#fff4ee',
-    lfIntensity: 11,
-      lfScale: [10, 5, 2],
-  },
-  {
-    id: 'showroom',
-    label: 'Cool showroom',
-    dIntensity: 0.9,
-    dColor: '#dcecff',
-    dPosition: [-2, 4, 3],
-    lfColor: '#ffccaa',
-    lfIntensity: 11,
-      lfScale: [2,10, 2],
-  },
+    {
+        id: 'evening',
+        label: 'Warm evening',
+        dIntensity: 0.5,
+        dColor: '#cfaf62',
+        dPosition: [2, 1, 2],
+        lfColor: '#ffccaa',
+        lfIntensity: 11,
+        lfScale: [10, 2, 2],
+    },
+    {
+        id: 'daylight',
+        label: 'Natural daylight',
+        dIntensity: 1.5,
+        dColor: '#f8f0e0',
+        dPosition: [6, 5, 4],
+        lfColor: '#fff4ee',
+        lfIntensity: 11,
+        lfScale: [10, 5, 2],
+    },
+    {
+        id: 'showroom',
+        label: 'Cool showroom',
+        dIntensity: 0.9,
+        dColor: '#dcecff',
+        dPosition: [-2, 4, 3],
+        lfColor: '#ffccaa',
+        lfIntensity: 11,
+        lfScale: [2, 10, 2],
+    },
 ]
 
 export default function Lighting() {
     const mirrorLight = useSceneStore((state) => state.mirrorLight);
-   
+
     const lightingType = useSceneStore((state) => state.lighingType);
 
     return (
@@ -66,24 +66,24 @@ export default function Lighting() {
                 color={new THREE.Color(lightingSchemas[lightingType].dColor)}
             />
 
-   
- <rectAreaLight
-    color="#ffd9a3"
-    intensity={2}
-    width={1.3}
-    height={0.2} 
-    position={[-1.95, 0, -0.7]}
-    rotation={[0, -Math.PI *0.5, 0]}
-  />
 
-   <rectAreaLight
-    color="#ffd9a3"
-    intensity={1}
-    width={2.3}
-    height={0.2} 
-    position={[0, 2, -2.55]}
-    rotation={[0, Math.PI , 0]}
-  />
+            <rectAreaLight
+                color="#ffd9a3"
+                intensity={2}
+                width={1.3}
+                height={0.2}
+                position={[-1.95, 0, -0.7]}
+                rotation={[0, -Math.PI * 0.5, 0]}
+            />
+
+            <rectAreaLight
+                color="#ffd9a3"
+                intensity={1}
+                width={2.3}
+                height={0.2}
+                position={[0, 2, -2.55]}
+                rotation={[0, Math.PI, 0]}
+            />
 
             {mirrorLight && (
                 <pointLight
