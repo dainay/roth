@@ -3,55 +3,65 @@ import { create } from 'zustand';
 const useConfiguratorStore = create((set) => ({
 
    data: null,
+ 
+  selection: {
+    paroi: null,
+    largeurParoi: null,
+    finitionParoi: null,
+    verre: null,
 
-  finition: 'or-brosse',
-  profile: 'or',
-  niche: true,
-  wall: false,
-  vipanelleft: 'CARP6B',
-  vipanelright: 'CAR5AF',
-  vipanelniche: 'CAR5AF',
-  shower: 'f',
-  serigraphie: 'None',
-  receveur: 'soft-white',
-  nicheColor: 'grey',
-  triptychLeft: 'None',
-  triptychRight: 'None',
+    receveur: null,
+    textureReceveur: null,
 
-  setFinition: (finition) => set({ finition }), 
-  setProfile: (profile) => set({ profile }), 
-  setNiche: (niche) => set({ niche }), 
-  toggleNiche: () => set((state) => ({ niche: !state.niche })), 
-  setWall: (wall) => set({ wall }), 
-  toggleWall: () => set((state) => ({ wall: !state.wall })), 
-  setVipanelLeft: (vipanelleft) => set({ vipanelleft }),
-  setVipanelRight: (vipanelright) => set({ vipanelright }),
-  setVipanelNiche: (vipanelniche) => set({ vipanelniche }),
-  setShower: (shower) => set({ shower }),
-  setSerigraphie: (serigraphie) => set({ serigraphie }),
-  setReceveur: (receveur) => set({ receveur }),
-  setNicheColor: (nicheColor) => set({ nicheColor }),
-  
-  setTriptychLeft:  (triptychLeft) => set({ triptychLeft }),
-  setTriptychRight:  (triptychRight) => set({ triptychRight }),
-  toggleTriptychLeft: () => set((state) => ({ triptychLeft: state.triptychLeft === 'palms' ? 'WLD4HV' : 'palms' })),
-  toggleTriptychRight: () => set((state) => ({ triptychRight: state.triptychRight === 'palms' ? 'WLD4HV' : 'palms' })),
+    vipanelLeft: "dd",
+    vipanelRight: "dddd",
+    vipanelNiche: "dddd",
+
+    niche: true,
+    finitionNiche: null,
+
+    profile: null,
+    finitionProfile: null,
+
+    triptychLeft: 'None',
+    triptychRight: 'None',
+  },
+
+   setData: (data) => set({ data }),
+
+   setSelectionValue: (key, value) =>
+    set((state) => ({
+      selection: {
+        ...state.selection,
+        [key]: value
+      }
+    })),
+
+  setSelection: (partialSelection) =>
+    set((state) => ({
+      selection: {
+        ...state.selection,
+        ...partialSelection
+      }
+    })),
 
   reset: () =>
     set({
-      finition: 'or-brosse',
-      profile: 'white',
-      niche: false,
-      wall: false,
-      vipanelleft: 'marble',
-      vipanelright: 'marble',
-      vipanelniche: 'marble',
-      shower: 'f',
-      serigraphie: false,
-      receveur: 'black',  
-      nicheColor: 'white',
-      triptychLeft: '',
-      triptychRight: '',
+      selection: {
+        finition: 'or-brosse',
+        profile: 'white',
+        niche: false,
+        wall: false,
+        vipanelleft: 'marble',
+        vipanelright: 'marble',
+        vipanelniche: 'marble',
+        shower: 'f',
+        serigraphie: false,
+        receveur: 'black',
+        nicheColor: 'white', 
+        triptychLeft: '',
+        triptychRight: '',
+      }
     }),
 }));
 

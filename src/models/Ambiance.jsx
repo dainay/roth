@@ -14,16 +14,7 @@ export function Ambiance(props) {
     const { nodes, materials } = useGLTF('./models/Ambiance_compressed.glb')
     const toggleMirrorLight = useSceneStore((state) => state.toggleMirrorLight);
 
-    const finition = useConfiguratorStore((state) => state.finition);
-    const profile = useConfiguratorStore((state) => state.profile);
-    const wall = useConfiguratorStore((state) => state.wall);
-    const vipanelleft = useConfiguratorStore((state) => state.vipanelleft);
-    const vipanelright = useConfiguratorStore((state) => state.vipanelright);
-    const vipanelniche = useConfiguratorStore((state) => state.vipanelniche);
-    const receveur = useConfiguratorStore((state) => state.receveur);
-    const shower = useConfiguratorStore((state) => state.shower);
-    const serigraphie = useConfiguratorStore((state) => state.serigraphie);
-    const nicheColor = useConfiguratorStore((state) => state.nicheColor);
+    const selection = useConfiguratorStore((state) => state.selection);
 
     const gradientTexture = useTexture('./img/evipanel.webp');
     gradientTexture.center.set(0.5, 0.5)
@@ -41,12 +32,12 @@ export function Ambiance(props) {
     })
  
 
-    // console.log('STORE', 'nich color:', nicheColor, 'serigraphie:', serigraphie, 'finition:', finition, 'profile:', profile, 'wall:', wall, 'vipanelleft:', vipanelleft, 'vipanelright:', vipanelright, 'vipanelniche:', vipanelniche, 'receveur:', receveur, 'shower:', shower);
+    // console.log('STORE', 'nich color:', selection.nicheColor, 'serigraphie:', selection.serigraphie, 'finition:', selection.finition, 'profile:', selection.profile, 'wall:', selection.wall, 'vipanelleft:', selection.vipanelleft, 'vipanelright:', selection.vipanelright, 'vipanelniche:', selection.vipanelniche, 'receveur:', selection.receveur, 'shower:', selection.shower);
 
     const handlePointerEnter = (e) => {
         e.stopPropagation()
         document.body.style.cursor = 'pointer'
-        console.log('Pointer entered the light area');
+        // console.log('Pointer entered the light area');
     }
 
     const handlePointerLeave = (e) => {
@@ -59,8 +50,8 @@ export function Ambiance(props) {
     //************************************* */
     useLayoutEffect(() => {
         const mFinition = materials['+FINITION']
-        const finitionData = FINITIONS.find(item => item.id === finition)
-        console.log('FINITION DATA', finitionData)
+        const finitionData = FINITIONS.find(item => item.id === selection.finition)
+        // console.log('FINITION DATA', finitionData)
 
         if (!mFinition || !finitionData) return
 
@@ -69,15 +60,15 @@ export function Ambiance(props) {
         mFinition.color.set(finitionData.color)
 
         mFinition.needsUpdate = true
-    }, [materials, finition])
+    }, [materials, selection.finition])
 
     //************************************* */
     //CHANGE Niche MATERIAL
     //************************************* */
     useLayoutEffect(() => {
         const mNiche = materials['+NICHE']
-        const nicheData = NICHES.find(item => item.id === nicheColor)
-        console.log('NICHE DATA', nicheData)
+        const nicheData = NICHES.find(item => item.id === selection.nicheColor)
+        // console.log('NICHE DATA', nicheData)
 
         if (!mNiche || !nicheData) return
 
@@ -86,14 +77,14 @@ export function Ambiance(props) {
         mNiche.roughness = 0.5
 
         mNiche.needsUpdate = true
-    }, [materials, nicheColor])
+    }, [materials, selection.nicheColor])
 
     //************************************* */
     //CHANGE profile MATERIAL
     //************************************* */
     useLayoutEffect(() => {
         const mProfile = materials['+PROFILE']
-        const profileData = PROFILES.find(item => item.id === profile)
+        const profileData = PROFILES.find(item => item.id === selection.profile)
         // console.log('PROFILE DATA', profileData)
 
         if (!mProfile || !profileData) return
@@ -103,7 +94,7 @@ export function Ambiance(props) {
         mProfile.color.set(profileData.color)
 
         mProfile.needsUpdate = true
-    }, [materials, profile])
+    }, [materials, selection.profile])
 
     useLayoutEffect(() => {
         const mGlass = materials['+GLASS']
@@ -136,7 +127,7 @@ export function Ambiance(props) {
 
     useLayoutEffect(() => {
         const mSerigraphie = materials['GLASS.002']
-        const tSerigraphie = serigraphieTexturesById[serigraphie]
+        const tSerigraphie = serigraphieTexturesById[selection.serigraphie]
 
         if (!mSerigraphie || !tSerigraphie) return
 
@@ -150,7 +141,7 @@ export function Ambiance(props) {
 
         mSerigraphie.needsUpdate = true
         tSerigraphie.needsUpdate = true
-    }, [materials, serigraphie, serigraphieTexturesById])
+    }, [materials, selection.serigraphie, serigraphieTexturesById])
 
 
 
@@ -171,7 +162,7 @@ export function Ambiance(props) {
 
     useLayoutEffect(() => {
         const mReceveur = materials['+RECEVUER']
-        const tReceveur = receveurTexturesById[receveur]
+        const tReceveur = receveurTexturesById[selection.receveur]
 
         if (!mReceveur || !tReceveur) return
 
@@ -187,7 +178,7 @@ export function Ambiance(props) {
 
         mReceveur.needsUpdate = true
         tReceveur.needsUpdate = true
-    }, [materials, receveur, receveurTexturesById])
+    }, [materials, selection.receveur, receveurTexturesById])
 
 
     //************************************* */
@@ -206,12 +197,14 @@ export function Ambiance(props) {
 
     useLayoutEffect(() => {
         const mVipanel = materials['VIPANEL-BIG-left']
-        const tVipanel = vipanelTexturesById[vipanelleft]
-        const vipanelData = VIPANEL_TEXTURES.find(item => item.id === vipanelleft)
+        const tVipanel = vipanelTexturesById[selection.vipanelLeft]
+        const vipanelData = VIPANEL_TEXTURES.find(item => item.id === selection.vipanelLeft)
 
         if (!mVipanel || !tVipanel) return
 
         tVipanel.flipY = false
+
+        console.log('VIPANEL LEFT DATA', vipanelData, selection.vipanelLeft )
 
         // like Blender Mapping Scale X/Y
         tVipanel.repeat.set(1, 1)
@@ -223,12 +216,12 @@ export function Ambiance(props) {
 
         mVipanel.needsUpdate = true
         tVipanel.needsUpdate = true
-    }, [materials, vipanelleft, vipanelTexturesById])
+    }, [materials, selection.vipanelLeft, vipanelTexturesById])
 
     useLayoutEffect(() => {
         const mVipanel = materials['VIPANEL-BIG-right']
-        const tVipanel = vipanelTexturesById[vipanelright]
-        const vipanelData = VIPANEL_TEXTURES.find(item => item.id === vipanelright)
+        const tVipanel = vipanelTexturesById[selection.vipanelRight]
+        const vipanelData = VIPANEL_TEXTURES.find(item => item.id === selection.vipanelRight)
 
         if (!mVipanel || !tVipanel) return
 
@@ -244,12 +237,12 @@ export function Ambiance(props) {
 
         mVipanel.needsUpdate = true
         tVipanel.needsUpdate = true
-    }, [materials, vipanelright, vipanelTexturesById])
+    }, [materials, selection.vipanelRight, vipanelTexturesById])
 
     useLayoutEffect(() => {
         const mVipanel = materials['VIPANEL-BIG']
-        const tVipanel = vipanelTexturesById[vipanelniche]
-        const vipanelData = VIPANEL_TEXTURES.find(item => item.id === vipanelniche)
+        const tVipanel = vipanelTexturesById[selection.vipanelNiche]
+        const vipanelData = VIPANEL_TEXTURES.find(item => item.id === selection.vipanelNiche)
 
         if (!mVipanel || !tVipanel) return
 
@@ -265,7 +258,7 @@ export function Ambiance(props) {
 
         mVipanel.needsUpdate = true
         tVipanel.needsUpdate = true
-    }, [materials, vipanelniche, vipanelTexturesById])
+    }, [materials, selection.vipanelNiche, vipanelTexturesById])
 
 
     return (
@@ -474,7 +467,7 @@ export function Ambiance(props) {
                 </group>
             </group>
 
-            {shower === 'pp' && wall && (
+            {selection.shower === 'pp' && selection.wall && (
                 //pivotante en niche
                 <group >
                     <mesh
@@ -514,7 +507,7 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {shower === 'pp' && !wall && (
+            {selection.shower === 'pp' && !selection.wall && (
                 //pivotante avec prolongation avec paroi fixe
                 <group position={[-0.883, -0.186, -1.678]}>
                     <mesh
@@ -558,7 +551,7 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {shower === 'f' && (
+            {selection.shower === 'f' && (
                 <group position={[-1.443, -0.316, -1.662]} rotation={[1.567, 0, 0]}>
                     <mesh
                         castShadow
@@ -578,9 +571,9 @@ export function Ambiance(props) {
             )}
 
 
-            {shower !== 'f' && wall && (
+            {selection.shower !== 'f' && selection.wall && (
                 //nichewall
-                <group position={shower === 'p' ? [-0.266, 0, -1.243] : [-0.097, 0, -1.243]}>
+                <group position={selection.shower === 'p' ? [-0.266, 0, -1.243] : [-0.097, 0, -1.243]}>
                     <mesh
                         castShadow
                         receiveShadow
@@ -618,7 +611,7 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {shower === 'p' && wall && (
+            {selection.shower === 'p' && selection.wall && (
                 //pivotante avec prolongation sans paroi fixe
                 <group position={[-0.43, -0.319, -1.669]} scale={0.999}>
                     <mesh
@@ -648,7 +641,7 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {shower === 'p' && !wall && (
+            {selection.shower === 'p' && !selection.wall && (
                 <group>
                     <group position={[-1.401, 0.689, -1.638]}>
                         <mesh
@@ -683,7 +676,7 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {shower === 'c' && wall && (
+            {selection.shower === 'c' && selection.wall && (
                 <group>
                     <group position={[-0.673, 0.751, -1.676]}>
                         <mesh
@@ -725,7 +718,7 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {shower === 'c' && !wall && (
+            {selection.shower === 'c' && !selection.wall && (
                 <group position={[-0.824, 0.749, -1.696]}>
                     <mesh
                         geometry={nodes['PL_CLS_1200x2000_+_Fixe_900x2000_2'].geometry}
@@ -808,7 +801,7 @@ export function Ambiance(props) {
                 position={[-1.412, 0, 0.064]}
             />
 
-            {(shower === 'c' || shower === 'pp') && (
+            {(selection.shower === 'c' || selection.shower === 'pp') && (
                 <group position={[-1.169, -0.328, -2.104]}>
                     <mesh
                         receiveShadow
@@ -817,7 +810,7 @@ export function Ambiance(props) {
                     />
                 </group>
             )}
-            {(shower === 'f') && (
+            {(selection.shower === 'f') && (
                 <group position={[-1.076, -0.324, -2.086]}>
                     <mesh
                         receiveShadow
@@ -828,7 +821,7 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {(shower === 'p') && (
+            {(selection.shower === 'p') && (
                 <group position={[-1.199, -0.328, -2.104]} scale={[1.025, 1, 1]}>
                     <mesh
                         receiveShadow
@@ -935,7 +928,7 @@ export function Ambiance(props) {
                 material={materials['+TOWEL-BROWN']}
             />
 
-            {(nicheColor !== 'None' && shower !== 'p') && (
+            {(selection.nicheColor !== 'None' && selection.shower !== 'p') && (
                 <mesh
                     castShadow
                     receiveShadow
@@ -1091,7 +1084,7 @@ export function Ambiance(props) {
                 material={materials['VIPANEL-BIG']}
                 position={[-1.446, 0.917, -2.311]}
             />
-            {(nicheColor === 'None' || shower === 'p') && (
+            {(selection.nicheColor === 'None' || selection.shower === 'p') && (
                 <mesh
                     receiveShadow
                     geometry={nodes['vp-n2'].geometry}

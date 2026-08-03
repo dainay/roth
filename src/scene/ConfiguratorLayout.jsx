@@ -8,20 +8,20 @@ export default function ConfiguratorLayout() {
    
 
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const response = await getConfiguratorData()
+//   useEffect(() => {
+//     async function loadData() {
+//       try {
+//         const response = await getConfiguratorData()
 
-        setData(response)
-        setSelection(createDefaultSelection(response))
-      } catch (error) {
-        console.error(error)
-      }
-    }
+//         setData(response)
+//         setSelection(createDefaultSelection(response))
+//       } catch (error) {
+//         console.error(error)
+//       }
+//     }
 
-    loadData()
-  }, [setData, setSelection])
+//     loadData()
+//   }, [setData, setSelection])
 
     return (
         <div className={s.configuratorLayout}>

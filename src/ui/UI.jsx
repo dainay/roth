@@ -9,73 +9,37 @@ import Button from './components/Button';
 export default function UI() {
     const [activeVipanelZone, setActiveVipanelZone] = useState('left')
 
-    const finition = useConfiguratorStore((state) => state.finition);
-    const setFinition = useConfiguratorStore((state) => state.setFinition);
+    const selection = useConfiguratorStore((state) => state.selection);
+    const setSelectionValue = useConfiguratorStore((state) => state.setSelectionValue)
 
-    const profile = useConfiguratorStore((state) => state.profile);
-    const setProfile = useConfiguratorStore((state) => state.setProfile);
-
-    const niche = useConfiguratorStore((state) => state.niche);
-    const setNiche = useConfiguratorStore((state) => state.setNiche);
-
-    const wall = useConfiguratorStore((state) => state.wall);
-    const setWall = useConfiguratorStore((state) => state.setWall);
-
-    const vipanelleft = useConfiguratorStore((state) => state.vipanelleft);
-    const setVipanelLeft = useConfiguratorStore((state) => state.setVipanelLeft);
-
-    const vipanelright = useConfiguratorStore((state) => state.vipanelright);
-    const setVipanelRight = useConfiguratorStore((state) => state.setVipanelRight);
-
-    const vipanelniche = useConfiguratorStore((state) => state.vipanelniche);
-    const setVipanelNiche = useConfiguratorStore((state) => state.setVipanelNiche);
-
-    const receveur = useConfiguratorStore((state) => state.receveur);
-    const setReceveur = useConfiguratorStore((state) => state.setReceveur);
-
-    const shower = useConfiguratorStore((state) => state.shower);
-    const setShower = useConfiguratorStore((state) => state.setShower);
-
-    const serigraphie = useConfiguratorStore((state) => state.serigraphie);
-    const setSerigraphie = useConfiguratorStore((state) => state.setSerigraphie);
-
-    const finitions = useConfiguratorStore((state) => state.finitions);
-    const setFinitions = useConfiguratorStore((state) => state.setFinitions);
-
-    const nicheColor = useConfiguratorStore((state) => state.nicheColor);
-    const setNicheColor = useConfiguratorStore((state) => state.setNicheColor);
-
-    const setTriptychLeft = useConfiguratorStore((state) => state.setTriptychLeft);
-    const setTriptychRight = useConfiguratorStore((state) => state.setTriptychRight);
-    const triptychLeft = useConfiguratorStore((state) => state.triptychLeft);
-    const triptychRight = useConfiguratorStore((state) => state.triptychRight);
 
     const vipanelZones = [
         {
             id: 'left',
             label: 'Mur gauche',
-            value: vipanelleft,
-            setValue: setVipanelLeft,
+            key: "vipanelLeft"
         },
         {
             id: 'niche',
             label: 'Espace douche',
-            value: vipanelniche,
-            setValue: setVipanelNiche,
+            key: "vipanelNiche"
         },
         {
             id: 'right',
             label: 'Mur droit',
-            value: vipanelright,
-            setValue: setVipanelRight,
+            key: "vipanelRight"
         },
         {
             id: 'triptych',
-            label: 'Décor triptyque'
+            label: 'Décor triptyque',
+            key: null
         },
     ]
 
     const activeZone = vipanelZones.find((zone) => zone.id === activeVipanelZone)
+
+    // console.log(activeZone.value)
+    console.log(activeZone, selection.vipanelLeft, selection.vipanelRight, selection.vipanelNiche, selection.triptychLeft, selection.triptychRight)
 
     return (
         <div className={s.uiWrapper}>
@@ -86,30 +50,30 @@ export default function UI() {
                     <Button
                         data-shower={item.id}
                         key={item.id}
-                        active={shower === item.id}
-                        className={`${s.showerIcon} ${shower === item.id ? s.showerIconActive : ''
+                        active={selection.shower === item.id}
+                        className={`${s.showerIcon} ${selection.shower === item.id ? s.showerIconActive : ''
                             }`}
-                        onClick={() => setShower(item.id)}
+                        onClick={() => setSelectionValue('shower', item.id)}
                     >
                         <img className={s.showerIcon} src={item.icon} alt={item.label} />
                         {item.label}
                     </Button>
                 ))}
             </div>
-            {shower !== 'f' && (
+            {selection.shower !== 'f' && (
                 <div className={s.blockButtons}>
                     <h2>Type d’installation</h2>
-                    <Button 
+                    <Button
                         className={s.buttonNormal}
-                        active={wall}
-                        onClick={() => setWall(true)}
+                        active={selection.wall}
+                        onClick={() => setSelectionValue('wall', true)}
                     >
                         En niche
                     </Button>
-                    <Button 
+                    <Button
                         className={s.buttonNormal}
-                        active={!wall}
-                        onClick={() => setWall(false)}
+                        active={!selection.wall}
+                        onClick={() => setSelectionValue('wall', false)}
                     >
                         Avec paroi fixe
                     </Button>
@@ -124,39 +88,39 @@ export default function UI() {
                     <Button
                         data-finition={item.id}
                         key={item.id}
-                        active={finition === item.id}
-                        className={`${s.vipanelButton} ${finition === item.id ? s.finitionButtonActive : ''
+                        active={selection.finition === item.id}
+                        className={`${s.vipanelButton} ${selection.finition === item.id ? s.finitionButtonActive : ''
                             }`}
-                        onClick={() => setFinition(item.id)}
+                        onClick={() => setSelectionValue('finition', item.id)}
                     >
                         <img className={s.finitionImage} src={item.url} alt={item.label} />
                         <span>{item.label}</span>
                     </Button>
                 ))}
             </div>
-            { shower !== 'p' && (
-            <div className={s.blockButtons}>
-                <h2>Niche dans l'espace douche</h2>
+            {selection.shower !== 'p' && (
+                <div className={s.blockButtons}>
+                    <h2>Niche dans l'espace douche</h2>
 
-                {NICHES.map((item) => (
+                    {NICHES.map((item) => (
 
-                    <Button
+                        <Button
 
-                        key={item.id}
-                        data-niche={item.id}
-                        active={nicheColor === item.id}
-                        className={`${s.vipanelButton} ${nicheColor === item.id ? s.finitionButtonActive : ''
-                            }`}
-                        onClick={() => setNicheColor(item.id)}
-                    >
-                        <img className={s.finitionImage} src={item.url} alt={item.label} />
-                        <span>{item.label}</span>
-                    </Button>
-                ))}
-            </div>
+                            key={item.id}
+                            data-niche={item.id}
+                            active={selection.nicheColor === item.id}
+                            className={`${s.vipanelButton} ${selection.nicheColor === item.id ? s.finitionButtonActive : ''
+                                }`}
+                            onClick={() => setSelectionValue('nicheColor', item.id)}
+                        >
+                            <img className={s.finitionImage} src={item.url} alt={item.label} />
+                            <span>{item.label}</span>
+                        </Button>
+                    ))}
+                </div>
             )}
 
-            {shower === 'f' && (
+            {selection.shower === 'f' && (
                 <div className={s.blockButtons}>
                     <h2>Sérigraphie</h2>
                     {SERIGRAPHIE.map((item) => (
@@ -164,10 +128,10 @@ export default function UI() {
                         <Button
                             data-serigraphie={item.id}
                             key={item.id}
-                            active={serigraphie === item.id}
-                            className={`${s.vipanelButton} ${serigraphie === item.id ? s.finitionButtonActive : ''
+                            active={selection.serigraphie === item.id}
+                            className={`${s.vipanelButton} ${selection.serigraphie === item.id ? s.finitionButtonActive : ''
                                 }`}
-                            onClick={() => setSerigraphie(item.id)}
+                            onClick={() => setSelectionValue('serigraphie', item.id)}
                         >
                             <img className={s.finitionImage} src={item.url} alt={item.label} />
                             <span>{item.label}</span>
@@ -183,10 +147,10 @@ export default function UI() {
 
                     <Button
                         data-receveur={item.id}
-                        className={`${s.vipanelButton} ${receveur  === item.id ? s.vipanelButtonActive : ''}`}
+                        className={`${s.vipanelButton} ${selection.receveur === item.id ? s.vipanelButtonActive : ''}`}
                         key={item.id}
-                        active={receveur === item.id}
-                        onClick={() => setReceveur(item.id)}
+                        active={selection.receveur === item.id}
+                        onClick={() => setSelectionValue('receveur', item.id)}
                     >
                         <div className={s.imgVipanelWrapper}>
                             <img
@@ -209,10 +173,10 @@ export default function UI() {
                     <Button
                         data-profile={item.id}
                         key={item.id}
-                        active={profile === item.id}
-                        className={`${s.vipanelButton} ${s.profileButton} ${profile === item.id ? s.finitionButtonActive : ''
+                        active={selection.profile === item.id}
+                        className={`${s.vipanelButton} ${s.profileButton} ${selection.profile === item.id ? s.finitionButtonActive : ''
                             }`}
-                        onClick={() => setProfile(item.id)}
+                        onClick={() => setSelectionValue('profile', item.id)}
                     >
                         <img className={s.finitionImage} src={item.url} alt={item.label} />
                         <span>{item.label}</span>
@@ -247,11 +211,11 @@ export default function UI() {
                                 {TRYPTICH_TEXTURES.map((item) => (
                                     <Button
                                         data-triptych={item.id}
-                                        className={`${s.vipanelButton} ${triptychLeft === item.id ? s.vipanelButtonActive : ''
+                                        className={`${s.vipanelButton} ${selection.triptychLeft === item.id ? s.vipanelButtonActive : ''
                                             }`}
                                         key={item.id}
-                                        active={triptychLeft === item.id}
-                                        onClick={() => setTriptychLeft(item.id)}
+                                        active={selection.triptychLeft === item.id}
+                                        onClick={() => setSelectionValue('triptychLeft', item.id)}
                                     >
                                         <div className={s.imgVipanelWrapper}>
                                             <img
@@ -272,11 +236,11 @@ export default function UI() {
                                 {TRYPTICH_TEXTURES.map((item) => (
                                     <Button
                                         data-triptych={item.id}
-                                        className={`${s.vipanelButton} ${triptychRight === item.id ? s.vipanelButtonActive : ''
+                                        className={`${s.vipanelButton} ${selection.triptychRight === item.id ? s.vipanelButtonActive : ''
                                             }`}
                                         key={item.id}
-                                        active={triptychRight === item.id}
-                                        onClick={() => setTriptychRight(item.id)}
+                                        active={selection.triptychRight === item.id}
+                                        onClick={() => setSelectionValue('triptychRight', item.id)}
                                     >
                                         <div className={s.imgVipanelWrapper}>
                                             <img
@@ -298,11 +262,17 @@ export default function UI() {
                         {VIPANEL_TEXTURES.map((item) => (
                             <Button
                                 data-decor={item.id}
-                                className={`${s.vipanelButton} ${activeZone.value === item.id ? s.vipanelButtonActive : ''
+                                className={`${s.vipanelButton} ${activeZone?.key && selection[activeZone.key] === item.id
+                                        ? s.vipanelButtonActive
+                                        : ''
                                     }`}
                                 key={item.id}
-                                active={activeZone.value === item.id}
-                                onClick={() => activeZone.setValue(item.id)}
+                                active={activeZone?.key && selection[activeZone.key] === item.id}
+                                onClick={() => {
+                                    if (!activeZone?.key) return
+                                    console.log('activeZone.key:', activeZone.key, 'item.id:', item.id)
+                                    setSelectionValue(activeZone.key, item.id)
+                                }}
                             >
                                 <div className={s.imgVipanelWrapper}>
                                     <img

@@ -5,14 +5,12 @@ import useConfiguratorStore from '../store/useConfiguratorStore';
 export default function Triptych(props) {
   const { nodes, materials } = useGLTF('./models/Triptych.glb')
 
-  const triptychLeft = useConfiguratorStore((state) => state.triptychLeft);
-    const triptychRight = useConfiguratorStore((state) => state.triptychRight);
-     const nicheColor = useConfiguratorStore((state) => state.nicheColor);
-     const shower = useConfiguratorStore((state) => state.shower);
+   const selection = useConfiguratorStore((state) => state.selection);
+    const setSelectionValue = useConfiguratorStore((state) => state.setSelectionValue) 
 
   return (
        <group {...props} dispose={null}>
-        {triptychLeft !== 'None' && (
+        {selection.triptychLeft !== 'None' && (
             <mesh 
             receiveShadow
             geometry={nodes.tryptich.geometry}
@@ -23,7 +21,7 @@ export default function Triptych(props) {
         />
         )}
 
-         {triptychRight !== 'None' && nicheColor === 'None' && (
+         {selection.triptychRight !== 'None' && selection.nicheColor === 'None' && (
             <mesh 
             receiveShadow
             geometry={nodes.tryptich.geometry}
@@ -33,7 +31,7 @@ export default function Triptych(props) {
         />
         )}
     
-            {triptychRight !== 'None' && nicheColor !== 'None' && shower !== 'p' && (
+            {selection.triptychRight !== 'None' && selection.nicheColor !== 'None' && selection.shower !== 'p' && (
           <mesh 
             receiveShadow
             geometry={nodes.tryptich001.geometry}
