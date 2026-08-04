@@ -11,9 +11,12 @@ import Triptych from "../models/Triptych";
 import Serigraphie from "../models/Serigraphie";
 import Switcher from "../models/Switcher";
 
+import { Perf } from 'r3f-perf';
+
 export default function Scene() {
   return (
     <Canvas
+        dpr={1}
       camera={{ position: [2, 1, 2], fov: 60 }}
       shadows={{ type: THREE.PCFShadowMap }}
       gl={{ antialias: true }}
@@ -28,6 +31,8 @@ export default function Scene() {
 
       <Switcher />
 
+         <Perf />
+
 
       <OrbitControls target={[-0.5, 1, -1]} 
       enablePan={true}
@@ -38,7 +43,7 @@ export default function Scene() {
         // maxPolarAngle={Math.PI / 1.6}
         // minAzimuthAngle={Math.PI / 8}
         // maxAzimuthAngle={Math.PI / 2.5}
-        enableDamping
+        enableDamping={false}
         rotateSpeed={0.1}
         zoomSpeed={3}
         dampingFactor={0.08}
