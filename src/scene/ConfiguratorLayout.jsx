@@ -2,26 +2,32 @@ import Scene from "./Scene";
 import UI from "../ui/UI";
 import s from './ConfiguratorLayout.module.scss'
 import { useEffect } from 'react'
+import useConfiguratorStore from '../store/useConfiguratorStore'
 
 
 export default function ConfiguratorLayout() {
-   
+ const data = useConfiguratorStore((state) => state.data)
+  const isLoading = useConfiguratorStore((state) => state.isLoading)
+  const error = useConfiguratorStore((state) => state.error)
+ const loadConfiguratorData = useConfiguratorStore(
+    (state) => state.loadConfiguratorData
+  )
 
+  const sendConfiguratorData = useConfiguratorStore(
+    (state) => state.sendConfiguratorData
+  )
 
-//   useEffect(() => {
-//     async function loadData() {
-//       try {
-//         const response = await getConfiguratorData()
+  useEffect(() => {
+    loadConfiguratorData()
+  }, [loadConfiguratorData])
 
-//         setData(response)
-//         setSelection(createDefaultSelection(response))
-//       } catch (error) {
-//         console.error(error)
-//       }
-//     }
+  if (isLoading) {
+    return <div>Chargement...</div>
+  }
 
-//     loadData()
-//   }, [setData, setSelection])
+  if (error) {
+    return <div>Erreur : {error}</div>
+  }
 
     return (
         <div className={s.configuratorLayout}>
@@ -29,7 +35,7 @@ export default function ConfiguratorLayout() {
             <Scene />
             <button
                 className={s.visualise__button}
-                // onClick={ }
+                onClick={sendConfiguratorData}
             >
                 Visualiser ma salle de bain
             </button>

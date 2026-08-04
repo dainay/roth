@@ -1,68 +1,111 @@
 import { create } from 'zustand';
+import { getConfiguratorDatabyAPI, sendConfiguratorDatabyAPI } from '../api/api';
 
-const useConfiguratorStore = create((set) => ({
+import {formatSendingPayload, formatSelectionByDefault} from '../api/formatPayload';
 
-   data: null,
- 
-  selection: {
-    paroi: null,
-    largeurParoi: null,
-    finitionParoi: null,
-    verre: null,
+const useConfiguratorStore = create((set, get) => ({
 
-    receveur: null,
-    textureReceveur: null,
+    data: null,
+    isLoading: false,
+    error: null,
+    selection: {
+        paroi: null,
+        largeurParoi: null,
+        finitionParoi: null,
+        verre: null,
 
-    vipanelLeft: "dd",
-    vipanelRight: "dddd",
-    vipanelNiche: "dddd",
+        receveur: null,
+        textureReceveur: null,
 
-    niche: true,
-    finitionNiche: null,
+        vipanelLeft: "dd",
+        vipanelRight: "dddd",
+        vipanelNiche: "dddd",
 
-    profile: null,
-    finitionProfile: null,
+        niche: true,
+        finitionNiche: null,
 
-    triptychLeft: 'None',
-    triptychRight: 'None',
-  },
+        profile: null,
+        finitionProfile: null,
 
-   setData: (data) => set({ data }),
+        triptychLeft: 'None',
+        triptychRight: 'None',
+    },
+    visualisation: {
+        img: null,
+        products: null,
+    },
 
-   setSelectionValue: (key, value) =>
-    set((state) => ({
-      selection: {
-        ...state.selection,
-        [key]: value
-      }
-    })),
 
-  setSelection: (partialSelection) =>
-    set((state) => ({
-      selection: {
-        ...state.selection,
-        ...partialSelection
-      }
-    })),
+    setData: (data) => set({ data }),
 
-  reset: () =>
-    set({
-      selection: {
-        finition: 'or-brosse',
-        profile: 'white',
-        niche: false,
-        wall: false,
-        vipanelleft: 'marble',
-        vipanelright: 'marble',
-        vipanelniche: 'marble',
-        shower: 'f',
-        serigraphie: false,
-        receveur: 'black',
-        nicheColor: 'white', 
-        triptychLeft: '',
-        triptychRight: '',
-      }
-    }),
+    setSelectionValue: (key, value) =>
+        set((state) => ({
+            selection: {
+                ...state.selection,
+                [key]: value
+            }
+        })),
+
+    setSelection: (partialSelection) =>
+        set((state) => ({
+            selection: {
+                ...state.selection,
+                ...partialSelection
+            }
+        })),
+
+    reset: () =>
+        set({
+            selection: {
+                finition: 'or-brosse',
+                profile: 'white',
+                niche: false,
+                wall: false,
+                vipanelleft: 'marble',
+                vipanelright: 'marble',
+                vipanelniche: 'marble',
+                shower: 'f',
+                serigraphie: false,
+                receveur: 'black',
+                nicheColor: 'white',
+                triptychLeft: '',
+                triptychRight: '',
+            }
+        }),
+
+    //API - first call to load data from the API and set the default selection
+    
+    loadConfiguratorData: async () => {
+        set({ isLoading: true })
+
+        const data = await getConfiguratorDatabyAPI()
+
+        set({
+            data,
+            // selection: formatSelectionByDefault(data),
+            isLoading: false,
+        })
+        console.log('data from API:', data)
+    },
+
+    sendConfiguratorData: async () => {
+        set({ isLoading: true })
+
+        const { selection, data } = get();
+
+        console.log('data sent to API:', selection, data)
+
+        const formattedPayload = formatSendingPayload(selection, data)
+
+        const response = await sendConfiguratorDatabyAPI(formattedPayload)
+
+        set({
+            visualisation: response, 
+            isLoading: false,
+        })
+        
+    }
+
 }));
 
-export default useConfiguratorStore;
+export default useConfiguratorStore
