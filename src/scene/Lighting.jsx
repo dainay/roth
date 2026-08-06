@@ -85,10 +85,10 @@ export default function Lighting() {
                 rotation={[0, Math.PI, 0]}
             />
 
-            {mirrorLight && (
+          
                 <pointLight
                     position={[-1.78, 1.2, 0.15]}
-                    intensity={0.7}
+                    intensity={mirrorLight ? 0.7 : 0}
                     distance={4}
                     decay={1}
                     // castShadow
@@ -99,7 +99,6 @@ export default function Lighting() {
                     shadow-normalBias={0.005}
                     color={new THREE.Color("#fce7b8")}
                 />
-            )}
 
             <pointLight
                 position={[-1, 2.1, -2]}

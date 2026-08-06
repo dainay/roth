@@ -3,10 +3,16 @@ import { useGLTF, useTexture, Outlines, Edges } from '@react-three/drei'
 import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
 import { useShallow } from 'zustand/react/shallow'
+import { getPhotoUrl } from '../helpers/getPhotoUrl'
 
-import { SERIGRAPHIE, NICHES, VIPANEL_TEXTURES, RECEVEUR_TEXTURES, SHOWER_TYPES, FINITIONS, PROFILES } from '../conf/textures'
+// import { SERIGRAPHIE, NICHES, VIPANEL_TEXTURES, RECEVEUR_TEXTURES, FINITIONS, PROFILES } from '../conf/textures'
+import { FINITION_ASSETS, NICHE_FINITION_ASSETS, PROFILE_ASSETS, RECEVEUR_ASSETS, PAROI_ASSETS, SERIGRAPHIE_ASSETS, FINITION_VIPANELS } from '../conf/lib'
 import useConfiguratorStore from '../store/useConfiguratorStore';
 import useSceneStore from '../store/useSceneStore';
+
+import DynamicTextureMaterial from './DynamicTextureMaterial'
+
+
 
 export function Ambiance(props) {
     const heatRef = useRef()
@@ -16,30 +22,39 @@ export function Ambiance(props) {
     const toggleMirrorLight = useSceneStore((state) => state.toggleMirrorLight);
 
     const {
-        finition,
-        nicheColor,
+        cleanedData,
+        finitionParoi,
+        niche,
         profile,
-        serigraphie,
+        finitionProfile,
+        verre,
         receveur,
+        textureReceveur,
         vipanelLeft,
         vipanelRight,
         vipanelNiche,
-        shower,
-        wall,
+        paroi,
+        montage,
+        finitionNiche,
     } = useConfiguratorStore(
         useShallow((state) => ({
-            finition: state.selection.finition,
-            nicheColor: state.selection.nicheColor,
+            cleanedData: state.cleanedData,
+            finitionParoi: state.selection.finitionParoi,
+            niche: state.selection.niche,
             profile: state.selection.profile,
-            serigraphie: state.selection.serigraphie,
+            finitionProfile: state.selection.finitionProfile,
+            verre: state.selection.verre,
             receveur: state.selection.receveur,
+            textureReceveur: state.selection.textureReceveur,
             vipanelLeft: state.selection.vipanelLeft,
             vipanelRight: state.selection.vipanelRight,
             vipanelNiche: state.selection.vipanelNiche,
-            shower: state.selection.shower,
-            wall: state.selection.wall,
+            paroi: state.selection.paroi,
+            montage: state.selection.montage,
+            finitionNiche: state.selection.finitionNiche,
         }))
     );
+
 
     const gradientTexture = useTexture('./img/evipanel.webp');
     gradientTexture.center.set(0.5, 0.5)
@@ -50,14 +65,12 @@ export function Ambiance(props) {
 
         const t = state.clock.elapsedTime
         gradientTexture.repeat.x = 0.5 + Math.sin(t * 2.5) * 0.1
-        gradientTexture.repeat.y = 1 + Math.sin(t * -2) * 0.1 
-       
+        gradientTexture.repeat.y = 1 + Math.sin(t * -2) * 0.1
+
         heatRef.current.intensity = 10 + Math.sin(t * 2.5) * 5
 
     })
- 
 
-    // console.log('STORE', 'nich color:', selection.nicheColor, 'serigraphie:', selection.serigraphie, 'finition:', selection.finition, 'profile:', selection.profile, 'wall:', selection.wall, 'vipanelleft:', selection.vipanelleft, 'vipanelright:', selection.vipanelright, 'vipanelniche:', selection.vipanelniche, 'receveur:', selection.receveur, 'shower:', selection.shower);
 
     const handlePointerEnter = (e) => {
         e.stopPropagation()
@@ -75,7 +88,7 @@ export function Ambiance(props) {
     //************************************* */
     useLayoutEffect(() => {
         const mFinition = materials['+FINITION']
-        const finitionData = FINITIONS.find(item => item.id === finition)
+        const finitionData = FINITION_ASSETS[finitionParoi]
         // console.log('FINITION DATA', finitionData)
 
         if (!mFinition || !finitionData) return
@@ -85,15 +98,15 @@ export function Ambiance(props) {
         mFinition.color.set(finitionData.color)
 
         mFinition.needsUpdate = true
-    }, [materials, finition])
+    }, [materials, finitionParoi])
 
     //************************************* */
     //CHANGE Niche MATERIAL
     //************************************* */
     useLayoutEffect(() => {
         const mNiche = materials['+NICHE']
-        const nicheData = NICHES.find(item => item.id === nicheColor)
-        // console.log('NICHE DATA', nicheData)
+        const nicheData = NICHE_FINITION_ASSETS[finitionNiche]
+        console.log('NICHE DATA', nicheData, niche, finitionNiche)
 
         if (!mNiche || !nicheData) return
 
@@ -102,15 +115,15 @@ export function Ambiance(props) {
         mNiche.roughness = 0.5
 
         mNiche.needsUpdate = true
-    }, [materials, nicheColor])
+    }, [materials, finitionNiche, niche])
 
     //************************************* */
     //CHANGE profile MATERIAL
     //************************************* */
     useLayoutEffect(() => {
         const mProfile = materials['+PROFILE']
-        const profileData = PROFILES.find(item => item.id === profile)
-        // console.log('PROFILE DATA', profileData)
+        const profileData = PROFILE_ASSETS[finitionProfile]
+        console.log('PROFILE DATA', profileData, profile, finitionProfile)
 
         if (!mProfile || !profileData) return
 
@@ -119,8 +132,11 @@ export function Ambiance(props) {
         mProfile.color.set(profileData.color)
 
         mProfile.needsUpdate = true
-    }, [materials, profile])
+    }, [materials, profile, finitionProfile])
 
+     //************************************* */
+    //CHANGE Glass MATERIAL for better web
+    //************************************* */
     useLayoutEffect(() => {
         const mGlass = materials['+GLASS']
 
@@ -129,165 +145,83 @@ export function Ambiance(props) {
         mGlass.roughness = 0.08
         mGlass.metalness = 1
         mGlass.depthWrite = false
-        mGlass.transparent
+        mGlass.transparent = true
         mGlass.opacity = 0.2
         mGlass.color.set(new THREE.Color("#ffffff"))
 
         mGlass.needsUpdate = true
     }, [])
 
+       //************************************* */
+    //CHANGE Floor MATERIAL for natura
     //************************************* */
-    //CHANGE SERIGRAPHIE MATERIAL
-    //************************************* */ 
-
-    const serigraphieTextureArray = useTexture(
-        SERIGRAPHIE.map((item) => item.url)
-    )
-    const serigraphieTexturesById = Object.fromEntries(
-        SERIGRAPHIE.map((item, index) => [
-            item.id,
-            serigraphieTextureArray[index],
-        ])
-    )
-
     useLayoutEffect(() => {
-        const mSerigraphie = materials['GLASS.002']
-        const tSerigraphie = serigraphieTexturesById[serigraphie]
+        const mGlass = materials['+GLASS']
 
-        if (!mSerigraphie || !tSerigraphie) return
+        if (!mGlass) return
 
-        tSerigraphie.flipY = false
+        mGlass.roughness = 0.08
+        mGlass.metalness = 1
+        mGlass.depthWrite = false
+        mGlass.transparent = true
+        mGlass.opacity = 0.2
+        mGlass.color.set(new THREE.Color("#ffffff"))
 
-        // like Blender Mapping Scale X/Y
-        tSerigraphie.repeat.set(0.75, 1)
+        mGlass.needsUpdate = true
+    }, [])
 
-        mSerigraphie.map = tSerigraphie
-        mSerigraphie.color.set('#ffffff')
+    const choosenVipanelLLeft = cleanedData?.vipanels?.find((item) => item.decor === vipanelLeft)
+    const choosenVipanelRight = cleanedData?.vipanels?.find((item) => item.decor === vipanelRight)
+    const choosenVipanelNiche = cleanedData?.vipanels?.find((item) => item.decor === vipanelNiche)
 
-        mSerigraphie.needsUpdate = true
-        tSerigraphie.needsUpdate = true
-    }, [materials, serigraphie, serigraphieTexturesById])
+    // console.log('montage', montage)
 
+    const toWebp = (filename) => filename.replace(/\.[^/.]+$/, '.webp')
 
-
-    //************************************* */
-    //CHANGE RECEVEUR MATERIAL
-    //************************************* */ 
-
-    const receveurTextureArray = useTexture(
-        RECEVEUR_TEXTURES.map((item) => item.url)
-    )
-    const receveurTexturesById = Object.fromEntries(
-        RECEVEUR_TEXTURES.map((item, index) => [
-            item.id,
-            receveurTextureArray[index],
-        ])
-    )
-
-
-    useLayoutEffect(() => {
-        const mReceveur = materials['+RECEVUER']
-        const tReceveur = receveurTexturesById[receveur]
-
-        if (!mReceveur || !tReceveur) return
-
-        tReceveur.flipY = false
-
-        // like Blender Mapping Scale X/Y
-        tReceveur.repeat.set(0.75, 1)
-
-        mReceveur.map = tReceveur
-        mReceveur.color.set('#ffffff')
-        mReceveur.roughness = 0.9
-        mReceveur.metalness = 0
-
-        mReceveur.needsUpdate = true
-        tReceveur.needsUpdate = true
-    }, [materials, receveur, receveurTexturesById])
-
-
-    //************************************* */
-    //CHANGE left VIPANEL MATERIAL
-    //************************************* */
-
-    const vipanelTextureArray = useTexture(
-        VIPANEL_TEXTURES.map((item) => item.url)
-    )
-    const vipanelTexturesById = Object.fromEntries(
-        VIPANEL_TEXTURES.map((item, index) => [
-            item.id,
-            vipanelTextureArray[index],
-        ])
-    )
-
-    useLayoutEffect(() => {
-        const mVipanel = materials['VIPANEL-BIG-left']
-        const tVipanel = vipanelTexturesById[vipanelLeft]
-        const vipanelData = VIPANEL_TEXTURES.find(item => item.id === vipanelLeft)
-
-        if (!mVipanel || !tVipanel) return
-
-        tVipanel.flipY = false
-
-        console.log('VIPANEL LEFT DATA', vipanelData, vipanelLeft )
-
-        // like Blender Mapping Scale X/Y
-        tVipanel.repeat.set(1, 1)
-
-        mVipanel.map = tVipanel
-        mVipanel.color.set('#ffffff')
-        mVipanel.roughness = vipanelData.roughness
-        mVipanel.metalness = vipanelData.metalness
-
-        mVipanel.needsUpdate = true
-        tVipanel.needsUpdate = true
-    }, [materials, vipanelLeft, vipanelTexturesById])
-
-    useLayoutEffect(() => {
-        const mVipanel = materials['VIPANEL-BIG-right']
-        const tVipanel = vipanelTexturesById[vipanelRight]
-        const vipanelData = VIPANEL_TEXTURES.find(item => item.id === vipanelRight)
-
-        if (!mVipanel || !tVipanel) return
-
-        tVipanel.flipY = false
-
-        // like Blender Mapping Scale X/Y
-        tVipanel.repeat.set(1, 1)
-
-        mVipanel.map = tVipanel
-        mVipanel.color.set('#ffffff')
-        mVipanel.roughness = vipanelData.roughness
-        mVipanel.metalness = vipanelData.metalness
-
-        mVipanel.needsUpdate = true
-        tVipanel.needsUpdate = true
-    }, [materials, vipanelRight, vipanelTexturesById])
-
-    useLayoutEffect(() => {
-        const mVipanel = materials['VIPANEL-BIG']
-        const tVipanel = vipanelTexturesById[vipanelNiche]
-        const vipanelData = VIPANEL_TEXTURES.find(item => item.id === vipanelNiche)
-
-        if (!mVipanel || !tVipanel) return
-
-        tVipanel.flipY = false
-
-        // like Blender Mapping Scale X/Y
-        tVipanel.repeat.set(1, 1)
-
-        mVipanel.map = tVipanel
-        mVipanel.color.set('#ffffff')
-        mVipanel.roughness = vipanelData.roughness
-        mVipanel.metalness = vipanelData.metalness
-
-        mVipanel.needsUpdate = true
-        tVipanel.needsUpdate = true
-    }, [materials, vipanelNiche, vipanelTexturesById])
-
-
+    // console.log('choosenVipanelLLeft', choosenVipanelLLeft, 'choosenVipanelRight', choosenVipanelRight, 'choosenVipanelNiche', choosenVipanelNiche)
     return (
         <group {...props} dispose={null}>
+
+            <DynamicTextureMaterial
+                url={RECEVEUR_ASSETS[textureReceveur].img}
+                material={materials['+RECEVUER']}
+                repeatX={0.75}
+                repeatY={1}
+                roughness={0.9}
+                metalness={0}
+            />
+            {choosenVipanelLLeft && (
+                <DynamicTextureMaterial
+                    url={choosenVipanelLLeft.files?.['1500x2550'] ? getPhotoUrl(choosenVipanelLLeft.files['1500x2550']) : null}
+                    material={materials['VIPANEL-BIG-left']}
+                    repeatX={1}
+                    repeatY={1}
+                    roughness={FINITION_VIPANELS[choosenVipanelLLeft.finition]?.roughness}
+                    metalness={FINITION_VIPANELS[choosenVipanelLLeft.finition]?.metalness}
+                />
+            )}
+
+            {choosenVipanelRight && (
+                <DynamicTextureMaterial
+                    url={choosenVipanelRight.files?.['1500x2550'] ? getPhotoUrl(choosenVipanelRight.files['1500x2550']) : null}
+                    material={materials['VIPANEL-BIG-right']}
+                    repeatX={1}
+                    repeatY={1}
+                    roughness={FINITION_VIPANELS[choosenVipanelRight.finition]?.roughness}
+                    metalness={FINITION_VIPANELS[choosenVipanelRight.finition]?.metalness}
+                />
+            )}
+
+            {choosenVipanelNiche && (
+                <DynamicTextureMaterial
+                    url={choosenVipanelNiche.files?.['1500x2550'] ? getPhotoUrl(choosenVipanelNiche.files['1500x2550']) : null}
+                    material={materials['VIPANEL-BIG']}
+                    repeatX={1}
+                    repeatY={1}
+                    roughness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.roughness}
+                    metalness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.metalness}
+                />
+            )}
 
 
             <mesh
@@ -320,12 +254,10 @@ export function Ambiance(props) {
             </mesh>
             <mesh
                 castShadow
-                receiveShadow
                 geometry={nodes.Faucet.geometry}
                 material={materials['+FINITION']}
             />
             <mesh
-                castShadow
                 geometry={nodes.pot.geometry}
                 material={materials['+GLASS VOLUME']}
                 position={[-0.009, 0.008, 0.008]}
@@ -348,7 +280,6 @@ export function Ambiance(props) {
             />
             <mesh castShadow geometry={nodes.Aroma_2.geometry} material={materials.Wood} />
             <mesh
-                receiveShadow
                 geometry={nodes.Aroma_3.geometry}
                 material={materials['white ncj1n .001']}
             />
@@ -369,11 +300,11 @@ export function Ambiance(props) {
                 geometry={nodes.Mirror_1.geometry}
                 material={materials['+MIRROR']}
             />
-            <mesh
+            {/* <mesh
                 castShadow
                 geometry={nodes.Mirror_2.geometry}
                 material={materials['+LUMIERE']}
-            />
+            /> */}
             <mesh
                 castShadow
                 receiveShadow
@@ -391,7 +322,7 @@ export function Ambiance(props) {
                 material={materials['+TOWEL-GREY']}
             />
             <mesh
-                castShadow
+
                 geometry={nodes.Towel_4_2.geometry}
                 material={materials['+TOWEL-WHITE']}
             />
@@ -402,8 +333,6 @@ export function Ambiance(props) {
                 material={materials['+TOWEL-GREY']}
             />
             <mesh
-                castShadow
-                receiveShadow
                 geometry={nodes.Towel_5_2.geometry}
                 material={materials['+TOWEL-WHITE']}
             />
@@ -414,8 +343,6 @@ export function Ambiance(props) {
                 material={materials['+TOWEL-GREY']}
             />
             <mesh
-                castShadow
-                receiveShadow
                 geometry={nodes.Towel_6_2.geometry}
                 material={materials['+TOWEL-WHITE']}
             />
@@ -448,7 +375,7 @@ export function Ambiance(props) {
                 />
                 <mesh
                     castShadow
-                    receiveShadow
+                    // receiveShadow
                     geometry={nodes.Cap.geometry}
                     material={materials.PLASTIC_CAP}
                 />
@@ -479,7 +406,7 @@ export function Ambiance(props) {
                         material={materials['+MIRROR']}
                     />
                     <mesh
-                        castShadow
+                        // castShadow
                         geometry={nodes.ampoule_1004_4.geometry}
                         material={materials['+FINITION']}
                     />
@@ -492,12 +419,12 @@ export function Ambiance(props) {
                 </group>
             </group>
 
-            {shower === 'pp' && wall && (
+            {paroi === 'PL PIF' && montage === 'niche' && (
                 //pivotante en niche
                 <group >
                     <mesh
                         castShadow
-                        receiveShadow
+                        // receiveShadow
                         geometry={nodes['+_Pastel__PASTEL_PLPIF_1200X2000__2'].geometry}
                         material={materials['+FINITION']}
                     />
@@ -506,15 +433,15 @@ export function Ambiance(props) {
                         material={materials['+GLASS']}
                     />
                     <mesh
-                        castShadow
-                        receiveShadow
+                        // castShadow
+                        // receiveShadow
                         geometry={nodes['+_Pastel__PASTEL_PLPIF_1200X2000__4'].geometry}
                         material={materials['+ PROTECTION']}
                     />
                     <group className="door-group" position={[-0.983, 0.669, -1.657]}>
                         <mesh
                             castShadow
-                            receiveShadow
+                            // receiveShadow
                             geometry={nodes.Door001_1.geometry}
                             material={materials['+FINITION']}
                         />
@@ -523,8 +450,8 @@ export function Ambiance(props) {
                             material={materials['+GLASS']}
                         />
                         <mesh
-                            castShadow
-                            receiveShadow
+                            // castShadow
+                            // receiveShadow
                             geometry={nodes.Door001_3.geometry}
                             material={materials['+ PROTECTION']}
                         />
@@ -532,7 +459,7 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {shower === 'pp' && !wall && (
+            {paroi === 'PL PIF' && montage !== 'niche' && (
                 //pivotante avec prolongation avec paroi fixe
                 <group position={[-0.883, -0.186, -1.678]}>
                     <mesh
@@ -543,7 +470,7 @@ export function Ambiance(props) {
                     />
                     <mesh
                         castShadow
-                        receiveShadow
+                        // receiveShadow
                         geometry={
                             nodes['+_Pastel__PASTEL_PLPIF_1200X2000_+_PLTWU_prolongation_900x2000_3'].geometry
                         }
@@ -558,7 +485,7 @@ export function Ambiance(props) {
                     <group position={[-0.06, 0.859, 0.02]}>
                         <mesh
                             castShadow
-                            receiveShadow
+                            // receiveShadow
                             geometry={nodes.Door002_1.geometry}
                             material={materials['+FINITION']}
                         />
@@ -568,7 +495,7 @@ export function Ambiance(props) {
                         />
                         <mesh
                             castShadow
-                            receiveShadow
+                            // receiveShadow
                             geometry={nodes.Door002_3.geometry}
                             material={materials['+ PROTECTION']}
                         />
@@ -576,11 +503,11 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {shower === 'f' && (
+            {paroi === 'PL TWU' && (
                 <group position={[-1.443, -0.316, -1.662]} rotation={[1.567, 0, 0]}>
                     <mesh
                         castShadow
-                        receiveShadow
+                        // receiveShadow
                         geometry={nodes.Fixe_1000x2000_2.geometry}
                         material={materials['+FINITION']}
                     />
@@ -596,19 +523,19 @@ export function Ambiance(props) {
             )}
 
 
-            {shower !== 'f' && wall && (
+            {paroi !== 'PL TWU' && montage === 'niche' && (
                 //nichewall
-                <group position={shower === 'p' ? [-0.266, 0, -1.243] : [-0.097, 0, -1.243]}>
+                <group position={paroi === 'PL PIV' ? [-0.266, 0, -1.243] : [-0.097, 0, -1.243]}>
                     <mesh
-                        castShadow
-                        receiveShadow
+                        // castShadow
+                        // receiveShadow
                         geometry={nodes.shower_profile_FIXED001.geometry}
                         material={materials['+PROFILE']}
                         position={[-1.767, 0, -0.281]}
                     />
                     <mesh
-                        castShadow
-                        receiveShadow
+                        // castShadow
+                        // receiveShadow
                         geometry={nodes.shower_profile_FIXED002.geometry}
                         material={materials['+PROFILE']}
                         position={[0.075, 0.014, 1.307]}
@@ -636,25 +563,25 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {shower === 'p' && wall && (
-                //pivotante avec prolongation sans paroi fixe
+            {paroi === 'PL PIV' && montage === 'niche' && (
+                //pivotante  sans paroi fixe
                 <group position={[-0.43, -0.319, -1.669]} scale={0.999}>
                     <mesh
                         castShadow
-                        receiveShadow
+                        // receiveShadow
                         geometry={nodes.Pastel__PLPV_Pivotante_1000x2000__2.geometry}
                         material={materials['+FINITION']}
                     />
                     <mesh
-                        castShadow
-                        receiveShadow
+                        // castShadow
+                        // receiveShadow
                         geometry={nodes.Pastel__PLPV_Pivotante_1000x2000__3.geometry}
                         material={materials['+ PROTECTION']}
                     />
                     <group position={[-0.957, 1.012, 0.004]} rotation={[1.575, 0, -Math.PI / 2]} scale={1.001}>
                         <mesh
                             castShadow
-                            receiveShadow
+                            // receiveShadow
                             geometry={nodes.Door004_1.geometry}
                             material={materials['+FINITION']}
                         />
@@ -666,12 +593,12 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {shower === 'p' && !wall && (
+            {paroi === 'PL PIV' && montage !== 'niche' && (
                 <group>
                     <group position={[-1.401, 0.689, -1.638]}>
                         <mesh
                             castShadow
-                            receiveShadow
+                            // receiveShadow
                             geometry={nodes.Door_1.geometry}
                             material={materials['+FINITION']}
                         />
@@ -683,13 +610,13 @@ export function Ambiance(props) {
                     <group position={[-0.447, 1.681, -2.517]} rotation={[-3.137, Math.PI / 2, 0]}>
                         <mesh
                             castShadow
-                            receiveShadow
+                            // receiveShadow
                             geometry={nodes['Pastel__PLPV_Pivotante_1000x2000_+_PLFXP_900x2000_2'].geometry}
                             material={materials['+ PROTECTION']}
                         />
                         <mesh
                             castShadow
-                            receiveShadow
+                            // receiveShadow
                             geometry={nodes['Pastel__PLPV_Pivotante_1000x2000_+_PLFXP_900x2000_3'].geometry}
                             material={materials['+FINITION']}
                         />
@@ -701,7 +628,7 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {shower === 'c' && wall && (
+            {paroi === 'PL CLS' && montage === 'niche' && (
                 <group>
                     <group position={[-0.673, 0.751, -1.676]}>
                         <mesh
@@ -710,13 +637,13 @@ export function Ambiance(props) {
                         />
                         <mesh
                             castShadow
-                            receiveShadow
+                            // receiveShadow
                             geometry={nodes.MovingDoor003_2.geometry}
                             material={materials['+FINITION']}
                         />
                         <mesh
-                            castShadow
-                            receiveShadow
+                            // castShadow
+                            // receiveShadow
                             geometry={nodes.MovingDoor003_3.geometry}
                             material={materials['+ PROTECTION']}
                         />
@@ -728,14 +655,14 @@ export function Ambiance(props) {
                             material={materials['+GLASS']}
                         />
                         <mesh
-                            castShadow
-                            receiveShadow
+                            // castShadow
+                            // receiveShadow
                             geometry={nodes.PL_CLS_1200x2000_3.geometry}
                             material={materials['+ PROTECTION']}
                         />
                         <mesh
                             castShadow
-                            receiveShadow
+                            // receiveShadow
                             geometry={nodes.PL_CLS_1200x2000_4.geometry}
                             material={materials['+FINITION']}
                         />
@@ -743,7 +670,7 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {shower === 'c' && !wall && (
+            {paroi === 'PL CLS' && montage !== 'niche' && (
                 <group position={[-0.824, 0.749, -1.696]}>
                     <mesh
                         geometry={nodes['PL_CLS_1200x2000_+_Fixe_900x2000_2'].geometry}
@@ -751,19 +678,19 @@ export function Ambiance(props) {
                     />
                     <mesh
                         castShadow
-                        receiveShadow
+                        // receiveShadow
                         geometry={nodes['PL_CLS_1200x2000_+_Fixe_900x2000_3'].geometry}
                         material={materials['+ PROTECTION']}
                     />
                     <mesh
                         castShadow
-                        receiveShadow
+                        // receiveShadow
                         geometry={nodes['PL_CLS_1200x2000_+_Fixe_900x2000_4'].geometry}
                         material={materials['+FINITION']}
                     />
                     <mesh
                         castShadow
-                        receiveShadow
+                        // receiveShadow
                         geometry={nodes['PL_CLS_1200x2000_+_Fixe_900x2000_5'].geometry}
                         material={materials['+ PROTECTION']}
                     />
@@ -774,19 +701,19 @@ export function Ambiance(props) {
                         />
                         <mesh
                             castShadow
-                            receiveShadow
+                            // receiveShadow
                             geometry={nodes.MovingDoor002_2.geometry}
                             material={materials['+FINITION']}
                         />
                         <mesh
-                            castShadow
-                            receiveShadow
+                            // castShadow
+                            // receiveShadow
                             geometry={nodes.MovingDoor002_3.geometry}
                             material={materials['+ PROTECTION']}
                         />
                         <mesh
                             castShadow
-                            receiveShadow
+                            // receiveShadow
                             geometry={nodes.MovingDoor002_4.geometry}
                             material={materials['+ PROTECTION']}
                         />
@@ -802,19 +729,19 @@ export function Ambiance(props) {
                     material={materials['+Plant_Banan']}
                 />
                 <mesh
-                    castShadow
+                    // castShadow
                     geometry={nodes.Banana__Plants001_2.geometry}
                     material={materials['+PLASTIC BLACK']}
                 />
                 <mesh
-                    castShadow
-                    receiveShadow
+                    // castShadow
+                    // receiveShadow
                     geometry={nodes.Banana__Plants001_3.geometry}
                     material={materials.Plant_Matti}
                 />
                 <mesh
-                    castShadow
-                    receiveShadow
+                    // castShadow
+                    // receiveShadow
                     geometry={nodes.Banana__Plants001_4.geometry}
                     material={materials.Plant_Dali}
                 />
@@ -826,7 +753,7 @@ export function Ambiance(props) {
                 position={[-1.412, 0, 0.064]}
             />
 
-            {(shower === 'c' || shower === 'pp') && (
+            {(paroi === 'PL CLS' || paroi === 'PL PIF') && (
                 <group position={[-1.169, -0.328, -2.104]}>
                     <mesh
                         receiveShadow
@@ -835,7 +762,7 @@ export function Ambiance(props) {
                     />
                 </group>
             )}
-            {(shower === 'f') && (
+            {paroi === 'PL TWU' && (
                 <group position={[-1.076, -0.324, -2.086]}>
                     <mesh
                         receiveShadow
@@ -846,7 +773,7 @@ export function Ambiance(props) {
                 </group>
             )}
 
-            {(shower === 'p') && (
+            {paroi === 'PL PIV' && (
                 <group position={[-1.199, -0.328, -2.104]} scale={[1.025, 1, 1]}>
                     <mesh
                         receiveShadow
@@ -864,7 +791,7 @@ export function Ambiance(props) {
             />
             <mesh
                 // castShadow
-                receiveShadow
+                // receiveShadow
                 geometry={nodes.Ceiling.geometry}
                 material={materials['+CEILING']}
                 position={[-2.063, 2.21, -2.614]}
@@ -884,22 +811,22 @@ export function Ambiance(props) {
                 position={[-2.165, -0.361, -2.545]}
             />
             <mesh
-                castShadow
-                receiveShadow
+                // castShadow
+                // receiveShadow
                 geometry={nodes.Right_wall.geometry}
                 material={nodes.Right_wall.material}
                 position={[-2.003, 0.91, -2.58]}
             />
             <mesh
                 castShadow
-                receiveShadow
+                // receiveShadow
                 geometry={nodes.Shower_system_1.geometry}
                 material={materials['+FINITION']}
             />
-            <mesh
+            {/* <mesh
                 geometry={nodes.Shower_system_2.geometry}
                 material={materials['+BLACK Metall']}
-            />
+            /> */}
             <mesh
                 geometry={nodes.Shower_system_3.geometry}
                 material={materials['+BLACK Metall']}
@@ -921,41 +848,44 @@ export function Ambiance(props) {
                         material={materials['+TOWEL-WHITE']}
                     />
                     <mesh
-                        castShadow
-                        receiveShadow
+                        // castShadow
+                        // receiveShadow
                         geometry={nodes.towel005001_2.geometry}
                         material={materials['+TOWEL-BROWN']}
                     />
                 </group>
             </mesh>
-            <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.Towle.geometry}
-                material={materials['+TOWEL-WHITE']}
-            />
-            <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.Cube016.geometry}
-                material={materials['+FINITION']}
-            />
-            <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.towel001_1.geometry}
-                material={materials['+TOWEL-WHITE']}
-            />
-            <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.towel001_2.geometry}
-                material={materials['+TOWEL-BROWN']}
-            />
 
-            {(nicheColor !== 'None' && shower !== 'p') && (
+            <group position={paroi === 'PL PIV' ? [-0.15, 0, 0] : [0, 0, 0]}>
                 <mesh
                     castShadow
+                    receiveShadow
+                    geometry={nodes.Towle.geometry}
+                    material={materials['+TOWEL-WHITE']}
+                />
+                <mesh
+                    castShadow
+                    // receiveShadow
+                    geometry={nodes.Cube016.geometry}
+                    material={materials['+FINITION']}
+                />
+                <mesh
+                    // castShadow
+                    // receiveShadow
+                    geometry={nodes.towel001_1.geometry}
+                    material={materials['+TOWEL-WHITE']}
+                />
+                <mesh
+                    castShadow
+                    // receiveShadow
+                    geometry={nodes.towel001_2.geometry}
+                    material={materials['+TOWEL-BROWN']}
+                />
+            </group>
+
+            {(niche && paroi !== 'PL PIV') && (
+                <mesh
+                    // castShadow
                     receiveShadow
                     geometry={nodes['Vipanel-niche'].geometry}
                     material={materials['VIPANEL-BIG']}
@@ -970,45 +900,45 @@ export function Ambiance(props) {
                     />
                     <group position={[-0.188, 0.042, -0.197]} scale={[1, 1, 10]}>
                         <mesh
-                            castShadow
-                            receiveShadow
+                            // castShadow
+                            // receiveShadow
                             geometry={nodes.Niche_Bottles_1.geometry}
                             material={materials['+PLASTIC BLACK']}
                         />
                         <mesh
-                            castShadow
-                            receiveShadow
+                            // castShadow
+                            // receiveShadow
                             geometry={nodes.Niche_Bottles_2.geometry}
                             material={materials['+PLASTIC BLACK']}
                         />
                         <mesh
-                            castShadow
-                            receiveShadow
+                            // castShadow
+                            // receiveShadow
                             geometry={nodes.Niche_Bottles_3.geometry}
                             material={materials['+BROWB GLASS']}
                         />
                         <group position={[0.392, 0.006, -0.003]}>
                             <mesh
-                                castShadow
-                                receiveShadow
+                                // castShadow
+                                // receiveShadow
                                 geometry={nodes.Bath_soak_Cap001003_1.geometry}
                                 material={materials['+PLASTIC BLACK']}
                             />
                             <mesh
-                                castShadow
-                                receiveShadow
+                                // castShadow
+                                // receiveShadow
                                 geometry={nodes.Bath_soak_Cap001003_2.geometry}
                                 material={materials['+GLASS']}
                             />
                             <mesh
                                 castShadow
-                                receiveShadow
+                                // receiveShadow
                                 geometry={nodes.Bath_soak_Cap001003_3.geometry}
                                 material={materials.Bathroom_set_2_Label}
                             />
                             <mesh
                                 castShadow
-                                receiveShadow
+                                // receiveShadow
                                 geometry={nodes.Bath_soak_Cap001003_4.geometry}
                                 material={materials['+CEILING']}
                             />
@@ -1021,8 +951,8 @@ export function Ambiance(props) {
                                 material={materials['+ETIQUETTE1']}
                             />
                             <mesh
-                                castShadow
-                                receiveShadow
+                                // castShadow
+                                // receiveShadow
                                 geometry={nodes.Bottle_3002_2.geometry}
                                 material={materials['+BROWB GLASS']}
                             />
@@ -1031,34 +961,34 @@ export function Ambiance(props) {
                                 material={materials['+GEL']}
                             />
                             <mesh
-                                castShadow
-                                receiveShadow
+                                // castShadow
+                                // receiveShadow
                                 geometry={nodes.Bottle_3002_4.geometry}
                                 material={materials['+PLASTIC BLACK']}
                             />
                         </group>
                         <group position={[0.321, 0.01, 0.003]}>
                             <mesh
-                                castShadow
-                                receiveShadow
+                                // castShadow
+                                // receiveShadow
                                 geometry={nodes.Meraki_conditioner_Cap001002_1.geometry}
                                 material={materials['+PLASTIC BLACK']}
                             />
                             <mesh
-                                castShadow
-                                receiveShadow
+                                // castShadow
+                                // receiveShadow
                                 geometry={nodes.Meraki_conditioner_Cap001002_2.geometry}
                                 material={materials['+GLASS']}
                             />
                             <mesh
                                 castShadow
-                                receiveShadow
+                                // receiveShadow
                                 geometry={nodes.Meraki_conditioner_Cap001002_3.geometry}
                                 material={materials['+CEILING']}
                             />
                             <mesh
-                                castShadow
-                                receiveShadow
+                                // castShadow
+                                // receiveShadow
                                 geometry={nodes.Meraki_conditioner_Cap001002_4.geometry}
                                 material={materials.Bathroom_set_2_Label}
                             />
@@ -1109,7 +1039,7 @@ export function Ambiance(props) {
                 material={materials['VIPANEL-BIG']}
                 position={[-1.446, 0.917, -2.311]}
             />
-            {(nicheColor === 'None' || shower === 'p') && (
+            {(!niche || paroi === 'PL PIV') && (
                 <mesh
                     receiveShadow
                     geometry={nodes['vp-n2'].geometry}
@@ -1123,52 +1053,51 @@ export function Ambiance(props) {
                 receiveShadow
                 geometry={nodes['vp-r3'].geometry}
                 material={materials['VIPANEL-BIG-right']}
-                position={[0.44, 0.917, -2.554]}
+                position={paroi === 'PL PIV' ? [0.27, 0.917, -2.554] : [0.44, 0.917, -2.554]}
                 onPointerEnter={() => setHeating(true)}
                 onPointerLeave={() => setHeating(false)}
             >
 
                 {heating && (
-                <>
-                <mesh
-                    
-                    geometry={nodes['vp-r3'].geometry}
-                    position={[0, 0, 0.02]}
-                >
-                    <meshBasicMaterial 
-                        toneMapped={false}
-                        map={gradientTexture}
-                    />
+                    <>
+                        <mesh
 
-                    <Edges
-                        color="#f08142"
-                        threshold={90}
-                        lineWidth={2}
-                    />
-                </mesh>
-                <rectAreaLight
-                    ref={heatRef}
-                    color="#9b3c20"
-                    intensity={20}
-                    width={0.3}
-                    height={2}
-                    position={[0, 0, 0]}
-                    rotation={[0, Math.PI, 0]}
-                />
-                </>
+                            geometry={nodes['vp-r3'].geometry}
+                            position={[0, 0, 0.02]}
+                        >
+                            <meshBasicMaterial
+                                toneMapped={false}
+                                map={gradientTexture}
+                            />
+
+                            <Edges
+                                color="#f08142"
+                                threshold={90}
+                                lineWidth={2}
+                            />
+                        </mesh>
+                        <rectAreaLight
+                            ref={heatRef}
+                            color="#9b3c20"
+                            intensity={20}
+                            width={0.3}
+                            height={2}
+                            position={[0, 0, 0]}
+                            rotation={[0, Math.PI, 0]}
+                        />
+                    </>
                 )}
             </mesh>
 
             <mesh
                 receiveShadow
                 geometry={nodes['vp-r4'].geometry}
-                material={materials['VIPANEL-BIG-right']}
-                position={[1.682, 0.917, -2.554]}
-                scale={[1, 1, 0.1]}
+                material={materials['VIPANEL-BIG-right']} 
+                position={paroi === 'PL PIV' ? [1.882, 0.917, -2.554] : [1.682, 0.917, -2.554]} 
+                scale={paroi === 'PL PIV' ? [1.5, 1, 0.1] : [1, 1, 0.1]}
             />
         </group>
     )
 }
 
 useGLTF.preload('./models/Ambiance_compressed.glb')
-

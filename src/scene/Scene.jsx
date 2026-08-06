@@ -1,9 +1,9 @@
 import { Canvas } from "@react-three/fiber";
 import s from './Scene.module.scss'
 import * as THREE from "three";
-import '../helpers/preload'
-import { Bounds, GizmoHelper, GizmoViewport, OrbitControls, } from "@react-three/drei";
-import { EffectComposer, SMAA } from '@react-three/postprocessing'
+// import '../helpers/preload'
+import {  GizmoHelper, GizmoViewport, OrbitControls  } from "@react-three/drei";
+ 
 
 import Lighting from "./Lighting";
 import { Ambiance } from "../models/Ambiance";
@@ -31,7 +31,7 @@ export default function Scene() {
 
       <Switcher />
 
-         <Perf />
+    <Perf position="bottom-left" />
 
 
       <OrbitControls target={[-0.5, 1, -1]} 

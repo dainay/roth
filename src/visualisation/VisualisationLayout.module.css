@@ -23,18 +23,7 @@
     aspect-ratio: 1400/1000;
   }
 
-.qr {
-     display: block;
-    width: 150px;
-    height: 150px;
-    margin:auto;
-    background-color: white;
-    padding: 5px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-block: 20px;
-}
- 
+
 .visualisationLayout__products {
     display: flex;  
     gap: 15px; 

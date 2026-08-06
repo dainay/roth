@@ -1,13 +1,21 @@
 import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import useConfiguratorStore from '../store/useConfiguratorStore';
+import { useShallow } from 'zustand/react/shallow'
 
 export default function Triptych(props) {
   const { nodes, materials } = useGLTF('./models/Triptych.glb')
 
-   const selection = useConfiguratorStore((state) => state.selection);
+   const selection = useConfiguratorStore(
+    useShallow((state) => ({
+      triptychLeft: state.selection.triptychLeft,
+      triptychRight: state.selection.triptychRight,
+      niche: state.selection.niche,
+      paroi: state.selection.paroi,
+    }))
+   );
     const setSelectionValue = useConfiguratorStore((state) => state.setSelectionValue) 
-
+console.log('triptychRight', selection.triptychRight, 'triptychLeft', selection.triptychLeft, 'niche', selection.niche, 'paroi', selection.paroi)
   return (
        <group {...props} dispose={null}>
         {selection.triptychLeft !== 'None' && (
@@ -21,7 +29,7 @@ export default function Triptych(props) {
         />
         )}
 
-         {selection.triptychRight !== 'None' && selection.nicheColor === 'None' && (
+        {selection.triptychRight !== 'None'  && selection.paroi === 'PL PIV'  &&(
             <mesh 
             receiveShadow
             geometry={nodes.tryptich.geometry}
@@ -31,7 +39,7 @@ export default function Triptych(props) {
         />
         )}
     
-            {selection.triptychRight !== 'None' && selection.nicheColor !== 'None' && selection.shower !== 'p' && (
+            {selection.triptychRight !== 'None' && selection.paroi !== 'PL PIV'  && (
           <mesh 
             receiveShadow
             geometry={nodes.tryptich001.geometry}

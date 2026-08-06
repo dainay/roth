@@ -1,14 +1,28 @@
 import React from 'react';
 import s from './VisualisationLayout.module.css';
 import OneProduct from './OneProduct/OneProduct';
+import PdfQrCode from './PdfQrCode';
+
+import useConfiguratorStore from '../store/useConfiguratorStore';
+import { useShallow } from 'zustand/shallow';
+import { useLayoutEffect } from 'react';
 
 
 const VisualisationLayout = ({ children }) => {
+
+    const realImg = useConfiguratorStore((state) => state.realImg);
+    const products = useConfiguratorStore((state) => state.products);
+    const pdf = useConfiguratorStore((state) => state.pdf);
+
+    const setCurrentView = useConfiguratorStore((state) => state.setCurrentView);
+ 
+    console.log('realImg', realImg, 'products', products, 'pdf', pdf);
+
 	return (
         <>
             <div className={s.visualisationLayout}>
                 <div className={s.visualisationLayout__img}>
-                    <img src="/img/pastel_0001.webp" alt="Visualisation" />
+                    <img src={realImg} alt="Visualisation" />
                 </div>
 
                 <div className={s.visualisationLayout__content}>
@@ -31,9 +45,9 @@ const VisualisationLayout = ({ children }) => {
                      <p className={`text text-center ${s.text}`}>ou</p>
                     <p className="text text-center">Télécharger le récapitulatif PDF par QR code</p>
                        
-                    <img className={s.qr} src="/img/qr.jpg" alt="QR Code" />
+                    <PdfQrCode className={s.qr} link={pdf} />
 
-                    <a href="#" className={`link text-center ${s.link}`}>
+                    <a href="#" className={`link text-center ${s.link}`} onClick={() => setCurrentView('configurateur')}>
                         Modifier ma configuration
                     </a>
 

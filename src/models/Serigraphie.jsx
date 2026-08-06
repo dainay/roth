@@ -1,17 +1,21 @@
 
-import React, { useRef } from 'react'
+import React from 'react'
 import { useGLTF } from '@react-three/drei'
 import useConfiguratorStore from '../store/useConfiguratorStore';
 
 
 export default function Serigraphie(props) {
-    const shower = useConfiguratorStore((state) => state.shower);
-    const serigraphie = useConfiguratorStore((state) => state.serigraphie);
+    const verre = useConfiguratorStore((state) => state.selection.verre);
+    const paroi = useConfiguratorStore((state) => state.selection.paroi);
     const { nodes, materials } = useGLTF('./models/Serigraphie.glb')
     
+    if (verre === 'PE' || paroi !==  'PL TWU') {
+        return null
+    }
+
     return (
         <group {...props} dispose={null}>
-            {shower === 'f' && serigraphie === 'geometrie' && (
+            {verre === 'GP' && (
                 <mesh
                     castShadow
                     receiveShadow
@@ -21,7 +25,7 @@ export default function Serigraphie(props) {
                 />
             )}
 
-            { shower === 'f' && serigraphie === 'chevrons' && (
+            {verre === 'MP' && (
                 <mesh
                     castShadow
                     receiveShadow

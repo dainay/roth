@@ -1,0 +1,12 @@
+.qr {
+     display: block;
+    width: 150px;
+    height: 150px;
+    margin:auto;
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-block: 20px;
+}
+ 
