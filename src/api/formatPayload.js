@@ -1,3 +1,5 @@
+import { PAROI_ASSETS } from "../conf/lib";
+
 
 export function formatSendingPayload(selection, data) {
     // const selectedParoi = data.parois.find(
@@ -94,9 +96,11 @@ export function formatSelectionByDefault(data) {
         paroi: data.parois[2]?.id || null,
         finitionParoi: data.parois[0]?.finitionsDisponibles[4] || data.parois[0]?.finitionsDisponibles[0] || null, 
         verre:  data.parois[0]?.verresDisponibles[0] || null,
+        sizeParoi: PAROI_ASSETS[data.parois[2]?.id]?.size || 1200,
 
         receveur: data.receveurs[0]?.id || null,
         textureReceveur: data.receveurs[0]?.finitionsDisponibles[0] || null,
+        sizeReceveur: PAROI_ASSETS[data.parois[2]?.id]?.sizeReceveurWithParoi || 1200,
 
         vipanelLeft: data.vipanels[0]?.decor || null,
         vipanelRight: data.vipanels[1]?.decor || null,

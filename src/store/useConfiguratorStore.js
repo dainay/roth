@@ -5,7 +5,7 @@ import { formatSendingPayload, formatSelectionByDefault } from '../api/formatPay
 
 const useConfiguratorStore = create((set, get) => ({
 
-    currentView: 'configurateur',
+    currentView: 'configurateur', 
 
     cleanedData: null,
     isLoading: false,
@@ -14,11 +14,13 @@ const useConfiguratorStore = create((set, get) => ({
         paroi: null,
         finitionParoi: null,
         verre: null,
+        sizeParoi: null,
 
         montage: null,
 
         receveur: null,
         textureReceveur: null,
+        sizeReceveur: null,
 
         vipanelLeft: null,
         vipanelRight: null,
@@ -105,6 +107,8 @@ const useConfiguratorStore = create((set, get) => ({
                         state.selection.montage,
                         availableMontages
                     ),
+
+                 
                 },
             };
         }),
@@ -149,7 +153,7 @@ const useConfiguratorStore = create((set, get) => ({
             const cleanedData = {
                 ...data,
                 parois: data.parois.filter(
-                    (item) => item.id !== "PL FXP" && item.id !== "PL WRU" && item.id !== "PL WRL" && item.id !== "PL WRR" && item.id !== "PL 2BT" && item.id !== "PL BAF"
+                    (item) => item.id !== "PL FXP" && item.id !== "PL WRL" && item.id !== "PL WRR" && item.id !== "PL 2BT" && item.id !== "PL BAF"
                 ),
                 vipanels: data.vipanels.filter(
                     (item) => item.files?.["1500x2550"]

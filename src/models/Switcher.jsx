@@ -5,7 +5,7 @@ import { useGLTF } from '@react-three/drei'
 import useSceneStore from '../store/useSceneStore';
 
 export default function Switcher(props) {
-  const { nodes, materials } = useGLTF('./models/Switcher.glb')
+  const { nodes, materials } = useGLTF('./models/Switcher_compressed.glb')
   const toggleLightingType = useSceneStore((state) => state.toggleLightingType);
   
   return (
@@ -15,7 +15,7 @@ export default function Switcher(props) {
         receiveShadow
         geometry={nodes.One_Swicth_.geometry}
         material={materials.Rough}
-        position={[1, 0.8, -2.55]}
+        position={[1.1, 0.8, -2.55]}
         rotation={[Math.PI / 2, 0, 0]}
         onClick={(e) => {
           e.stopPropagation()
@@ -26,4 +26,4 @@ export default function Switcher(props) {
   )
 }
 
-useGLTF.preload('./models/Switcher.glb')
+useGLTF.preload('./models/Switcher_compressed.glb')

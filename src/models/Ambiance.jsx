@@ -5,7 +5,7 @@ import { useFrame } from '@react-three/fiber'
 import { useShallow } from 'zustand/react/shallow'
 import { getPhotoUrl } from '../helpers/getPhotoUrl'
 
-// import { SERIGRAPHIE, NICHES, VIPANEL_TEXTURES, RECEVEUR_TEXTURES, FINITIONS, PROFILES } from '../conf/textures'
+ 
 import { FINITION_ASSETS, NICHE_FINITION_ASSETS, PROFILE_ASSETS, RECEVEUR_ASSETS, PAROI_ASSETS, SERIGRAPHIE_ASSETS, FINITION_VIPANELS } from '../conf/lib'
 import useConfiguratorStore from '../store/useConfiguratorStore';
 import useSceneStore from '../store/useSceneStore';
@@ -152,32 +152,13 @@ export function Ambiance(props) {
         mGlass.needsUpdate = true
     }, [])
 
-       //************************************* */
-    //CHANGE Floor MATERIAL for natura
-    //************************************* */
-    useLayoutEffect(() => {
-        const mGlass = materials['+GLASS']
-
-        if (!mGlass) return
-
-        mGlass.roughness = 0.08
-        mGlass.metalness = 1
-        mGlass.depthWrite = false
-        mGlass.transparent = true
-        mGlass.opacity = 0.2
-        mGlass.color.set(new THREE.Color("#ffffff"))
-
-        mGlass.needsUpdate = true
-    }, [])
+ 
 
     const choosenVipanelLLeft = cleanedData?.vipanels?.find((item) => item.decor === vipanelLeft)
     const choosenVipanelRight = cleanedData?.vipanels?.find((item) => item.decor === vipanelRight)
     const choosenVipanelNiche = cleanedData?.vipanels?.find((item) => item.decor === vipanelNiche)
 
-    // console.log('montage', montage)
-
-    const toWebp = (filename) => filename.replace(/\.[^/.]+$/, '.webp')
-
+     
     // console.log('choosenVipanelLLeft', choosenVipanelLLeft, 'choosenVipanelRight', choosenVipanelRight, 'choosenVipanelNiche', choosenVipanelNiche)
     return (
         <group {...props} dispose={null}>
@@ -192,7 +173,7 @@ export function Ambiance(props) {
             />
             {choosenVipanelLLeft && (
                 <DynamicTextureMaterial
-                    url={choosenVipanelLLeft.files?.['1500x2550'] ? getPhotoUrl(choosenVipanelLLeft.files['1500x2550']) : null}
+                    url={choosenVipanelLLeft.files?.['1500x2550'] ? `https://testwww.roth-france.fr/photos/${choosenVipanelLLeft.files['1500x2550']}` : null}
                     material={materials['VIPANEL-BIG-left']}
                     repeatX={1}
                     repeatY={1}
@@ -203,7 +184,7 @@ export function Ambiance(props) {
 
             {choosenVipanelRight && (
                 <DynamicTextureMaterial
-                    url={choosenVipanelRight.files?.['1500x2550'] ? getPhotoUrl(choosenVipanelRight.files['1500x2550']) : null}
+                    url={choosenVipanelRight.files?.['1500x2550'] ? `https://testwww.roth-france.fr/photos/${choosenVipanelRight.files['1500x2550']}` : null}
                     material={materials['VIPANEL-BIG-right']}
                     repeatX={1}
                     repeatY={1}
@@ -214,7 +195,7 @@ export function Ambiance(props) {
 
             {choosenVipanelNiche && (
                 <DynamicTextureMaterial
-                    url={choosenVipanelNiche.files?.['1500x2550'] ? getPhotoUrl(choosenVipanelNiche.files['1500x2550']) : null}
+                    url={choosenVipanelNiche.files?.['1500x2550'] ? `https://testwww.roth-france.fr/photos/${choosenVipanelNiche.files['1500x2550']}` : null}
                     material={materials['VIPANEL-BIG']}
                     repeatX={1}
                     repeatY={1}

@@ -17,9 +17,11 @@ export default function UI() {
             montage: state.selection.montage,
             finitionParoi: state.selection.finitionParoi,
             verre: state.selection.verre,
+            sizeParoi: state.selection.sizeParoi,
 
             textureReceveur: state.selection.textureReceveur,
             receveur: state.selection.receveur,
+            sizeReceveur: state.selection.sizeReceveur,
 
             finitionProfile: state.selection.finitionProfile,
             profile: state.selection.profile,
@@ -59,7 +61,7 @@ export default function UI() {
         { id: 'left', label: 'Mur gauche', key: 'vipanelLeft' },
         { id: 'niche', label: 'Espace douche', key: 'vipanelNiche' },
         { id: 'right', label: 'Mur droit', key: 'vipanelRight' },
-        { id: 'triptych', label: 'Décor triptyque', key: null },
+        // { id: 'triptych', label: 'Décor triptyque', key: null },
     ]
 
     const activeZone = vipanelZones.find((zone) => zone.id === activeVipanelZone)
@@ -74,7 +76,7 @@ export default function UI() {
 
     const handleNicheChange = (item) => {
         if (item === 'None') {
-            setSelectionValue('niche', 'None')
+            setSelectionValue('niche', null)
             setSelectionValue('finitionNiche', null)
             return
         }
@@ -88,6 +90,12 @@ export default function UI() {
         setSelectionValue('profile', cleanedData?.profiles?.[0]?.id)
     }
 
+     const handleParoiChange = (item) => {
+        setSelectionValue('paroi', item.id)
+        setSelectionValue('sizeParoi', PAROI_ASSETS[item.id].size)
+        setSelectionValue('sizeReceveur', PAROI_ASSETS[item.id].sizeReceveurWithParoi) 
+    }
+ 
 
     return (
         <div className={s.uiWrapper}>
@@ -100,7 +108,7 @@ export default function UI() {
                         key={item.id}
                         active={selection.paroi === item.id}
                         className={`${s.showerIcon} ${selection.paroi === item.id ? s.showerIconActive : ''}`}
-                        onClick={() => setSelectionValue('paroi', item.id)}
+                        onClick={() => handleParoiChange(item)}
                     >
                         <img className={s.showerIcon} src={PAROI_ASSETS[item.id].icon} alt={item.label} />
                         {PAROI_ASSETS[item.id].shortLabel}

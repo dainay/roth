@@ -1,9 +1,9 @@
 export async function getConfiguratorDatabyAPI() {
     const response = await fetch(
-        '/api/xu/getProducts',
+        'https://testwww.roth-france.fr/api/xu/getProducts',
         {
             method: "GET",
-            credentials: "include",
+            // credentials: "include",
             headers: {
                 Accept: "application/json",
             },

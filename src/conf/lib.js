@@ -108,7 +108,7 @@ export const PROFILE_ASSETS = {
     id: 'argent-mat',
     label: 'Argent mat',
     color: '#a9aaa7',
-    metalness: 1,
+    metalness: 0.6,
     roughness: 0.8,
     img: './img/finitions/argent brossé.jpg',
   },
@@ -117,7 +117,7 @@ export const PROFILE_ASSETS = {
     id: 'blanc',
     label: 'Blanc',
     color: '#f2f2ef',
-    metalness: 1,
+    metalness: 0.6,
     roughness: 0.6,
     img: './img/niches/blanc.jpg',
   },
@@ -126,7 +126,7 @@ export const PROFILE_ASSETS = {
     id: 'noir',
     label: 'Noir',
     color: '#222222',
-    metalness: 1,
+    metalness: 0.6,
     roughness: 0.8,
     img: './img/niches/noir.jpg',
   },
@@ -135,7 +135,7 @@ export const PROFILE_ASSETS = {
     id: 'or',
     label: 'Or',
     color: '#b89a45',
-    metalness: 1,
+    metalness: 0.6,
     roughness: 0.8,
     img: './img/niches/Acier_or.jpg',
   },
@@ -177,26 +177,43 @@ export const PAROI_ASSETS = {
   'PL PIV': {
     shortLabel: 'Pivotante',
     icon: './img/icons/PL PIV.svg',
+    size: 1000,
+    sizeReceveurWithParoi: 1000,
   },
 
   'PL PIF': {
     shortLabel: 'Pivotante prolongée',
     icon: './img/icons/PL PIF.svg',
+    size: 1200,
+    sizeReceveurWithParoi: 1200,
   },
 
   'PL TWU': {
     shortLabel: 'Walk-in',
     icon: './img/icons/PL TWU.svg',
+    size: 1000,
+    sizeReceveurWithParoi: 1600,
   },
 
   'PL CLS': {
     shortLabel: 'Coulissante',
     icon: './img/icons/PL CLS.svg',
+    size: 1200,
+    sizeReceveurWithParoi: 1200,
   },
 
   'PL FXP': {
     shortLabel: 'Paroi fixe',
     icon: './img/icons/fix.svg',
+    size: 900,
+    sizeReceveurWithParoi: 900,
+  },
+
+  'PL WRU': {
+    shortLabel: 'Paroi fixe arrondie',
+    icon: './img/icons/PL WRU.svg',
+    size: 1000,
+    sizeReceveurWithParoi: 1600,
   },
 }
 
@@ -208,13 +225,18 @@ export const SERIGRAPHIE_ASSETS = {
   },
   'MP': {
     id: 'MP',
-    label: 'Mini chevrons',
+    label: 'Mini chevrons bronze brillant',
     img: './img/serigraphie/Chevrons.jpg', 
   },
   'GP': {
     id: 'GP',
-    label: 'Géométrie',
+    label: 'Géométrie bronze brillant',
     img: './img/serigraphie/Geometrie.jpg' 
+  },
+   'CR': {
+    id: 'CR',
+    label: 'Minis chevrons or rose',
+    img: './img/serigraphie/Cerclage.jpg', 
   },
 }
 
