@@ -18,7 +18,7 @@ export default function Model(props) {
 
     const heating = meshHover || htmlHover
 
-    console.log('heating: ', heating, 'meshHover: ', meshHover, 'htmlHover: ', htmlHover)
+    // console.log('heating: ', heating, 'meshHover: ', meshHover, 'htmlHover: ', htmlHover)
 
     const {
         cleanedData,
@@ -41,7 +41,7 @@ export default function Model(props) {
     );
 
 
-    console.log('sizeReceveur Vipanels: ', sizeReceveur)
+    // // console.log('sizeReceveur Vipanels: ', sizeReceveur)
 
     const choosenVipanelLLeft = cleanedData?.vipanels?.find((item) => item.decor === vipanelLeft)
     const choosenVipanelRight = cleanedData?.vipanels?.find((item) => item.decor === vipanelRight)
@@ -191,7 +191,7 @@ export default function Model(props) {
                 receiveShadow
                 geometry={nodes.vipanel_1500x2550x3002.geometry}
                 material={materials['VIPANEL-1500x2550-left']}
-                position={[-1.944, 0.921, 0.691]}
+                position={[-1.944, 0.9169, 0.6]}
             />
             <mesh
                 castShadow

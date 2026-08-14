@@ -35,12 +35,12 @@ export default function Model(props) {
                 position={[-2.165, -0.361, -2.545]}
             />
             <group position={[-1.794, 1.313, 0.138]} rotation={[0, 0, Math.PI]} scale={1.517} >
-                <mesh 
+                <mesh
                     geometry={nodes.ampoule_1004_1.geometry}
                     material={materials['+GLASS']}
                 />
                 {mirrorLight && (
-                    <mesh 
+                    <mesh
                         geometry={nodes.ampoule_1004_2.geometry}
                         material={materials.lumière}
                     />
@@ -65,7 +65,7 @@ export default function Model(props) {
                 material={materials['+GLASS-VOLUMED']}
                 position={[-1.794, 1.303, 0.138]}
                 rotation={[0, 0, Math.PI]}
-                scale={1.517} 
+                scale={1.517}
                 onClick={(e) => {
                     e.stopPropagation()
                     toggleMirrorLight(false)
@@ -95,11 +95,22 @@ export default function Model(props) {
                 />
             </group>
             <mesh
-              
+
                 geometry={nodes.Back_wall.geometry}
                 material={nodes.Back_wall.material}
                 position={[-1.968, 0.911, -2.597]}
             />
+
+            <mesh
+                position={[-1, 2.18, -2]}
+                rotation={[0, 0, 0]}
+            >
+                <cylinderGeometry args={[0.04, 0.04, 0.04, 10]} />
+
+                <meshBasicMaterial
+                    color="#fdfdfd"
+                />
+            </mesh>
         </group>
     )
 }

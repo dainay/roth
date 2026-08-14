@@ -46,7 +46,7 @@ export default function Model(props) {
                 geometry={nodes.Niche_910x305x68.geometry}
                 material={materials['+NICHE']}
                 position={[-0.828, 1.069, -2.566]}
-                scale={[0.441, 0.148, 0.035]}
+                scale={[0.443, 0.149, 0.035]}
             />
             <group position={[-0.997, 0.97, -2.574]}>
                 <mesh

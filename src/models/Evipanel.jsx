@@ -40,7 +40,8 @@ export default function Evipanel({ onPointerEnter, onPointerLeave, geometry, gra
                     onPointerEnter={onPointerEnter}
                     onPointerLeave={onPointerLeave}
                     style={{
-                        
+                         transform: visible ? 'translateY(0)' : 'translateY(8px)',
+                        transition: 'opacity 0.7s ease, transform 0.7s ease',
                         opacity: visible ? 1 : 0,
                         pointerEvents: visible ? 'auto' : 'none',
                     }}>

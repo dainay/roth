@@ -1,110 +1,60 @@
 import { PAROI_ASSETS } from "../conf/lib";
 
 
-export function formatSendingPayload(selection, data) {
-    // const selectedParoi = data.parois.find(
-    //     (item) => item.id === selection.paroi
-    // )
+export function formatSendingBody(selection) {
 
-    // const selectedFinitionParoi = data.finitionsParois.find(
-    //     (item) => item.id === selection.finitionParoi
-    // )
 
-    // const selectedVerre = data.verres.find(
-    //     (item) => item.id === selection.verre
-    // )
+    const body = {
+        "scene": "PASTEL02",
 
-    // const selectedReceveur = data.receveurs.find(
-    //     (item) => item.id === selection.receveur
-    // )
+        "finition_parois": selection.finitionParoi,
+        "verre": selection.verre,
 
-    // const selectedReceveurTexture = selectedReceveur?.textures.find(
-    //     (item) => item.id === selection.textureReceveur
-    // )
+        "parois": [
+            { "modele": selection.paroi, "largeur": selection.sizeParoi },
+            ...(selection.montage === "angle"
+                ? [
+                    {
+                        "modele": "PL TWU",
+                        "largeur": 1000,
+                    },
+                ]
+                : []),
+        ],
 
-    // const vipanelLeft = data.vipanels.find(
-    //     (item) => item.id === selection.vipanelLeft
-    // )
+        "receveur": selection.receveur, 
+        "finition_receveur": selection.textureReceveur, 
+        "largeur_receveur": selection.sizeReceveur,
+        "profondeur_receveur": 900,
 
-    // const vipanelRight = data.vipanels.find(
-    //     (item) => item.id === selection.vipanelRight
-    // )
+        "finition_profile": selection.finitionProfile === null ? 'None' : selection.finitionProfile,
 
-    // const vipanelNiche = data.vipanels.find(
-    //     (item) => item.id === selection.vipanelNiche
-    // )
+        "finition_niche": selection.finitionNiche === null ? 'None' : selection.finitionNiche,
+        "largeur_niche": selection.finitionProfile === null ? 'None' : 910,
 
-    // return {
-    //     configurator: 'pastel',
-
-    //     products: {
-    //         paroi: {
-    //             id: selectedParoi?.id,
-    //             label: selectedParoi?.label,
-    //             model: selectedParoi?.model,
-    //             width: selectedParoi?.largeurs?.[0] ?? null,
-    //             height: selectedParoi?.hauteur,
-
-    //             finish: {
-    //                 id: selectedFinitionParoi?.id,
-    //                 label: selectedFinitionParoi?.label,
-    //             },
-
-    //             glass: {
-    //                 id: selectedVerre?.id,
-    //                 label: selectedVerre?.label,
-    //             },
-    //         },
-
-    //         receveur: {
-    //             id: selectedReceveur?.id,
-    //             label: selectedReceveur?.label,
-
-    //             texture: {
-    //                 id: selectedReceveurTexture?.id,
-    //                 label: selectedReceveurTexture?.label,
-    //             },
-    //         },
-
-    //         vipanels: [
-    //             {
-    //                 zone: 'left',
-    //                 id: vipanelLeft?.id,
-    //                 label: vipanelLeft?.label,
-    //             },
-    //             {
-    //                 zone: 'right',
-    //                 id: vipanelRight?.id,
-    //                 label: vipanelRight?.label,
-    //             },
-    //             {
-    //                 zone: 'niche',
-    //                 id: vipanelNiche?.id,
-    //                 label: vipanelNiche?.label,
-    //                 enabled: selection.niche,
-    //             },
-    //         ],
-    //     },
-
-    //     rawSelection: selection,
-    // }
+        "vipanel": {
+            "gauche": selection.vipanelLeft,
+            "centre": selection.vipanelNiche,
+            "droit": selection.vipanelRight
+        }
+    }
+    return body;
 }
 
 export function formatSelectionByDefault(data) {
-    
     const defaultSelection = {
-        paroi: data.parois[2]?.id || null,
-        finitionParoi: data.parois[0]?.finitionsDisponibles[4] || data.parois[0]?.finitionsDisponibles[0] || null, 
-        verre:  data.parois[0]?.verresDisponibles[0] || null,
-        sizeParoi: PAROI_ASSETS[data.parois[2]?.id]?.size || 1200,
+        paroi: data.parois[4]?.id || null,
+        finitionParoi: data.parois[4]?.finitionsDisponibles[2]?.code || data.parois[0]?.finitionsDisponibles[0]?.code || null,
+        verre: data.parois[4]?.verresDisponibles[0] || null,
+        sizeParoi: PAROI_ASSETS[data.parois[4]?.id]?.size || 1200,
 
         receveur: data.receveurs[0]?.id || null,
-        textureReceveur: data.receveurs[0]?.finitionsDisponibles[0] || null,
-        sizeReceveur: PAROI_ASSETS[data.parois[2]?.id]?.sizeReceveurWithParoi || 1200,
+        textureReceveur: data.receveurs[0]?.finitionsDisponibles[3] || null,
+        sizeReceveur: PAROI_ASSETS[data.parois[4]?.id]?.sizeReceveurWithParoi || 1200,
 
-        vipanelLeft: data.vipanels[0]?.decor || null,
-        vipanelRight: data.vipanels[1]?.decor || null,
-        vipanelNiche: data.vipanels[2]?.decor || null,
+        vipanelLeft: data.vipanels[12]?.decor || null,
+        vipanelRight: data.vipanels[11]?.decor || null,
+        vipanelNiche: data.vipanels[11]?.decor || null,
 
         niche: data.niches[0]?.id || null,
         finitionNiche: data.niches[0]?.finitionsDisponibles[0] || null,

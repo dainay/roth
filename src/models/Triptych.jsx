@@ -15,7 +15,7 @@ export default function Triptych(props) {
     }))
    );
     const setSelectionValue = useConfiguratorStore((state) => state.setSelectionValue) 
-console.log('triptychRight', selection.triptychRight, 'triptychLeft', selection.triptychLeft, 'niche', selection.niche, 'paroi', selection.paroi)
+// console.log('triptychRight', selection.triptychRight, 'triptychLeft', selection.triptychLeft, 'niche', selection.niche, 'paroi', selection.paroi)
   return (
        <group {...props} dispose={null}>
         {selection.triptychLeft !== 'None' && (

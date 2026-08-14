@@ -102,18 +102,20 @@ export default function UI() {
             <div className={s.blockButtons}>
                 <h2>Type de paroi</h2>
 
-                {cleanedData?.parois.map((item) => (
-                    <Button
-                        data-paroi={item.id}
-                        key={item.id}
-                        active={selection.paroi === item.id}
-                        className={`${s.showerIcon} ${selection.paroi === item.id ? s.showerIconActive : ''}`}
-                        onClick={() => handleParoiChange(item)}
-                    >
-                        <img className={s.showerIcon} src={PAROI_ASSETS[item.id].icon} alt={item.label} />
-                        {PAROI_ASSETS[item.id].shortLabel}
-                    </Button>
-                ))}
+                <div className={s.paroisWrapper}>
+                    {cleanedData?.parois.map((item) => (
+                        <Button
+                            data-paroi={item.id}
+                            key={item.id}
+                            active={selection.paroi === item.id}
+                            className={`${s.showerIcon} ${selection.paroi === item.id ? s.showerIconActive : ''}`}
+                            onClick={() => handleParoiChange(item)}
+                        >
+                            <img className={s.showerIcon} src={PAROI_ASSETS[item.id].icon} alt={item.label} />
+                            {PAROI_ASSETS[item.id].shortLabel}
+                        </Button>
+                    ))}
+                </div>
             </div>
             {montageAvailable && (
                 <div className={s.blockButtons}>
@@ -148,7 +150,7 @@ export default function UI() {
                         data-finition={item.code}
                         key={item.code}
                         active={selection.finitionParoi === item.code}
-                        className={`${s.vipanelButton} ${selection.finitionParoi === item.code ? s.finitionButtonActive : ''}`}
+                        className={`${s.vipanelButton} ${s.largeButton} ${selection.finitionParoi === item.code ? s.finitionButtonActive : ''}`}
                         onClick={() => setSelectionValue('finitionParoi', item.code)}
                     >
                         <img className={s.finitionImage} src={FINITION_ASSETS[item.code].img} alt={item.libelle} />
@@ -164,10 +166,10 @@ export default function UI() {
                         key={'None'}
                         data-niche={'None'}
                         active={selection.niche === 'None'}
-                        className={`${s.vipanelButton} ${selection.niche === 'None' ? s.finitionButtonActive : ''}`}
+                        className={`${s.vipanelButton}  ${s.largeButton} ${selection.niche === null ? s.finitionButtonActive : ''}`}
                         onClick={() => handleNicheChange('None')}
                     >
-                        <img className={s.finitionImage} src='./img/None.svg' alt={'Pas de niche'} />
+                        <img className={s.finitionImage}  src='./img/None.svg' alt={'Pas de niche'} />
                         <span>None</span>
                     </Button>
 
@@ -176,11 +178,12 @@ export default function UI() {
                             <Button
                                 key={item}
                                 data-niche={item}
-                                active={selection.niche === item}
-                                className={`${s.vipanelButton} ${selection.niche === item ? s.finitionButtonActive : ''}`}
+                                active={selection.finitionNiche === item}
+                                className={`${s.vipanelButton} ${s.largeButton} ${selection.finitionNiche === item ? s.finitionButtonActive : ''}`}
                                 onClick={() => handleNicheChange(item)}
                             >
-                                <img className={s.finitionImage} src={NICHE_FINITION_ASSETS[item].img} alt={item} />
+                                <img className={s.finitionImage}
+                                src={NICHE_FINITION_ASSETS[item].img} alt={item} />
                                 <span>{NICHE_FINITION_ASSETS[item].label}</span>
                             </Button>
                         ))}
@@ -194,7 +197,7 @@ export default function UI() {
                         data-verre={item}
                         key={item}
                         active={selection.verre === item}
-                        className={`${s.vipanelButton} ${selection.verre === item ? s.finitionButtonActive : ''}`}
+                        className={`${s.vipanelButton} ${s.largeButton}  ${selection.verre === item ? s.finitionButtonActive : ''}`}
                         onClick={() => setSelectionValue('verre', item)}
                     >
                         <img className={s.finitionImage} src={SERIGRAPHIE_ASSETS[item].img} alt={item} />
@@ -210,13 +213,13 @@ export default function UI() {
                 {cleanedData?.receveurs[0].finitionsDisponibles.map((item) => (
                     <Button
                         data-receveur={item}
-                        className={`${s.vipanelButton} ${selection.textureReceveur === item ? s.vipanelButtonActive : ''}`}
+                        className={`${s.vipanelButton} ${s.largeButton}  ${selection.textureReceveur === item ? s.vipanelButtonActive : ''}`}
                         key={item}
                         active={selection.textureReceveur === item}
                         onClick={() => handleReceveurChange(item)}
                     >
                         <div className={s.imgVipanelWrapper}>
-                            <img className={s.imgVipanel} src={RECEVEUR_ASSETS[item].img} alt={item} />
+                            <img className={s.finitionImage} src={RECEVEUR_ASSETS[item].img} alt={item} />
                         </div>
                         <span>{RECEVEUR_ASSETS[item].label}</span>
                     </Button>
@@ -231,7 +234,7 @@ export default function UI() {
                         data-profile={item}
                         key={item}
                         active={selection.finitionProfile === item}
-                        className={`${s.vipanelButton} ${s.profileButton} ${selection.finitionProfile === item ? s.finitionButtonActive : ''}`}
+                        className={`${s.vipanelButton} ${s.largeButton} ${s.profileButton} ${selection.finitionProfile === item ? s.finitionButtonActive : ''}`}
                         onClick={() => handleProfileChange(item)}
                     >
                         <img className={s.finitionImage} src={PROFILE_ASSETS[item].img} alt={item} />
@@ -311,7 +314,7 @@ export default function UI() {
                                 }}
                             >
                                 <div className={s.imgVipanelWrapper}>
-                                    <img className={s.imgVipanel} src={getPhotoUrl(item.files["1500x2550"])} alt={item.decor} />
+                                    <img className={s.imgVipanel} src={`https://testwww.roth-france.fr/photos/${item.vignette}`} alt={item.decor} />
                                 </div>
                                 <span>{item.nom}</span>
                             </Button>

@@ -22,7 +22,7 @@ export default function Model(props) {
         }))
     );
 
-    console.log('Model Receveurs:', sizeReceveur, receveur, textureReceveur);
+    // console.log('Model Receveurs:', sizeReceveur, receveur, textureReceveur);
 
       const receveur1000 = useMemo(() => {
             const geometry = nodes.Natura_1000x900_1.geometry.clone()

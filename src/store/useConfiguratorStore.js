@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 import { getConfiguratorDatabyAPI, sendConfiguratorDatabyAPI } from '../api/api';
 
-import { formatSendingPayload, formatSelectionByDefault } from '../api/formatPayload';
+import { formatSendingBody, formatSelectionByDefault } from '../api/formatPayload';
 
 const useConfiguratorStore = create((set, get) => ({
 
-    currentView: 'configurateur', 
+    currentView: 'configurateur',
 
     cleanedData: null,
     isLoading: false,
@@ -108,7 +108,7 @@ const useConfiguratorStore = create((set, get) => ({
                         availableMontages
                     ),
 
-                 
+
                 },
             };
         }),
@@ -146,6 +146,7 @@ const useConfiguratorStore = create((set, get) => ({
             isLoading: true,
             error: null,
         });
+        const hiddenParoiIds = ["PL FXP", "PL WRL", "PL 2BT", "PL BAF"]
 
         try {
             const data = await getConfiguratorDatabyAPI();
@@ -153,12 +154,27 @@ const useConfiguratorStore = create((set, get) => ({
             const cleanedData = {
                 ...data,
                 parois: data.parois.filter(
-                    (item) => item.id !== "PL FXP" && item.id !== "PL WRL" && item.id !== "PL WRR" && item.id !== "PL 2BT" && item.id !== "PL BAF"
+                    (item) => !hiddenParoiIds.includes(item.id)
                 ),
                 vipanels: data.vipanels.filter(
                     (item) => item.files?.["1500x2550"]
                 ),
             };
+
+            //delte repeating arrondie fix mergin glasses
+            const plWru = cleanedData.parois.find((item) => item.id === 'PL WRU')
+            const plWrr = cleanedData.parois.find((item) => item.id === 'PL WRR')
+
+            if (plWru && plWrr) {
+                plWru.verresDisponibles = [
+                    ...new Set([
+                        ...(plWru.verresDisponibles ?? []),
+                        ...(plWrr.verresDisponibles ?? []),
+                    ]),
+                ]
+
+                cleanedData.parois = cleanedData.parois.filter((item) => item.id !== 'PL WRR')
+            }
 
             const selection = formatSelectionByDefault(cleanedData);
             if (!selection) {
@@ -184,28 +200,42 @@ const useConfiguratorStore = create((set, get) => ({
     },
 
     sendConfiguratorData: async () => {
-
+        set({
+            isLoading: true,
+            error: null,
+        });
         const { selection } = get();
 
-        console.log('data sent to API:', selection)
+        const body = formatSendingBody(selection);
+
+        console.log('data sent to API:', body)
+
+
         try {
-            const response = await sendConfiguratorDatabyAPI(selection)
+            const response = await sendConfiguratorDatabyAPI(body)
 
-            set({
-                realImg: response.img,
-                products: response.products,
-                pdf: response.pdf,
-                isLoading: false,
-            })
+            console.log("rrrr" + JSON.stringify(body, null, 2));
 
-            console.log('response from API:', response)
+            const visualizationData = await response.json();
+
+              console.log('AAAAAAAAAAA:', visualizationData)
+
+            if (response.status === 200 && visualizationData) { 
+ 
+                set({
+                    realImg: visualizationData.img,
+                    products: visualizationData.products,
+                    pdf: visualizationData.pdf,
+                    isLoading: false,
+                })
+
+              
+
+            }
+
 
         } catch (error) {
             console.error("Configurator API error:", error);
-
-            set({
-                isLoading: false,
-            });
 
         }
     },

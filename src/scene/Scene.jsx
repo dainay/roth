@@ -17,12 +17,15 @@ import Profiles from "../models/Profiles";
 import Nichepanels from "../models/Nichepanels";
 import Vipanels from "../models/Vipanels";
 
-import { Perf } from 'r3f-perf';
-import { Preload } from "@react-three/drei";
+import { Perf } from 'r3f-perf'; 
+import useConfiguratorStore from "../store/useConfiguratorStore";
 
 export default function Scene() {
+
+        const currentView = useConfiguratorStore((state) => state.currentView)
     return (
-        <Canvas
+        <Canvas 
+            frameloop={currentView === 'configurateur' ? 'always' : 'never'}
             dpr={1}
             camera={{ position: [2, 1, 2], fov: 60 }}
             shadows={{ type: THREE.PCFShadowMap }}
@@ -46,8 +49,7 @@ export default function Scene() {
             <Vipanels /> 
 
             {/* **** scene ****** */}
-
- {/* <Preload all /> */}
+ 
             <Perf position="bottom-left" />
 
 

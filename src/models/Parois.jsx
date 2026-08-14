@@ -357,12 +357,14 @@ export default function Model(props) {
                 </>
             )}
 
-            {/* <mesh
+            {(paroi === 'PL WRU' && verre === 'CR') && (
+            <mesh
                 geometry={nodes.Serigraphie_Chevrons_arondie.geometry}
                 material={materials['Serigraphie Shevrons arrondi']}
                 position={[-0.464, 0.677, -1.665]}
                 scale={[0.317, 0.33, 0.094]}
-            /> */}
+            />
+            )}
 
             {/* <mesh
                 geometry={nodes.Serigraphie_Geometrie_arondie.geometry}

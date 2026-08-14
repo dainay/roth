@@ -24,11 +24,11 @@ export default function ConfiguratorLayout() {
     }, [loadConfiguratorData])
 
     if (isLoading || !cleanedData) {
-        return <div>Chargement...</div>
+        return <div className={s.loading}>Chargement...</div>
     }
 
     if (error) {
-        return <div>Erreur : {error}</div>
+        return <div>Erreur  : {error}</div>
     }
 
     return (

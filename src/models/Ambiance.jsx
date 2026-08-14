@@ -106,7 +106,7 @@ export function Ambiance(props) {
     useLayoutEffect(() => {
         const mNiche = materials['+NICHE']
         const nicheData = NICHE_FINITION_ASSETS[finitionNiche]
-        console.log('NICHE DATA', nicheData, niche, finitionNiche)
+        // console.log('NICHE DATA', nicheData, niche, finitionNiche)
 
         if (!mNiche || !nicheData) return
 
@@ -123,7 +123,7 @@ export function Ambiance(props) {
     useLayoutEffect(() => {
         const mProfile = materials['+PROFILE']
         const profileData = PROFILE_ASSETS[finitionProfile]
-        console.log('PROFILE DATA', profileData, profile, finitionProfile)
+        // console.log('PROFILE DATA', profileData, profile, finitionProfile)
 
         if (!mProfile || !profileData) return
 

@@ -1,6 +1,9 @@
 import * as THREE from "three";
-import { ContactShadows, Environment, useHelper, Lightformer, TransformControls, AccumulativeShadows, RandomizedLight } from "@react-three/drei";
+import { ContactShadows, Environment, Lightformer, TransformControls, AccumulativeShadows, RandomizedLight,   useHelper } from "@react-three/drei";
 import { useRef } from "react";
+
+import { RectAreaLightHelper } from
+  "three/addons/helpers/RectAreaLightHelper.js";
 
 import useSceneStore from "../store/useSceneStore";
 
@@ -40,6 +43,14 @@ const lightingSchemas = [
 export default function Lighting() {
     const mirrorLight = useSceneStore((state) => state.mirrorLight);
 
+    const blueRectLightRef = useRef();
+
+useHelper(
+  blueRectLightRef,
+  RectAreaLightHelper,
+  "#f5dc97"
+);
+
     const lightingType = useSceneStore((state) => state.lighingType);
 
     return (
@@ -52,8 +63,8 @@ export default function Lighting() {
                 position={lightingSchemas[lightingType].dPosition}
                 intensity={lightingSchemas[lightingType].dIntensity}
                 castShadow
-                shadow-mapSize-width={1024}
-                shadow-mapSize-height={1024}
+                shadow-mapSize-width={512}
+                shadow-mapSize-height={512}
                 shadow-camera-left={-3}
                 shadow-camera-right={3}
                 shadow-camera-top={3}
@@ -77,32 +88,19 @@ export default function Lighting() {
             />
 
             <rectAreaLight
-                color="#ffd9a3"
-                intensity={1}
-                width={2.3}
-                height={0.2}
-                position={[0, 2, -2.55]}
-                rotation={[0, Math.PI, 0]}
+                ref={blueRectLightRef}
+                color="#d6b385"
+                intensity={50}
+                width={0.87}
+                height={0.01}
+                position={[-0.83, 1.201, -2.605]}
+                rotation={[-Math.PI /2, 0, 0]}
             />
-
-          
-                <pointLight
-                    position={[-1.78, 1.2, 0.15]}
-                    intensity={mirrorLight ? 0.7 : 0}
-                    distance={4}
-                    decay={1}
-                    // castShadow
-                    shadow-mapSize-width={2048}
-                    shadow-mapSize-height={2048}
-                    shadow-radius={10}
-                    shadow-bias={-0.0001}
-                    shadow-normalBias={0.005}
-                    color={new THREE.Color("#fce7b8")}
-                />
+ 
 
             <pointLight
-                position={[-1, 2.1, -2]}
-                intensity={0.6}
+                position={[-1.78, 1.2, 0.15]}
+                intensity={mirrorLight ? 0.7 : 0}
                 distance={4}
                 decay={1}
                 // castShadow
@@ -114,28 +112,46 @@ export default function Lighting() {
                 color={new THREE.Color("#fce7b8")}
             />
 
+            <pointLight
+                position={[-1, 2.1, -2]}
+                intensity={0.6}
+                distance={4}
+                decay={1}
+                color={new THREE.Color("#fce7b8")}
+            />
+
             <Environment
+                resolution={16}
                 preset="apartment"
                 environmentIntensity={0.07}
-                environmentBlur={1}
-                backgroundBlurriness={1}
+
             >
                 <Lightformer
 
                     form="circle"
                     intensity={lightingSchemas[lightingType].lfIntensity}
-                    position={[-4, -0.5, 5]}
+                    position={[4, 0, 5]}
                     rotation={[0, Math.PI, 0]}
                     scale={lightingSchemas[lightingType].lfScale}
                     color={lightingSchemas[lightingType].lfColor}
                 />
+                {/* window */}
+                <Lightformer
+                    form="rect"
+                    intensity={30}
+                    position={[-4, 0, 6]}
+                    target={[0, 0, 0]}
+                    scale={[1, 1]}
+                    color="#fff4e8"
+                />
+
                 <Lightformer
                     form="ring"
                     intensity={10}
-                    position={[4, 0, 6]}
-                    rotation={[0, Math.PI, 0]}
-                    scale={[5, 2, 3]}
-                    color="#fdd5a8"
+                    position={[6, -0.5, -6]}
+                    target={[0, 0, 2]}
+                    scale={[2, 2]}
+                    color="#967d62"
                 />
             </Environment>
         </>

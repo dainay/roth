@@ -67,45 +67,45 @@ export const FINITION_ASSETS = {
 }
 
 export const NICHE_FINITION_ASSETS = {
-  blanc: {
-    id: 'blanc',
+  Blanc: {
+    id: 'Blanc',
     label: 'Blanc',
     color: '#f2f2ef',
     img: './img/niches/blanc.jpg',
   },
 
-  gris: {
-    id: 'gris',
+  Gris: {
+    id: 'Gris',
     label: 'Gris',
     color: '#a9aaa7',
     img: './img/niches/gris.jpg',
   },
 
-  noir: {
-    id: 'noir',
+  Noir: {
+    id: 'Noir',
     label: 'Noir',
     color: '#222222',
     img: './img/niches/noir.jpg',
   },
 
-  or: {
-    id: 'or',
+  Or: {
+    id: 'Or',
     label: 'Or',
-    color: '#b89a45',
+    color: '#8f7e4c',
     img: './img/niches/Acier_or.jpg',
   },
 
-  bronze: {
-    id: 'bronze',
+  Bronze: {
+    id: 'Bronze',
     label: 'Bronze',
-    color: '#997f4e',
+    color: '#7a6752',
     img: './img/niches/Acier_bronze.jpg',
   },
 }
 
 export const PROFILE_ASSETS = {
-  'argent mat': {
-    id: 'argent-mat',
+  'Argent mat': {
+    id: 'Argent mat',
     label: 'Argent mat',
     color: '#a9aaa7',
     metalness: 0.6,
@@ -113,8 +113,8 @@ export const PROFILE_ASSETS = {
     img: './img/finitions/argent brossé.jpg',
   },
 
-  blanc: {
-    id: 'blanc',
+  Blanc: {
+    id: 'Blanc',
     label: 'Blanc',
     color: '#f2f2ef',
     metalness: 0.6,
@@ -122,8 +122,8 @@ export const PROFILE_ASSETS = {
     img: './img/niches/blanc.jpg',
   },
 
-  noir: {
-    id: 'noir',
+  Noir: {
+    id: 'Noir',
     label: 'Noir',
     color: '#222222',
     metalness: 0.6,
@@ -131,8 +131,8 @@ export const PROFILE_ASSETS = {
     img: './img/niches/noir.jpg',
   },
 
-  or: {
-    id: 'or',
+  Or: {
+    id: 'Or',
     label: 'Or',
     color: '#b89a45',
     metalness: 0.6,
@@ -142,32 +142,32 @@ export const PROFILE_ASSETS = {
 }
 
 export const RECEVEUR_ASSETS = {
-  ardoxyde: {
-    id: 'ardoxyde',
+  "Ardoxyde": {
+    id: 'Ardoxyde',
     label: 'Ardoxyde', 
     img: './textures/receveurs/ardoxyde.webp',
   },
 
-  greyge: {
-    id: 'greyge',
+  "Greyge": {
+    id: 'Greyge',
     label: 'Greyge', 
     img: './textures/receveurs/greyge.webp',
   },
 
-  'gris veiné': {
-    id: 'gris veiné',
+  'Gris veiné': {
+    id: 'Gris veiné',
     label: 'Gris veiné', 
     img: './textures/receveurs/gris veiné.webp',
   },
 
-  'soft grey': {
-    id: 'soft grey',
+  "Soft Grey": {
+    id: "Soft Grey",
     label: 'Soft grey', 
     img: './textures/receveurs/soft grey.webp',
   },
 
-  'soft white': {
-    id: 'soft white',
+  "Soft White": {
+    id: "Soft White",
     label: 'Soft white', 
     img: './textures/receveurs/soft white.webp',
   },
@@ -236,7 +236,7 @@ export const SERIGRAPHIE_ASSETS = {
    'CR': {
     id: 'CR',
     label: 'Minis chevrons or rose',
-    img: './img/serigraphie/Cerclage.jpg', 
+    img: './img/serigraphie/Chevrons or rose.jpg', 
   },
 }
 
@@ -262,7 +262,7 @@ export const FINITION_VIPANELS = {
     "B": {
         id: 'B',
         label: 'Brillant',
-        roughness: 0,
+        roughness: 0.02,
         metalness: 0.1,
     },
     "F" : {
