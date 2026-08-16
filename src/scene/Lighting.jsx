@@ -63,8 +63,8 @@ useHelper(
                 position={lightingSchemas[lightingType].dPosition}
                 intensity={lightingSchemas[lightingType].dIntensity}
                 castShadow
-                shadow-mapSize-width={512}
-                shadow-mapSize-height={512}
+                shadow-mapSize-width={1024}
+                shadow-mapSize-height={1024}
                 shadow-camera-left={-3}
                 shadow-camera-right={3}
                 shadow-camera-top={3}

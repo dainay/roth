@@ -65,6 +65,7 @@ const EmailPdfModal = ({ pdf, onClose }) => {
             await sendPdfByEmailFake({ name, email, pdf });
             setStatus('success');
         } catch (submissionError) {
+            console.error('[E-mail] Erreur d’envoi du PDF :', submissionError)
             setError(submissionError.message || 'Une erreur est survenue. Veuillez réessayer.');
             setStatus('idle');
         }

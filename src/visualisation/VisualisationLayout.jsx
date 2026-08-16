@@ -58,7 +58,7 @@ const VisualisationLayout = () => {
                                 aria-haspopup="dialog"
                             >
                                 <img src="./img/icons/mail.svg" alt="" aria-hidden="true" />
-                                <span>Envoyer par e-mail</span>
+                                {/* <span>Envoyer par e-mail</span> */}
                             </button>
                          </div>
                     </div>

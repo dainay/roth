@@ -196,11 +196,11 @@ const useConfiguratorStore = create((set, get) => ({
                 isLoading: false,
             });
         } catch (error) {
+            if (!error?.alreadyLogged) {
+                console.error('[Configurateur] Erreur de chargement :', error)
+            }
             set({
-                error:
-                    error instanceof Error
-                        ? error.message
-                        : "Erreur inconnue",
+                error: 'Impossible de charger le configurateur. Veuillez réessayer.',
                 isLoading: false,
             });
         }
@@ -228,11 +228,11 @@ const useConfiguratorStore = create((set, get) => ({
 
             return visualizationData
         } catch (error) {
+            if (!error?.alreadyLogged) {
+                console.error('[API] Erreur de génération de la visualisation :', error)
+            }
             set({
-                error:
-                    error instanceof Error
-                        ? error.message
-                        : 'Erreur inconnue',
+                error: 'Impossible de générer la visualisation. Veuillez réessayer.',
             })
             throw error
         } finally {

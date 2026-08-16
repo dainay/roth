@@ -6,16 +6,62 @@ if (!API_BASE_URL) {
 
 const getApiUrl = (path) => `${API_BASE_URL}/${path.replace(/^\/+/, '')}`
 
+const throwApiPayloadError = (data) => {
+    const status = Number(data?.status)
+    const hasErrorStatus = Number.isFinite(status) && (status < 200 || status >= 300)
+    const payloadError = data?.error ?? data?.errors ?? (
+        hasErrorStatus || data?.success === false || data?.ok === false
+            ? data?.message ?? data
+            : null
+    )
+
+    if (!payloadError) return
+
+    const errorDetails = Array.isArray(payloadError)
+        ? payloadError.map((item) => item?.message ?? String(item)).join(', ')
+        : payloadError
+    const message = typeof errorDetails === 'string'
+        ? errorDetails
+        : errorDetails.message ?? JSON.stringify(errorDetails)
+
+    const apiError = new Error(message || 'Erreur retournée par l’API')
+    apiError.name = data?.name ?? data?.code ?? 'ApiResponseError'
+    apiError.status = data?.status
+    apiError.details = data
+    apiError.alreadyLogged = true
+
+    console.error('[API] Erreur backend :', data)
+    throw apiError
+}
+
 const parseJsonResponse = async (response, errorMessage) => {
-    if (!response.ok) {
-        throw new Error(errorMessage)
+    let data
+    try {
+        data = await response.json()
+    } catch (error) {
+        const jsonError = new Error(
+            `${errorMessage} : réponse JSON invalide`,
+            { cause: error }
+        )
+        jsonError.name = 'InvalidJsonResponseError'
+        jsonError.alreadyLogged = true
+        console.error('[API] JSON invalide :', jsonError)
+        throw jsonError
     }
 
-    try {
-        return await response.json()
-    } catch {
-        throw new Error(`${errorMessage} : réponse JSON invalide`)
+    if (!response.ok) {
+        const responseError = new Error(
+            data?.message ?? `${errorMessage} (${response.status} ${response.statusText})`
+        )
+        responseError.name = data?.name ?? data?.code ?? 'ApiResponseError'
+        responseError.status = response.status
+        responseError.details = data
+        responseError.alreadyLogged = true
+        console.error('[API] Erreur backend :', data)
+        throw responseError
     }
+
+    return data
 }
 
 export async function getConfiguratorDatabyAPI() {
@@ -33,6 +79,7 @@ export async function getConfiguratorDatabyAPI() {
         response,
         'Impossible de charger les données du configurateur'
     )
+    throwApiPayloadError(data)
 
     const requiredCollections = [
         'parois',
@@ -71,6 +118,7 @@ export async function sendConfiguratorDatabyAPI(payload) {
         response,
         'Impossible d’envoyer la configuration'
     )
+    throwApiPayloadError(data)
 
     const productCollections = [
         'parois',
@@ -79,18 +127,27 @@ export async function sendConfiguratorDatabyAPI(payload) {
         'niches',
         'vipanels',
     ]
-    if (
-        !data ||
-        typeof data !== 'object' ||
-        typeof data.img !== 'string' ||
-        !data.img.trim() ||
-        typeof data.pdf !== 'string' ||
-        !data.pdf.trim() ||
-        !data.products ||
-        typeof data.products !== 'object' ||
-        Array.isArray(data.products)
-    ) {
-        throw new Error('La réponse de visualisation est incomplète')
+    const invalidFields = []
+
+    if (!data || typeof data !== 'object' || Array.isArray(data)) {
+        invalidFields.push('response')
+    } else {
+        if (typeof data.img !== 'string' || !data.img.trim()) invalidFields.push('img')
+        if (typeof data.pdf !== 'string' || !data.pdf.trim()) invalidFields.push('pdf')
+        if (!data.products || typeof data.products !== 'object' || Array.isArray(data.products)) {
+            invalidFields.push('products')
+        }
+    }
+
+    if (invalidFields.length > 0) {
+        const responseError = new Error(
+            `La réponse de visualisation est incomplète : ${invalidFields.join(', ')}`
+        )
+        responseError.name = 'IncompleteVisualizationResponseError'
+        responseError.invalidFields = invalidFields
+        responseError.alreadyLogged = true
+        console.error('[API] Champs manquants dans la réponse :', responseError)
+        throw responseError
     }
 
     const products = Object.fromEntries(
