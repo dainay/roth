@@ -1,6 +1,7 @@
-import { useLayoutEffect } from 'react'
+import { useEffect, useLayoutEffect, useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
+import * as THREE from 'three'
 
 import { useShallow } from 'zustand/react/shallow'
 
@@ -10,6 +11,25 @@ import { FINITION_ASSETS } from '../conf/lib'
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/PAROIS_compressed.glb')
     const invalidate = useThree((state) => state.invalidate)
+    
+    const protectionMaterial = useMemo(
+        () => new THREE.MeshStandardMaterial({
+            name: '+ PROTECTION (web)',
+            color: '#ffffff',
+            roughness: 0,
+            metalness: 0,
+            transparent: true,
+            opacity: 0.3,
+            depthWrite: false,
+            side: THREE.DoubleSide,
+        }),
+        []
+    )
+
+    useEffect(
+        () => () => protectionMaterial.dispose(),
+        [protectionMaterial]
+    )
 
     const {
         finitionParoi,
@@ -44,23 +64,6 @@ export default function Model(props) {
         invalidate()
     }, [materials, invalidate])
 
-    useLayoutEffect(() => {
-        const mProtection = materials['+ PROTECTION']
-
-        if (!mProtection) return
-
-        mProtection.roughness = 0
-        mProtection.metalness = 0
-        mProtection.depthWrite = false
-        mProtection.transparent = true
-        mProtection.opacity = 0.3
-        mProtection.color.set("#ffffff")
-
-        mProtection.needsUpdate = true
-        invalidate()
-    }, [materials, invalidate])
-
-   
     useLayoutEffect(() => {
         const mSerigraphie = materials['Serigraphie Shevrons arrondi']
 
@@ -131,7 +134,7 @@ export default function Model(props) {
                         <mesh
                             castShadow
                             geometry={nodes.MovingDoor_3.geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                     </group>
 
@@ -143,7 +146,7 @@ export default function Model(props) {
                         <mesh
                             castShadow
                             geometry={nodes.PLCLS_1200x2000_3.geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                         <mesh
                             castShadow
@@ -169,12 +172,12 @@ export default function Model(props) {
                         <mesh
                             castShadow
                             geometry={nodes.MovingDoor001_3.geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                         <mesh
                             castShadow
                             geometry={nodes.MovingDoor001_4.geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                     </group>
                     <group position={[-0.824, 0.749, -1.705]}>
@@ -186,7 +189,7 @@ export default function Model(props) {
                         <mesh
                             receiveShadow
                             geometry={nodes['PLCLS_1200x2000_+_PLTWU_900x2000_3'].geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                         <mesh
                             geometry={nodes['PLCLS_1200x2000_+_PLTWU_900x2000_4'].geometry}
@@ -195,7 +198,7 @@ export default function Model(props) {
                         <mesh
                             castShadow
                             geometry={nodes['PLCLS_1200x2000_+_PLTWU_900x2000_5'].geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                     </group>
                 </>
@@ -216,7 +219,7 @@ export default function Model(props) {
                         <mesh
                             castShadow
                             geometry={nodes.Moving_door__3.geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                     </group>
 
@@ -229,7 +232,7 @@ export default function Model(props) {
                         <mesh
                             castShadow
                             geometry={nodes.PLPIF_1200X2000_3.geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                         <mesh
                             geometry={nodes.PLPIF_1200X2000_4.geometry}
@@ -255,7 +258,7 @@ export default function Model(props) {
                         <mesh
                             castShadow
                             geometry={nodes.Door_3.geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                     </group>
                     <group position={[-0.883, -0.186, -1.678]}>
@@ -267,7 +270,7 @@ export default function Model(props) {
                         <mesh
                             castShadow
                             geometry={nodes['PLPIF_1200X2000_+_PLTWU_900x2000_3'].geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                         <mesh
                             geometry={nodes['PLPIF_1200X2000_+_PLTWU_900x2000_4'].geometry}
@@ -288,7 +291,7 @@ export default function Model(props) {
                         <mesh
                             castShadow
                             geometry={nodes.PLPIV_1000x2000_3.geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                     </group>
 
@@ -324,7 +327,7 @@ export default function Model(props) {
                         <mesh
                             castShadow
                             geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000_2'].geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                         <mesh
                             castShadow
@@ -344,7 +347,7 @@ export default function Model(props) {
                     <group position={[-1.41, -0.333, -1.669]} rotation={[1.567, 0, Math.PI / 2]}>
                         <mesh
                             geometry={nodes.PLTWU_1000x2000_2.geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                         <mesh
                             castShadow
@@ -373,7 +376,7 @@ export default function Model(props) {
                         />
                         <mesh
                             geometry={nodes.PLWRU_1000X2000_4.geometry}
-                            material={materials['+ PROTECTION']}
+                            material={protectionMaterial}
                         />
                     </group>
                 </>
