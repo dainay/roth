@@ -59,6 +59,7 @@ useHelper(
         color = {new THREE.Color("#d3c093")}
          /> */}
 
+      
             <directionalLight
                 position={lightingSchemas[lightingType].dPosition}
                 intensity={lightingSchemas[lightingType].dIntensity}
@@ -123,7 +124,7 @@ useHelper(
             <Environment
                 resolution={16}
                 preset="apartment"
-                environmentIntensity={0.07}
+                environmentIntensity={0.1}
 
             >
                 <Lightformer
