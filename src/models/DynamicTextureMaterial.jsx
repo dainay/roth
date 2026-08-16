@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 
 const textureLoader = new THREE.TextureLoader()
@@ -62,6 +63,8 @@ export default function DynamicTextureMaterial({
   roughness,
   metalness,
 }) {
+  const invalidate = useThree((state) => state.invalidate)
+
   useEffect(() => {
     if (!url || !material) return
 
@@ -84,6 +87,7 @@ export default function DynamicTextureMaterial({
       }
 
       material.needsUpdate = true
+      invalidate()
     }).catch((error) => {
       if (!cancelled) {
         console.error(`Not loaded: ${url}`, error)
@@ -96,6 +100,7 @@ export default function DynamicTextureMaterial({
       if (material.map === entry.texture) {
         material.map = null
         material.needsUpdate = true
+        invalidate()
       }
 
       releaseTexture(entry, key)
@@ -107,6 +112,7 @@ export default function DynamicTextureMaterial({
     repeatY,
     roughness,
     metalness,
+    invalidate,
   ])
 
   return null
