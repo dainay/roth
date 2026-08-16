@@ -49,7 +49,7 @@ export default function Model(props) {
 
         if (!mProtection) return
 
-        mProtection.roughness = 0.3
+        mProtection.roughness = 0
         mProtection.metalness = 0
         mProtection.depthWrite = false
         mProtection.transparent = true
@@ -60,9 +60,7 @@ export default function Model(props) {
         invalidate()
     }, [materials, invalidate])
 
-       //************************************* */
-    //CHANGE Glass MATERIAL for better web
-    //************************************* */
+   
     useLayoutEffect(() => {
         const mSerigraphie = materials['Serigraphie Shevrons arrondi']
 
@@ -70,8 +68,10 @@ export default function Model(props) {
 
         mSerigraphie.roughness = 0
         mSerigraphie.metalness = 0
-        mSerigraphie.depthWrite = false 
-        mSerigraphie.color.set("#e2916b")
+         mSerigraphie.transmission = 0
+    mSerigraphie.opacity = 1
+    mSerigraphie.transparent = true
+    mSerigraphie.depthWrite = false
 
         mSerigraphie.needsUpdate = true
         invalidate()
