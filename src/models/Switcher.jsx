@@ -6,6 +6,16 @@ import useSceneStore from '../store/useSceneStore';
 export default function Switcher(props) {
   const { nodes, materials } = useGLTF('./models/Switcher_compressed.glb')
   const toggleLightingType = useSceneStore((state) => state.toggleLightingType);
+
+  const handlePointerEnter = (event) => {
+    event.stopPropagation()
+    document.body.style.cursor = 'pointer'
+  }
+
+  const handlePointerLeave = (event) => {
+    event.stopPropagation()
+    document.body.style.cursor = 'default'
+  }
   
   return (
     <group {...props} dispose={null}>
@@ -19,7 +29,9 @@ export default function Switcher(props) {
         onClick={(e) => {
           e.stopPropagation()
           toggleLightingType()
-        }} 
+        }}
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
       />
     </group>
   )
