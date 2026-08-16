@@ -1,5 +1,6 @@
-import React, { useRef, useLayoutEffect} from 'react'
+import { useLayoutEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
+import { useThree } from '@react-three/fiber'
 import { useShallow } from 'zustand/shallow'
 
 import useConfiguratorStore from '../store/useConfiguratorStore';
@@ -7,16 +8,15 @@ import { NICHE_FINITION_ASSETS } from '../conf/lib';
 
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/NICHEPANEL_compressed.glb')
+    const invalidate = useThree((state) => state.invalidate)
 
     const {
         finitionNiche,
-        montage,
         paroi
     } = useConfiguratorStore(
         useShallow((state) => ({
 
             finitionNiche: state.selection.finitionNiche,
-            montage: state.selection.montage,
             paroi: state.selection.paroi,
         }))
     );
@@ -31,7 +31,8 @@ export default function Model(props) {
         mNiche.roughness = 0.5
 
         mNiche.needsUpdate = true
-    }, [materials, finitionNiche])
+        invalidate()
+    }, [materials, finitionNiche, invalidate])
 
 
     if ( finitionNiche === null || paroi === 'PL PIV') {

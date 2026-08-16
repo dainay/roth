@@ -21,6 +21,8 @@
     min-width: 550px;
     max-width: 550px;
     padding-inline: 30px; 
+    height: 100vh;
+    overflow-y: auto;
 }
 
 .visualisationLayout__img img  { 
@@ -52,6 +54,14 @@
 .link { 
     font-weight: 500; 
     margin-block: 20px 40px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 3px solid #23be3d;
+      outline-offset: 4px;
+    }
 }
 
 .text {
@@ -93,6 +103,75 @@
     overflow: hidden;
 }
 
+.emailButton {
+    gap: 12px;
+    padding: 18px;
+    border: 0;
+    background: #fff;
+    color: #130b0b;
+    font: inherit;
+    cursor: pointer;
+
+    img {
+      width: 54px;
+      height: 54px;
+    }
+
+    span {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    &:hover {
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    &:focus-visible {
+      outline: 3px solid #23be3d;
+      outline-offset: 4px;
+    }
+}
+
 .imgWithWhiteBackground {
           object-fit: contain !important;
     }
+
+.visualisationLayout__error {
+  padding: 24px;
+}
+
+@media (max-width: 900px) {
+  .visualisationLayout {
+    position: relative;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .visualisationLayout__img {
+    width: 100%;
+    height: 45vh;
+    min-height: 280px;
+  }
+
+  .visualisationLayout__content {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    height: auto;
+    overflow: visible;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper_buttonsPDF {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .visualisationLayout__products > * {
+    width: calc(50% - 8px);
+  }
+}

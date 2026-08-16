@@ -2,21 +2,15 @@ import { create } from 'zustand';
 
 const useSceneStore = create((set) => ({
     mirrorLight: true,
-    lighingType: 0,
+    lightingType: 0,
 
 
     toggleMirrorLight: () => set((state) => ({ mirrorLight: !state.mirrorLight })),
-    setLightingType: (type) => set({ lighingType: type }),
+    setLightingType: (type) => set({ lightingType: type }),
 
-    toggleLightingType: () => set((state) => ({ lighingType: (state.lighingType + 1) % 3 })),
-
-    setCurrentView: (view) => set({ currentView: view }),
-    
-
-    reset: () =>
-        set({
-            mirrorLight: true,
-        }),
+    toggleLightingType: () => set((state) => ({
+        lightingType: (state.lightingType + 1) % 3,
+    })),
 }));
 
 export default useSceneStore;

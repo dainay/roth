@@ -65,7 +65,6 @@ export const FINITION_ASSETS = {
     img: './img/finitions/or rosé.jpg',
   } 
 }
-
 export const NICHE_FINITION_ASSETS = {
   Blanc: {
     id: 'Blanc',
@@ -273,19 +272,3 @@ export const FINITION_VIPANELS = {
     }
 
 }
-
-export const TRYPTICH_TEXTURES = [
-  
-   {
-      id: 'None',
-      label: 'None',
-       url: './img/None.svg',
-    },
-  {
-    id: 'WLD4HV',
-    label: 'Voile tropical',
-    url: './textures/vipanel/WLD4HV-Voile-tropical-3-1250x2550x3MM.webp',
-    metalness: 0,
-    roughness: 0.6,
-  },
-]

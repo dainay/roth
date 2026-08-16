@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { ContactShadows, Environment, Lightformer, TransformControls, AccumulativeShadows, RandomizedLight,   useHelper } from "@react-three/drei";
+import { Environment, Lightformer, useHelper } from "@react-three/drei";
 import { useRef } from "react";
 
 import { RectAreaLightHelper } from
@@ -51,7 +51,7 @@ useHelper(
   "#f5dc97"
 );
 
-    const lightingType = useSceneStore((state) => state.lighingType);
+    const lightingType = useSceneStore((state) => state.lightingType);
 
     return (
         <>
@@ -63,8 +63,8 @@ useHelper(
                 position={lightingSchemas[lightingType].dPosition}
                 intensity={lightingSchemas[lightingType].dIntensity}
                 castShadow
-                shadow-mapSize-width={512}
-                shadow-mapSize-height={512}
+                shadow-mapSize-width={1024}
+                shadow-mapSize-height={1024}
                 shadow-camera-left={-3}
                 shadow-camera-right={3}
                 shadow-camera-top={3}

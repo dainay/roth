@@ -1,14 +1,16 @@
-import React from 'react';
+import { useState } from 'react';
+
 import s from './VisualisationLayout.module.scss';
 import OneProduct from './OneProduct/OneProduct';
 import PdfQrCode from './PdfQrCode';
+import EmailPdfModal from './EmailPdfModal';
 
 import useConfiguratorStore from '../store/useConfiguratorStore';
-import { useShallow } from 'zustand/shallow';
-import { useLayoutEffect } from 'react';
 
 
-const VisualisationLayout = ({ children }) => {
+const VisualisationLayout = () => {
+
+    const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
 
     const realImg = useConfiguratorStore((state) => state.realImg);
     const products = useConfiguratorStore((state) => state.products);
@@ -16,9 +18,13 @@ const VisualisationLayout = ({ children }) => {
 
     const setCurrentView = useConfiguratorStore((state) => state.setCurrentView);
  
-    const allProducts = Object.values(products).flat();
-    
-    console.log('realImg', realImg, 'products', products, 'pdf', pdf);
+    if (!realImg || !products || !pdf) {
+        return (
+            <div className={s.visualisationLayout__error}>
+                Impossible d’afficher la visualisation.
+            </div>
+        )
+    }
 
 	return (
         <>
@@ -34,14 +40,7 @@ const VisualisationLayout = ({ children }) => {
                     <h2 className="text-center">Recevoir mon récapitulatif PDF</h2>
 
                     <div className={s.wrapper_buttonsPDF}>
-                        <div >
-                            <h3>Par e-mail</h3>
-                            <p>Saisir mon e-mail</p>
-                            <div className={s.buttonPDF}>
-                                <img src="./img/icons/mail.svg" alt="" />
-                            </div>
-                        </div>
-                         <div >
+                         <div>
                              <h3>Sur mon téléphone</h3>
                             <p>Scanner le QR code</p>
                             <div className={s.buttonPDF}>
@@ -49,36 +48,52 @@ const VisualisationLayout = ({ children }) => {
                             </div>
 
                          </div>
+                         <div>
+                            <h3>Par e-mail</h3>
+                            <p>Recevoir le PDF</p>
+                            <button
+                                type="button"
+                                className={`${s.buttonPDF} ${s.emailButton}`}
+                                onClick={() => setIsEmailModalOpen(true)}
+                                aria-haspopup="dialog"
+                            >
+                                <img src="./img/icons/mail.svg" alt="" aria-hidden="true" />
+                                {/* <span>Envoyer par e-mail</span> */}
+                            </button>
+                         </div>
                     </div>
 
                     <p className="text">Vous voulez ajuster quelques détails ou recommencer votre projet ?</p>
 
-                    <a href="#" className={`link text-center ${s.link}`} onClick={() => setCurrentView('configurateur')}>
+                    <button type="button" className={`link text-center ${s.link}`} onClick={() => setCurrentView('configurateur')}>
                         Modifier ma configuration
-                    </a>
+                    </button>
 
                      <h2>Produits sélectionnés</h2>
                     <div className={s.visualisationLayout__products}>
-                        {products.parois?.map((product, index) => (
-                            <OneProduct key={index} product={product} type="Paroi de douche" />
+                        {products.parois?.map((product) => (
+                            <OneProduct key={`paroi-${product.codearticle}`} product={product} type="Paroi de douche" />
                         ))}
-                        {products.receveur?.map((product, index) => (
-                            <OneProduct key={index} product={product} type="Receveur" />
+                        {products.receveur?.map((product) => (
+                            <OneProduct key={`receveur-${product.codearticle}`} product={product} type="Receveur" />
                         ))}
-                        {products.profile?.map((product, index) => (
-                            <OneProduct key={index} product={product} type="Profilé de jonction" imgClassName={s.imgWithWhiteBackground} />
+                        {products.profile?.map((product) => (
+                            <OneProduct key={`profile-${product.codearticle}`} product={product} type="Profilé de jonction" imgClassName={s.imgWithWhiteBackground} />
                         ))}
-                        {products.niches?.map((product, index) => (
-                            <OneProduct key={index} product={product} type="Niche" imgClassName={s.imgWithWhiteBackground} />
+                        {products.niches?.map((product) => (
+                            <OneProduct key={`niche-${product.codearticle}`} product={product} type="Niche" imgClassName={s.imgWithWhiteBackground} />
                         ))}
-                        {products.vipanels?.map((product, index) => (
-                            <OneProduct key={index} product={product} type="Panneau mural VIPANEL®" />
+                        {products.vipanels?.map((product) => (
+                            <OneProduct key={`vipanel-${product.codearticle}`} product={product} type="Panneau mural VIPANEL®" />
                         ))}
                     </div>
 
                 </div>
                 
             </div>
+            {isEmailModalOpen && (
+                <EmailPdfModal pdf={pdf} onClose={() => setIsEmailModalOpen(false)} />
+            )}
         </>
     );
 };

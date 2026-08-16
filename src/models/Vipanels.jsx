@@ -1,12 +1,12 @@
-import React, { useRef, useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { useGLTF, useTexture } from '@react-three/drei'
 import { useShallow } from 'zustand/react/shallow'
-import { Suspense } from 'react'
 
 import useConfiguratorStore from '../store/useConfiguratorStore';
 import DynamicTextureMaterial from './DynamicTextureMaterial'
 import { FINITION_VIPANELS } from '../conf/lib'
 import Evipanel from './Evipanel'
+import { getPhotoUrl } from '../helpers/getPhotoUrl'
 
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/VIPANELS_compressed.glb')
@@ -91,10 +91,8 @@ export default function Model(props) {
         <group {...props} dispose={null}>
             {choosenVipanelLLeft && (
                 <DynamicTextureMaterial
-                    url={choosenVipanelLLeft.files?.['1500x2550'] ? `https://testwww.roth-france.fr/photos/${choosenVipanelLLeft.files['1500x2550']}` : null}
+                    url={getPhotoUrl(choosenVipanelLLeft.files?.['1500x2550'])}
                     material={materials['VIPANEL-1500x2550-left']}
-                    repeatX={1}
-                    repeatY={1}
                     roughness={FINITION_VIPANELS[choosenVipanelLLeft.finition]?.roughness}
                     metalness={FINITION_VIPANELS[choosenVipanelLLeft.finition]?.metalness}
                 />
@@ -102,10 +100,8 @@ export default function Model(props) {
 
             {choosenVipanelRight && (
                 <DynamicTextureMaterial
-                    url={choosenVipanelRight.files?.['1500x2550'] ? `https://testwww.roth-france.fr/photos/${choosenVipanelRight.files['1500x2550']}` : null}
+                    url={getPhotoUrl(choosenVipanelRight.files?.['1500x2550'])}
                     material={materials['VIPANEL-1500x2550-right']}
-                    repeatX={1}
-                    repeatY={1}
                     roughness={FINITION_VIPANELS[choosenVipanelRight.finition]?.roughness}
                     metalness={FINITION_VIPANELS[choosenVipanelRight.finition]?.metalness}
                 />
@@ -113,10 +109,8 @@ export default function Model(props) {
 
             {choosenVipanelNiche && (
                 <DynamicTextureMaterial
-                    url={choosenVipanelNiche.files?.['1500x2550'] ? `https://testwww.roth-france.fr/photos/${choosenVipanelNiche.files['1500x2550']}` : null}
+                    url={getPhotoUrl(choosenVipanelNiche.files?.['1500x2550'])}
                     material={materials['VIPANEL-1500x2550-niche']}
-                    repeatX={1}
-                    repeatY={1}
                     roughness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.roughness}
                     metalness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.metalness}
                 />

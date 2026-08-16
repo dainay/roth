@@ -1,5 +1,6 @@
-import React, { useRef, useLayoutEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
+import { useThree } from '@react-three/fiber'
 
 import { useShallow } from 'zustand/react/shallow'
 
@@ -8,6 +9,7 @@ import { FINITION_ASSETS } from '../conf/lib'
 
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/PAROIS_compressed.glb')
+    const invalidate = useThree((state) => state.invalidate)
 
     const {
         finitionParoi,
@@ -39,14 +41,15 @@ export default function Model(props) {
         mGlass.color.set("#ffffff")
 
         mGlass.needsUpdate = true
-    }, [])
+        invalidate()
+    }, [materials, invalidate])
 
     useLayoutEffect(() => {
         const mProtection = materials['+ PROTECTION']
 
         if (!mProtection) return
 
-        mProtection.roughness = 0.3
+        mProtection.roughness = 0
         mProtection.metalness = 0
         mProtection.depthWrite = false
         mProtection.transparent = true
@@ -54,7 +57,25 @@ export default function Model(props) {
         mProtection.color.set("#ffffff")
 
         mProtection.needsUpdate = true
-    }, [])
+        invalidate()
+    }, [materials, invalidate])
+
+   
+    useLayoutEffect(() => {
+        const mSerigraphie = materials['Serigraphie Shevrons arrondi']
+
+        if (!mSerigraphie) return
+
+        mSerigraphie.roughness = 0
+        mSerigraphie.metalness = 0
+         mSerigraphie.transmission = 0
+    mSerigraphie.opacity = 1
+    mSerigraphie.transparent = true
+    mSerigraphie.depthWrite = false
+
+        mSerigraphie.needsUpdate = true
+        invalidate()
+    }, [materials, invalidate])
 
 
     //************************************* */
@@ -72,7 +93,8 @@ export default function Model(props) {
         mFinition.color.set(finitionData.color)
 
         mFinition.needsUpdate = true
-    }, [materials, finitionParoi])
+        invalidate()
+    }, [materials, finitionParoi, invalidate])
 
 
     return (

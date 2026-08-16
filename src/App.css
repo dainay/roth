@@ -10,10 +10,30 @@
   color: white;
   border: none; 
   cursor: pointer;
+  z-index: 10;
 
   &:hover {
     transition: all 0.3s ease;
     background-color: #ffffff;
     color: #111111;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #23be3d;
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    cursor: wait;
+    opacity: 0.65;
+  }
+}
+
+@media (max-width: 900px) {
+  .visualise__button {
+    position: fixed;
+    left: 50%;
+    bottom: 16px;
+    width: min(90%, 360px);
   }
 }

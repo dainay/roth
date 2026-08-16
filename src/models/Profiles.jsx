@@ -1,5 +1,6 @@
-import React, { useRef, useLayoutEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
+import { useThree } from '@react-three/fiber'
 import { useShallow } from 'zustand/shallow'
 
 import useConfiguratorStore from '../store/useConfiguratorStore';
@@ -7,6 +8,7 @@ import { PROFILE_ASSETS } from '../conf/lib'
 
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/PROFILES_compressed.glb')
+    const invalidate = useThree((state) => state.invalidate)
 
     const {
         finitionProfile,
@@ -32,7 +34,8 @@ export default function Model(props) {
         mFinition.color.set(finitionData.color)
 
         mFinition.needsUpdate = true
-    }, [materials, finitionProfile])
+        invalidate()
+    }, [materials, finitionProfile, invalidate])
 
 
     return (

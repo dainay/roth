@@ -1,4 +1,5 @@
 import Scene from "./Scene";
+import SceneLoadingOverlay from './SceneLoadingOverlay';
 import UI from "../ui/UI";
 import s from './ConfiguratorLayout.module.scss'
 import { useEffect } from 'react'
@@ -15,27 +16,40 @@ export default function ConfiguratorLayout() {
     const loadConfiguratorData = useConfiguratorStore(
         (state) => state.loadConfiguratorData
     )
-    const sendConfiguratorData = useConfiguratorStore(
-        (state) => state.sendConfiguratorData
+    const restartConfigurator = useConfiguratorStore(
+        (state) => state.restartConfigurator
     )
 
     useEffect(() => {
         loadConfiguratorData()
     }, [loadConfiguratorData])
 
-    if (isLoading || !cleanedData) {
-        return <div className={s.loading}>Chargement...</div>
-    }
-
     if (error) {
-        return <div>Erreur  : {error}</div>
+        return (
+            <section className={s.errorScreen} role="alert">
+                <div className={s.errorCard}>
+                    <p className={s.errorLabel}>Une erreur est survenue</p>
+                    <h1>Impossible de continuer</h1>
+                    <p className={s.errorMessage}>{error}</p>
+                    <button type="button" onClick={restartConfigurator}>
+                        Recommencer
+                    </button>
+                </div>
+            </section>
+        )
     }
 
     return (
-        <div className={s.configuratorLayout}>
-            <UI />
-            <Scene />
-          
-        </div>
+        <>
+            <SceneLoadingOverlay forceVisible={isLoading || !cleanedData} />
+            {!isLoading && cleanedData && (
+                <div className={s.configuratorLayout}>
+                    <UI />
+                    <div className={s.sceneWrapper}>
+                        <Scene />
+                    </div>
+                </div>
+            )}
+        </>
     );
 }

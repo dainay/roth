@@ -6,8 +6,13 @@
     padding: 0 10px;
     cursor: pointer;
     font-size: 14px;
-    transition: background-color 0.3s ease;
-    border: 1px solid #cfcfcf;
+     transition: background-color 0.3s ease;
+     border: 1px solid #cfcfcf;
+
+    &:focus-visible {
+      outline: 3px solid #23be3d;
+      outline-offset: 2px;
+    }
    
 }
 

@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -11,13 +11,11 @@ export default function Model(props) {
 
     const { 
         sizeReceveur,
-        receveur,
         textureReceveur,
 
     } = useConfiguratorStore(
         useShallow((state) => ({ 
             sizeReceveur: state.selection.sizeReceveur,
-            receveur: state.selection.receveur,
             textureReceveur: state.selection.textureReceveur
         }))
     );
@@ -57,8 +55,6 @@ export default function Model(props) {
             <DynamicTextureMaterial
                 url={RECEVEUR_ASSETS[textureReceveur].img}
                 material={materials['+RECEVEUR']}
-                repeatX={0.75}
-                repeatY={1}
                 roughness={0.9}
                 metalness={0}
             />
