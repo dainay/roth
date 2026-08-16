@@ -93,8 +93,6 @@ export default function Model(props) {
                 <DynamicTextureMaterial
                     url={getPhotoUrl(choosenVipanelLLeft.files?.['1500x2550'])}
                     material={materials['VIPANEL-1500x2550-left']}
-                    repeatX={1}
-                    repeatY={1}
                     roughness={FINITION_VIPANELS[choosenVipanelLLeft.finition]?.roughness}
                     metalness={FINITION_VIPANELS[choosenVipanelLLeft.finition]?.metalness}
                 />
@@ -104,8 +102,6 @@ export default function Model(props) {
                 <DynamicTextureMaterial
                     url={getPhotoUrl(choosenVipanelRight.files?.['1500x2550'])}
                     material={materials['VIPANEL-1500x2550-right']}
-                    repeatX={1}
-                    repeatY={1}
                     roughness={FINITION_VIPANELS[choosenVipanelRight.finition]?.roughness}
                     metalness={FINITION_VIPANELS[choosenVipanelRight.finition]?.metalness}
                 />
@@ -115,8 +111,6 @@ export default function Model(props) {
                 <DynamicTextureMaterial
                     url={getPhotoUrl(choosenVipanelNiche.files?.['1500x2550'])}
                     material={materials['VIPANEL-1500x2550-niche']}
-                    repeatX={1}
-                    repeatY={1}
                     roughness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.roughness}
                     metalness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.metalness}
                 />

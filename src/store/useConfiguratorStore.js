@@ -115,6 +115,19 @@ const useConfiguratorStore = create((set, get) => ({
 
     setCurrentView: (view) => set({ currentView: view }),
 
+    restartConfigurator: async () => {
+        set({
+            currentView: 'configurateur',
+            cleanedData: null,
+            realImg: null,
+            products: null,
+            pdf: null,
+            error: null,
+        })
+
+        await get().loadConfiguratorData()
+    },
+
     //API - first call to load data from the API and set the default selection
 
     loadConfiguratorData: async () => {
@@ -128,6 +141,7 @@ const useConfiguratorStore = create((set, get) => ({
 
         try {
             const data = await getConfiguratorDatabyAPI();
+            console.log('[API] Données reçues du configurateur :', data)
 
             const cleanedData = {
                 ...data,
@@ -158,7 +172,11 @@ const useConfiguratorStore = create((set, get) => ({
                 cleanedData.parois = cleanedData.parois.filter((item) => item.id !== 'PL WRR')
             }
 
+            console.log('[Configurateur] Données nettoyées :', cleanedData)
+
             const selection = formatSelectionByDefault(cleanedData);
+            console.log('[Configurateur] Sélection par défaut :', selection)
+
             if (
                 !selection.paroi ||
                 !selection.finitionParoi ||
@@ -196,8 +214,11 @@ const useConfiguratorStore = create((set, get) => ({
         const { selection } = get();
 
         const body = formatSendingBody(selection);
+        console.log('[API] Données envoyées pour la visualisation :', body)
+
         try {
             const visualizationData = await sendConfiguratorDatabyAPI(body)
+            console.log('[API] Réponse de visualisation reçue :', visualizationData)
 
             set({
                 realImg: visualizationData.img,

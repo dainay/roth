@@ -16,12 +16,27 @@ export default function ConfiguratorLayout() {
     const loadConfiguratorData = useConfiguratorStore(
         (state) => state.loadConfiguratorData
     )
+    const restartConfigurator = useConfiguratorStore(
+        (state) => state.restartConfigurator
+    )
+
     useEffect(() => {
         loadConfiguratorData()
     }, [loadConfiguratorData])
 
     if (error) {
-        return <div>Erreur : {error}</div>
+        return (
+            <section className={s.errorScreen} role="alert">
+                <div className={s.errorCard}>
+                    <p className={s.errorLabel}>Une erreur est survenue</p>
+                    <h1>Impossible de continuer</h1>
+                    <p className={s.errorMessage}>{error}</p>
+                    <button type="button" onClick={restartConfigurator}>
+                        Recommencer
+                    </button>
+                </div>
+            </section>
+        )
     }
 
     return (

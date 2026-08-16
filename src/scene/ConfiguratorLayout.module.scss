@@ -11,6 +11,69 @@
   height: 100vh;
 }
 
+.errorScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #f3f1eb;
+  color: #111;
+}
+
+.errorCard {
+  width: min(100%, 520px);
+  padding: clamp(28px, 5vw, 48px);
+  border: 1px solid rgba(17, 17, 17, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+  text-align: center;
+
+  h1 {
+    margin: 8px 0 14px;
+    font-size: clamp(28px, 5vw, 44px);
+    line-height: 1.05;
+  }
+
+  button {
+    margin-top: 24px;
+    padding: 12px 26px;
+    border: 1px solid #111;
+    border-radius: 999px;
+    background: #111;
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+    transition: background-color 160ms ease, color 160ms ease;
+
+    &:hover {
+      background: transparent;
+      color: #111;
+    }
+
+    &:focus-visible {
+      outline: 3px solid #23be3d;
+      outline-offset: 3px;
+    }
+  }
+}
+
+.errorLabel {
+  margin: 0;
+  color: #287c36;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.errorMessage {
+  margin: 0;
+  color: #4b4b4b;
+  line-height: 1.5;
+}
+
 @media (max-width: 900px) {
   .configuratorLayout {
     flex-direction: column-reverse;

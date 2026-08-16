@@ -79,19 +79,6 @@ export async function sendConfiguratorDatabyAPI(payload) {
         'niches',
         'vipanels',
     ]
-    const hasInvalidProduct = productCollections.some((key) => {
-        const products = data?.products?.[key]
-
-        return Array.isArray(products) && products.some(
-            (product) =>
-                !product ||
-                typeof product !== 'object' ||
-                typeof product.codearticle !== 'string' ||
-                !product.codearticle.trim() ||
-                typeof product.libelle !== 'string'
-        )
-    })
-
     if (
         !data ||
         typeof data !== 'object' ||
@@ -101,14 +88,27 @@ export async function sendConfiguratorDatabyAPI(payload) {
         !data.pdf.trim() ||
         !data.products ||
         typeof data.products !== 'object' ||
-        Array.isArray(data.products) ||
-        productCollections.some(
-            (key) => data.products[key] !== undefined && !Array.isArray(data.products[key])
-        ) ||
-        hasInvalidProduct
+        Array.isArray(data.products)
     ) {
         throw new Error('La réponse de visualisation est incomplète')
     }
 
-    return data
+    const products = Object.fromEntries(
+        productCollections.map((key) => [
+            key,
+            Array.isArray(data.products[key])
+                ? data.products[key].filter(
+                    (product) => product && typeof product === 'object' && !Array.isArray(product)
+                )
+                : [],
+        ])
+    )
+
+    return {
+        ...data,
+        products: {
+            ...data.products,
+            ...products,
+        },
+    }
 }

@@ -1,5 +1,6 @@
 import { useLayoutEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
+import { useThree } from '@react-three/fiber'
 
 import { useShallow } from 'zustand/react/shallow'
 
@@ -8,6 +9,7 @@ import { FINITION_ASSETS } from '../conf/lib'
 
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/PAROIS_compressed.glb')
+    const invalidate = useThree((state) => state.invalidate)
 
     const {
         finitionParoi,
@@ -39,7 +41,8 @@ export default function Model(props) {
         mGlass.color.set("#ffffff")
 
         mGlass.needsUpdate = true
-    }, [materials])
+        invalidate()
+    }, [materials, invalidate])
 
     useLayoutEffect(() => {
         const mProtection = materials['+ PROTECTION']
@@ -54,7 +57,25 @@ export default function Model(props) {
         mProtection.color.set("#ffffff")
 
         mProtection.needsUpdate = true
-    }, [materials])
+        invalidate()
+    }, [materials, invalidate])
+
+       //************************************* */
+    //CHANGE Glass MATERIAL for better web
+    //************************************* */
+    useLayoutEffect(() => {
+        const mSerigraphie = materials['Serigraphie Shevrons arrondi']
+
+        if (!mSerigraphie) return
+
+        mSerigraphie.roughness = 0
+        mSerigraphie.metalness = 0
+        mSerigraphie.depthWrite = false 
+        mSerigraphie.color.set("#e2916b")
+
+        mSerigraphie.needsUpdate = true
+        invalidate()
+    }, [materials, invalidate])
 
 
     //************************************* */
@@ -72,7 +93,8 @@ export default function Model(props) {
         mFinition.color.set(finitionData.color)
 
         mFinition.needsUpdate = true
-    }, [materials, finitionParoi])
+        invalidate()
+    }, [materials, finitionParoi, invalidate])
 
 
     return (

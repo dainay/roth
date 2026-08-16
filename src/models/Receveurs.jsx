@@ -55,8 +55,6 @@ export default function Model(props) {
             <DynamicTextureMaterial
                 url={RECEVEUR_ASSETS[textureReceveur].img}
                 material={materials['+RECEVEUR']}
-                repeatX={0.75}
-                repeatY={1}
                 roughness={0.9}
                 metalness={0}
             />

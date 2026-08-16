@@ -1,7 +1,7 @@
 import { useRef, useLayoutEffect, useState } from 'react'
 import { useGLTF, useTexture, Edges } from '@react-three/drei'
 import * as THREE from 'three'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import { useShallow } from 'zustand/react/shallow'
 import { getPhotoUrl } from '../helpers/getPhotoUrl'
 
@@ -17,6 +17,7 @@ import DynamicTextureMaterial from './DynamicTextureMaterial'
 export function Ambiance(props) {
     const heatRef = useRef()
     const [heating, setHeating] = useState(false)
+    const invalidate = useThree((state) => state.invalidate)
 
     const { nodes, materials } = useGLTF('./models/Ambiance_compressed.glb')
     const toggleMirrorLight = useSceneStore((state) => state.toggleMirrorLight);
@@ -94,7 +95,8 @@ export function Ambiance(props) {
         mFinition.color.set(finitionData.color)
 
         mFinition.needsUpdate = true
-    }, [materials, finitionParoi])
+        invalidate()
+    }, [materials, finitionParoi, invalidate])
 
     //************************************* */
     //CHANGE Niche MATERIAL
@@ -111,7 +113,8 @@ export function Ambiance(props) {
         mNiche.roughness = 0.5
 
         mNiche.needsUpdate = true
-    }, [materials, finitionNiche, niche])
+        invalidate()
+    }, [materials, finitionNiche, niche, invalidate])
 
     //************************************* */
     //CHANGE profile MATERIAL
@@ -128,7 +131,8 @@ export function Ambiance(props) {
         mProfile.color.set(profileData.color)
 
         mProfile.needsUpdate = true
-    }, [materials, profile, finitionProfile])
+        invalidate()
+    }, [materials, profile, finitionProfile, invalidate])
 
      //************************************* */
     //CHANGE Glass MATERIAL for better web
@@ -146,7 +150,8 @@ export function Ambiance(props) {
         mGlass.color.set(new THREE.Color("#ffffff"))
 
         mGlass.needsUpdate = true
-    }, [materials])
+        invalidate()
+    }, [materials, invalidate])
 
  
 
@@ -162,8 +167,6 @@ export function Ambiance(props) {
             <DynamicTextureMaterial
                 url={RECEVEUR_ASSETS[textureReceveur].img}
                 material={materials['+RECEVUER']}
-                repeatX={0.75}
-                repeatY={1}
                 roughness={0.9}
                 metalness={0}
             />
@@ -171,8 +174,6 @@ export function Ambiance(props) {
                 <DynamicTextureMaterial
                     url={getPhotoUrl(choosenVipanelLLeft.files?.['1500x2550'])}
                     material={materials['VIPANEL-BIG-left']}
-                    repeatX={1}
-                    repeatY={1}
                     roughness={FINITION_VIPANELS[choosenVipanelLLeft.finition]?.roughness}
                     metalness={FINITION_VIPANELS[choosenVipanelLLeft.finition]?.metalness}
                 />
@@ -182,8 +183,6 @@ export function Ambiance(props) {
                 <DynamicTextureMaterial
                     url={getPhotoUrl(choosenVipanelRight.files?.['1500x2550'])}
                     material={materials['VIPANEL-BIG-right']}
-                    repeatX={1}
-                    repeatY={1}
                     roughness={FINITION_VIPANELS[choosenVipanelRight.finition]?.roughness}
                     metalness={FINITION_VIPANELS[choosenVipanelRight.finition]?.metalness}
                 />
@@ -193,8 +192,6 @@ export function Ambiance(props) {
                 <DynamicTextureMaterial
                     url={getPhotoUrl(choosenVipanelNiche.files?.['1500x2550'])}
                     material={materials['VIPANEL-BIG']}
-                    repeatX={1}
-                    repeatY={1}
                     roughness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.roughness}
                     metalness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.metalness}
                 />
