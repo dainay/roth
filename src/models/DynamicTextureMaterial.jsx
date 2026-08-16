@@ -1,7 +1,58 @@
 import { useEffect } from 'react'
 import * as THREE from 'three'
 
+const textureLoader = new THREE.TextureLoader()
 const textureCache = new Map()
+
+const getTextureKey = (url, repeatX, repeatY) =>
+  JSON.stringify([url, repeatX, repeatY])
+
+const acquireTexture = (url, repeatX, repeatY) => {
+  const key = getTextureKey(url, repeatX, repeatY)
+  let entry = textureCache.get(key)
+
+  if (!entry) {
+    entry = {
+      refs: 0,
+      texture: null,
+      promise: null,
+    }
+
+    entry.promise = textureLoader.loadAsync(url).then((texture) => {
+      texture.flipY = false
+      texture.colorSpace = THREE.SRGBColorSpace
+      texture.wrapS = THREE.RepeatWrapping
+      texture.wrapT = THREE.RepeatWrapping
+      texture.repeat.set(repeatX, repeatY)
+      texture.needsUpdate = true
+      entry.texture = texture
+
+      if (entry.refs === 0) {
+        texture.dispose()
+        textureCache.delete(key)
+      }
+
+      return texture
+    }).catch((error) => {
+      textureCache.delete(key)
+      throw error
+    })
+
+    textureCache.set(key, entry)
+  }
+
+  entry.refs += 1
+  return { entry, key }
+}
+
+const releaseTexture = (entry, key) => {
+  entry.refs = Math.max(0, entry.refs - 1)
+
+  if (entry.refs === 0 && entry.texture) {
+    entry.texture.dispose()
+    textureCache.delete(key)
+  }
+}
 
 export default function DynamicTextureMaterial({
   url,
@@ -16,16 +67,11 @@ export default function DynamicTextureMaterial({
 
     let cancelled = false
 
-    const applyTexture = (texture) => {
+    const { entry, key } = acquireTexture(url, repeatX, repeatY)
+
+    entry.promise.then((texture) => {
       if (cancelled) return
 
-      texture.flipY = false
-      texture.colorSpace = THREE.SRGBColorSpace
-      texture.wrapS = THREE.RepeatWrapping
-      texture.wrapT = THREE.RepeatWrapping
-      texture.repeat.set(repeatX, repeatY)
-      texture.needsUpdate = true
- 
       material.map = texture
       material.color.set('#ffffff')
 
@@ -38,28 +84,21 @@ export default function DynamicTextureMaterial({
       }
 
       material.needsUpdate = true
-    }
-
-    const cachedTexture = textureCache.get(url)
-
-    if (cachedTexture) {
-      applyTexture(cachedTexture)
-    } else {
-      new THREE.TextureLoader().load(
-        url,
-        (texture) => {
-          textureCache.set(url, texture)
-          applyTexture(texture)
-        },
-        undefined,
-        (error) => {
-          console.error(`Not loaded: ${url}`, error)
-        }
-      )
-    }
+    }).catch((error) => {
+      if (!cancelled) {
+        console.error(`Not loaded: ${url}`, error)
+      }
+    })
 
     return () => {
       cancelled = true
+
+      if (material.map === entry.texture) {
+        material.map = null
+        material.needsUpdate = true
+      }
+
+      releaseTexture(entry, key)
     }
   }, [
     url,

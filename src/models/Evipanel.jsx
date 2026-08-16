@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { useTexture, Html } from '@react-three/drei'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import s from './Evipanel.module.css'
 
 useTexture.preload('/img/evipanel.webp')
@@ -8,15 +8,19 @@ useTexture.preload('/img/evipanel.webp')
 export default function Evipanel({ onPointerEnter, onPointerLeave, geometry, gradientTexture, visible }) {
 
     const heatRef = useRef()
+    const invalidate = useThree((state) => state.invalidate)
 
     gradientTexture.center.set(0.3, 0.5)
 
     useFrame((state) => {
+        if (!visible || !heatRef.current) return
+
         const t = state.clock.elapsedTime
         gradientTexture.repeat.x = 0.5 + Math.sin(t * 5) * 1
         gradientTexture.repeat.y = 1 + Math.sin(t * -2) * 0.1
 
         heatRef.current.intensity = 10 + Math.sin(t * 5) * 5
+        invalidate()
     })
 
     return (

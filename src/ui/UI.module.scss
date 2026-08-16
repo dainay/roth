@@ -81,7 +81,8 @@ button.vipanelButton {
   overflow: hidden;
   position: relative;
 
-  &:hover span {
+  &:hover span,
+  &:focus-visible span {
     opacity: 1;
   }
 }
@@ -144,6 +145,11 @@ button.largeButton {
   background: #111;
   color: white;
   border-color: #111;
+}
+
+.vipanelTab:focus-visible {
+  outline: 3px solid #23be3d;
+  outline-offset: 2px;
 }
 
 .vipanelGrid {
@@ -253,7 +259,8 @@ button:has(.finitionImage) {
     vertical-align: middle;
   }
 
-  &:hover span {
+  &:hover span,
+  &:focus-visible span {
     opacity: 1;
   }
 }
@@ -325,4 +332,37 @@ button.showerIconActive {
 button[data-receveur="soft white"], button[data-decor="Uni_blanc"] {
   box-shadow: 0 0 0 1px rgba(184, 182, 182, 0.37);
 }
- 
+
+@media (max-width: 900px) {
+  .uiWrapper {
+    --size: 100%;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    height: auto;
+    overflow: visible;
+    padding: 20px;
+  }
+
+  .paroisWrapper {
+    justify-content: center;
+  }
+
+  .blockButtons {
+    justify-content: center;
+
+    h2 {
+      text-align: center;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .vipanelGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  button.largeButton {
+    --sizeLarge: calc(50% - 3px);
+  }
+}

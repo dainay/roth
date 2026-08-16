@@ -1,12 +1,9 @@
 import { Canvas } from "@react-three/fiber";
-import s from './Scene.module.scss'
 import * as THREE from "three";
-// import '../helpers/preload'
 import { GizmoHelper, GizmoViewport, OrbitControls } from "@react-three/drei";
 
 
 import Lighting from "./Lighting";
-import { Ambiance } from "../models/Ambiance"; 
 
 import Switcher from "../models/Switcher";
 
@@ -17,15 +14,10 @@ import Profiles from "../models/Profiles";
 import Nichepanels from "../models/Nichepanels";
 import Vipanels from "../models/Vipanels";
 
-import { Perf } from 'r3f-perf'; 
-import useConfiguratorStore from "../store/useConfiguratorStore";
-
 export default function Scene() {
-
-        const currentView = useConfiguratorStore((state) => state.currentView)
     return (
         <Canvas 
-            frameloop={currentView === 'configurateur' ? 'always' : 'never'}
+            frameloop="demand"
             dpr={1}
             camera={{ position: [2, 1, 2], fov: 60 }}
             shadows={{ type: THREE.PCFShadowMap }}
@@ -34,8 +26,6 @@ export default function Scene() {
         >
             <color attach="background" args={["#161616"]} />
             <Lighting />
-
-            {/* <Ambiance /> */}
 
             {/* **** scene ****** */}
 
@@ -50,9 +40,6 @@ export default function Scene() {
 
             {/* **** scene ****** */}
  
-            <Perf position="bottom-left" />
-
-
             <OrbitControls target={[-0.5, 1, -1]}
                 enablePan={true}
                 enableZoom={true}

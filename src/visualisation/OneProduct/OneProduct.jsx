@@ -1,11 +1,12 @@
 import s from './OneProduct.module.scss'
+import { getPhotoUrl, getProductUrl } from '../../helpers/getPhotoUrl'
 
 const OneProduct = ({ product, type, imgClassName }) => {
     return (
         <div className={s.wrapper}>
-             <a  href={`https://testwww.roth-france.fr/catalogue/produit/${product.codearticle}`} target="_blank" rel="noopener noreferrer">
+             <a href={getProductUrl(product.codearticle)} target="_blank" rel="noopener noreferrer">
             <div className={s.imgWrapper}>
-                <img src={`https://testwww.roth-france.fr/photos/${product.photo}`} alt={product.libelle} className={imgClassName} />
+                <img src={getPhotoUrl(product.photo)} alt={product.libelle} className={imgClassName} />
             </div>
             <p className={s.textSmall}>{type} {type === 'Paroi de douche' ? product.type_paroi : ''}</p>
             <h3 className={s.title}>{product.libelle}</h3>

@@ -1,4 +1,3 @@
-import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import useConfiguratorStore from '../store/useConfiguratorStore';
 import { useShallow } from 'zustand/react/shallow'
@@ -14,7 +13,6 @@ export default function Triptych(props) {
       paroi: state.selection.paroi,
     }))
    );
-    const setSelectionValue = useConfiguratorStore((state) => state.setSelectionValue) 
 // console.log('triptychRight', selection.triptychRight, 'triptychLeft', selection.triptychLeft, 'niche', selection.niche, 'paroi', selection.paroi)
   return (
        <group {...props} dispose={null}>

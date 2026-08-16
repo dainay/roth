@@ -1,8 +1,17 @@
 import { PAROI_ASSETS } from "../conf/lib";
 
+const DEFAULT_PAROI_ID = 'PL WRU'
+const DEFAULT_PAROI_FINITION = '4'
+const DEFAULT_RECEVEUR_FINITION = 'Soft White'
+const DEFAULT_VIPANEL_LEFT = 'Z2'
+const DEFAULT_VIPANEL_RIGHT = 'X4'
+
+const findBy = (items, key, value) =>
+    items.find((item) => item?.[key] === value) ?? items[0] ?? null
+
 
 export function formatSendingBody(selection) {
-
+    const hasNiche = Boolean(selection.niche && selection.finitionNiche)
 
     const body = {
         "scene": "PASTEL02",
@@ -29,8 +38,8 @@ export function formatSendingBody(selection) {
 
         "finition_profile": selection.finitionProfile === null ? 'None' : selection.finitionProfile,
 
-        "finition_niche": selection.finitionNiche === null ? 'None' : selection.finitionNiche,
-        "largeur_niche": selection.finitionProfile === null ? 'None' : 910,
+        "finition_niche": hasNiche ? selection.finitionNiche : 'None',
+        "largeur_niche": hasNiche ? 910 : 'None',
 
         "vipanel": {
             "gauche": selection.vipanelLeft,
@@ -42,33 +51,55 @@ export function formatSendingBody(selection) {
 }
 
 export function formatSelectionByDefault(data) {
+    const defaultParoi = findBy(data.parois, 'id', DEFAULT_PAROI_ID)
+    const defaultReceveur = data.receveurs[0] ?? null
+    const defaultNiche = data.niches[0] ?? null
+    const defaultProfile = data.profiles[0] ?? null
+    const defaultVipanelLeft = findBy(
+        data.vipanels,
+        'decor',
+        DEFAULT_VIPANEL_LEFT
+    )
+    const defaultVipanelRight = findBy(
+        data.vipanels,
+        'decor',
+        DEFAULT_VIPANEL_RIGHT
+    )
+    const paroiFinitions = defaultParoi?.finitionsDisponibles ?? []
+    const defaultParoiFinition = findBy(
+        paroiFinitions,
+        'code',
+        DEFAULT_PAROI_FINITION
+    )
+    const receveurFinitions = defaultReceveur?.finitionsDisponibles ?? []
+
     const defaultSelection = {
-        paroi: data.parois[4]?.id || null,
-        finitionParoi: data.parois[4]?.finitionsDisponibles[2]?.code || data.parois[0]?.finitionsDisponibles[0]?.code || null,
-        verre: data.parois[4]?.verresDisponibles[0] || null,
-        sizeParoi: PAROI_ASSETS[data.parois[4]?.id]?.size || 1200,
+        paroi: defaultParoi?.id ?? null,
+        finitionParoi: defaultParoiFinition?.code ?? null,
+        verre: defaultParoi?.verresDisponibles?.[0] ?? null,
+        sizeParoi: PAROI_ASSETS[defaultParoi?.id]?.size ?? 1200,
 
-        receveur: data.receveurs[0]?.id || null,
-        textureReceveur: data.receveurs[0]?.finitionsDisponibles[3] || null,
-        sizeReceveur: PAROI_ASSETS[data.parois[4]?.id]?.sizeReceveurWithParoi || 1200,
+        receveur: defaultReceveur?.id ?? null,
+        textureReceveur: receveurFinitions.includes(DEFAULT_RECEVEUR_FINITION)
+            ? DEFAULT_RECEVEUR_FINITION
+            : receveurFinitions[0] ?? null,
+        sizeReceveur: PAROI_ASSETS[defaultParoi?.id]?.sizeReceveurWithParoi ?? 1200,
 
-        vipanelLeft: data.vipanels[12]?.decor || null,
-        vipanelRight: data.vipanels[11]?.decor || null,
-        vipanelNiche: data.vipanels[11]?.decor || null,
+        vipanelLeft: defaultVipanelLeft?.decor ?? null,
+        vipanelRight: defaultVipanelRight?.decor ?? null,
+        vipanelNiche: defaultVipanelRight?.decor ?? null,
 
-        niche: data.niches[0]?.id || null,
-        finitionNiche: data.niches[0]?.finitionsDisponibles[0] || null,
+        niche: defaultNiche?.id ?? null,
+        finitionNiche: defaultNiche?.finitionsDisponibles?.[0] ?? null,
 
         montage: "angle",
 
-        profile: data.profiles[0]?.id || null,
-        finitionProfile: data.profiles[0]?.finitionsDisponibles[0] || null,
+        profile: defaultProfile?.id ?? null,
+        finitionProfile: defaultProfile?.finitionsDisponibles?.[0] ?? null,
 
         triptychLeft: 'None',
         triptychRight: 'None',
     }
-
-    console.log('defaultSelection:', defaultSelection)
 
     return defaultSelection
 }

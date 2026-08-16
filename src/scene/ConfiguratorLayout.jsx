@@ -15,26 +15,24 @@ export default function ConfiguratorLayout() {
     const loadConfiguratorData = useConfiguratorStore(
         (state) => state.loadConfiguratorData
     )
-    const sendConfiguratorData = useConfiguratorStore(
-        (state) => state.sendConfiguratorData
-    )
-
     useEffect(() => {
         loadConfiguratorData()
     }, [loadConfiguratorData])
+
+    if (error) {
+        return <div>Erreur : {error}</div>
+    }
 
     if (isLoading || !cleanedData) {
         return <div className={s.loading}>Chargement...</div>
     }
 
-    if (error) {
-        return <div>Erreur  : {error}</div>
-    }
-
     return (
         <div className={s.configuratorLayout}>
             <UI />
-            <Scene />
+            <div className={s.sceneWrapper}>
+                <Scene />
+            </div>
           
         </div>
     );

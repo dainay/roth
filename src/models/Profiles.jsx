@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useShallow } from 'zustand/shallow'
 

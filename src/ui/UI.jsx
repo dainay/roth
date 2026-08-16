@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import s from './UI.module.scss'
 import useConfiguratorStore from '../store/useConfiguratorStore'
 import { useShallow } from 'zustand/react/shallow'
-import { FINITION_ASSETS, NICHE_FINITION_ASSETS, PROFILE_ASSETS, RECEVEUR_ASSETS, PAROI_ASSETS, SERIGRAPHIE_ASSETS, TRYPTICH_TEXTURES } from '../conf/lib'
+import { FINITION_ASSETS, NICHE_FINITION_ASSETS, PROFILE_ASSETS, RECEVEUR_ASSETS, PAROI_ASSETS, SERIGRAPHIE_ASSETS } from '../conf/lib'
 import { getPhotoUrl } from '../helpers/getPhotoUrl'
 
 
@@ -28,9 +28,6 @@ export default function UI() {
 
             finitionNiche: state.selection.finitionNiche,
             niche: state.selection.niche,
-
-            triptychLeft: state.selection.triptychLeft,
-            triptychRight: state.selection.triptychRight,
 
             vipanelLeft: state.selection.vipanelLeft,
             vipanelRight: state.selection.vipanelRight,
@@ -61,13 +58,10 @@ export default function UI() {
         { id: 'left', label: 'Mur gauche', key: 'vipanelLeft' },
         { id: 'niche', label: 'Espace douche', key: 'vipanelNiche' },
         { id: 'right', label: 'Mur droit', key: 'vipanelRight' },
-        // { id: 'triptych', label: 'Décor triptyque', key: null },
     ]
 
     const activeZone = vipanelZones.find((zone) => zone.id === activeVipanelZone)
 
-
-    console.log('selection:', selection)
 
     const handleReceveurChange = (item) => {
         setSelectionValue('textureReceveur', item)
@@ -103,7 +97,9 @@ export default function UI() {
                 <h2>Type de paroi</h2>
 
                 <div className={s.paroisWrapper}>
-                    {cleanedData?.parois.map((item) => (
+                    {cleanedData?.parois
+                        .filter((item) => PAROI_ASSETS[item.id])
+                        .map((item) => (
                         <Button
                             data-paroi={item.id}
                             key={item.id}
@@ -114,7 +110,7 @@ export default function UI() {
                             <img className={s.showerIcon} src={PAROI_ASSETS[item.id].icon} alt={item.label} />
                             {PAROI_ASSETS[item.id].shortLabel}
                         </Button>
-                    ))}
+                        ))}
                 </div>
             </div>
             {montageAvailable && (
@@ -145,7 +141,9 @@ export default function UI() {
             <div className={s.blockButtons}>
                 <h2>Finition du profilé</h2>
 
-                {selectedParoiData.finitionsDisponibles.map((item) => (
+                {selectedParoiData.finitionsDisponibles
+                    .filter((item) => FINITION_ASSETS[item.code])
+                    .map((item) => (
                     <Button
                         data-finition={item.code}
                         key={item.code}
@@ -156,7 +154,7 @@ export default function UI() {
                         <img className={s.finitionImage} src={FINITION_ASSETS[item.code].img} alt={item.libelle} />
                         <span>{item.libelle}</span>
                     </Button>
-                ))}
+                    ))}
             </div>
 
             {selectedParoiData?.id !== "PL PIV" && (
@@ -165,7 +163,7 @@ export default function UI() {
                     <Button
                         key={'None'}
                         data-niche={'None'}
-                        active={selection.niche === 'None'}
+                        active={selection.niche === null}
                         className={`${s.vipanelButton}  ${s.largeButton} ${selection.niche === null ? s.finitionButtonActive : ''}`}
                         onClick={() => handleNicheChange('None')}
                     >
@@ -174,6 +172,7 @@ export default function UI() {
                     </Button>
 
                     {cleanedData?.niches[0].finitionsDisponibles
+                        .filter((item) => NICHE_FINITION_ASSETS[item])
                         .map((item) => (
                             <Button
                                 key={item}
@@ -192,7 +191,9 @@ export default function UI() {
 
             <div className={s.blockButtons}>
                 <h2>Verre</h2>
-                {selectedParoiData.verresDisponibles.map((item) => (
+                {selectedParoiData.verresDisponibles
+                    .filter((item) => SERIGRAPHIE_ASSETS[item])
+                    .map((item) => (
                     <Button
                         data-verre={item}
                         key={item}
@@ -203,14 +204,16 @@ export default function UI() {
                         <img className={s.finitionImage} src={SERIGRAPHIE_ASSETS[item].img} alt={item} />
                         <span>{SERIGRAPHIE_ASSETS[item].label}</span>
                     </Button>
-                ))
+                    ))
                 }
             </div>
 
             <div className={s.blockButtons}>
                 <h2>Finition du receveur</h2>
 
-                {cleanedData?.receveurs[0].finitionsDisponibles.map((item) => (
+                {cleanedData?.receveurs[0].finitionsDisponibles
+                    .filter((item) => RECEVEUR_ASSETS[item])
+                    .map((item) => (
                     <Button
                         data-receveur={item}
                         className={`${s.vipanelButton} ${s.largeButton}  ${selection.textureReceveur === item ? s.vipanelButtonActive : ''}`}
@@ -223,13 +226,15 @@ export default function UI() {
                         </div>
                         <span>{RECEVEUR_ASSETS[item].label}</span>
                     </Button>
-                ))}
+                    ))}
             </div>
 
             <div className={s.blockButtons}>
                 <h2>FINITION DES PROFILÉS DE JONCTION</h2>
 
-                {cleanedData?.profiles[0].finitionsDisponibles.map((item) => (
+                {cleanedData?.profiles[0].finitionsDisponibles
+                    .filter((item) => PROFILE_ASSETS[item])
+                    .map((item) => (
                     <Button
                         data-profile={item}
                         key={item}
@@ -240,17 +245,20 @@ export default function UI() {
                         <img className={s.finitionImage} src={PROFILE_ASSETS[item].img} alt={item} />
                         <span>{PROFILE_ASSETS[item].label}</span>
                     </Button>
-                ))}
+                    ))}
             </div>
 
             <div className={`${s.blockButtons} ${s.blockButtonsVipanel}`}>
                 <h2>Décor mural VIPANEL®</h2>
 
-                <div className={s.vipanelTabs}>
+                <div className={s.vipanelTabs} role="tablist" aria-label="Zone VIPANEL">
                     {vipanelZones.map((zone) => (
                         <button
                             key={zone.id}
                             type="button"
+                            role="tab"
+                            aria-selected={activeVipanelZone === zone.id}
+                            aria-controls="vipanel-panel"
                             className={`${s.vipanelTab} ${activeVipanelZone === zone.id ? s.vipanelTabActive : ''}`}
                             onClick={() => setActiveVipanelZone(zone.id)}
                         >
@@ -259,49 +267,7 @@ export default function UI() {
                     ))}
                 </div>
 
-                {activeVipanelZone === 'triptych' ? (
-                    <div className={s.triptychWrapper}>
-                        <div className={s.triptychColumn}>
-                            <h3>Mur gauche</h3>
-                            <div className={s.triptychGrid}>
-                                {TRYPTICH_TEXTURES.map((item) => (
-                                    <Button
-                                        data-triptych={item.id}
-                                        className={`${s.vipanelButton} ${selection.triptychLeft === item.id ? s.vipanelButtonActive : ''}`}
-                                        key={item.id}
-                                        active={selection.triptychLeft === item.id}
-                                        onClick={() => setSelectionValue('triptychLeft', item.id)}
-                                    >
-                                        <div className={s.imgVipanelWrapper}>
-                                            <img className={s.imgVipanel} src={item.url} alt={item.label} />
-                                        </div>
-                                        <span>{item.label}</span>
-                                    </Button>
-                                ))}
-                            </div>
-                        </div>
-                        <div className={s.triptychColumn}>
-                            <h3>Mur droit</h3>
-                            <div className={s.triptychGrid}>
-                                {TRYPTICH_TEXTURES.map((item) => (
-                                    <Button
-                                        data-triptych={item.id}
-                                        className={`${s.vipanelButton} ${selection.triptychRight === item.id ? s.vipanelButtonActive : ''}`}
-                                        key={item.id}
-                                        active={selection.triptychRight === item.id}
-                                        onClick={() => setSelectionValue('triptychRight', item.id)}
-                                    >
-                                        <div className={s.imgVipanelWrapper}>
-                                            <img className={s.imgVipanel} src={item.url} alt={item.label} />
-                                        </div>
-                                        <span>{item.label}</span>
-                                    </Button>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                ) : (
-                    <div className={s.vipanelGrid}>
+                <div id="vipanel-panel" className={s.vipanelGrid} role="tabpanel">
                         {cleanedData.vipanels.map((item) => (
                             <Button
                                 data-decor={item.decor}
@@ -314,13 +280,12 @@ export default function UI() {
                                 }}
                             >
                                 <div className={s.imgVipanelWrapper}>
-                                    <img className={s.imgVipanel} src={`https://testwww.roth-france.fr/photos/${item.vignette}`} alt={item.decor} />
+                                    <img className={s.imgVipanel} src={getPhotoUrl(item.vignette)} alt={item.decor} />
                                 </div>
                                 <span>{item.nom}</span>
                             </Button>
                         ))}
-                    </div>
-                )}
+                </div>
             </div>
         </div>
     )

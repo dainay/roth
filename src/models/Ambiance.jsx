@@ -1,12 +1,12 @@
-import React, { useRef, useLayoutEffect, useState } from 'react'
-import { useGLTF, useTexture, Outlines, Edges } from '@react-three/drei'
+import { useRef, useLayoutEffect, useState } from 'react'
+import { useGLTF, useTexture, Edges } from '@react-three/drei'
 import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
 import { useShallow } from 'zustand/react/shallow'
 import { getPhotoUrl } from '../helpers/getPhotoUrl'
 
  
-import { FINITION_ASSETS, NICHE_FINITION_ASSETS, PROFILE_ASSETS, RECEVEUR_ASSETS, PAROI_ASSETS, SERIGRAPHIE_ASSETS, FINITION_VIPANELS } from '../conf/lib'
+import { FINITION_ASSETS, NICHE_FINITION_ASSETS, PROFILE_ASSETS, RECEVEUR_ASSETS, FINITION_VIPANELS } from '../conf/lib'
 import useConfiguratorStore from '../store/useConfiguratorStore';
 import useSceneStore from '../store/useSceneStore';
 
@@ -27,8 +27,6 @@ export function Ambiance(props) {
         niche,
         profile,
         finitionProfile,
-        verre,
-        receveur,
         textureReceveur,
         vipanelLeft,
         vipanelRight,
@@ -43,8 +41,6 @@ export function Ambiance(props) {
             niche: state.selection.niche,
             profile: state.selection.profile,
             finitionProfile: state.selection.finitionProfile,
-            verre: state.selection.verre,
-            receveur: state.selection.receveur,
             textureReceveur: state.selection.textureReceveur,
             vipanelLeft: state.selection.vipanelLeft,
             vipanelRight: state.selection.vipanelRight,
@@ -150,7 +146,7 @@ export function Ambiance(props) {
         mGlass.color.set(new THREE.Color("#ffffff"))
 
         mGlass.needsUpdate = true
-    }, [])
+    }, [materials])
 
  
 
@@ -173,7 +169,7 @@ export function Ambiance(props) {
             />
             {choosenVipanelLLeft && (
                 <DynamicTextureMaterial
-                    url={choosenVipanelLLeft.files?.['1500x2550'] ? `https://testwww.roth-france.fr/photos/${choosenVipanelLLeft.files['1500x2550']}` : null}
+                    url={getPhotoUrl(choosenVipanelLLeft.files?.['1500x2550'])}
                     material={materials['VIPANEL-BIG-left']}
                     repeatX={1}
                     repeatY={1}
@@ -184,7 +180,7 @@ export function Ambiance(props) {
 
             {choosenVipanelRight && (
                 <DynamicTextureMaterial
-                    url={choosenVipanelRight.files?.['1500x2550'] ? `https://testwww.roth-france.fr/photos/${choosenVipanelRight.files['1500x2550']}` : null}
+                    url={getPhotoUrl(choosenVipanelRight.files?.['1500x2550'])}
                     material={materials['VIPANEL-BIG-right']}
                     repeatX={1}
                     repeatY={1}
@@ -195,7 +191,7 @@ export function Ambiance(props) {
 
             {choosenVipanelNiche && (
                 <DynamicTextureMaterial
-                    url={choosenVipanelNiche.files?.['1500x2550'] ? `https://testwww.roth-france.fr/photos/${choosenVipanelNiche.files['1500x2550']}` : null}
+                    url={getPhotoUrl(choosenVipanelNiche.files?.['1500x2550'])}
                     material={materials['VIPANEL-BIG']}
                     repeatX={1}
                     repeatY={1}
@@ -1080,5 +1076,3 @@ export function Ambiance(props) {
         </group>
     )
 }
-
-useGLTF.preload('./models/Ambiance_compressed.glb')

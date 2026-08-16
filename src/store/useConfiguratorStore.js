@@ -9,6 +9,7 @@ const useConfiguratorStore = create((set, get) => ({
 
     cleanedData: null,
     isLoading: false,
+    isSubmitting: false,
     error: null,
     selection: {
         paroi: null,
@@ -40,8 +41,6 @@ const useConfiguratorStore = create((set, get) => ({
     products: null,
     pdf: null,
 
-    setCleanedData: (cleanedData) => set({ cleanedData }),
-
     setSelectionValue: (key, value) =>
         set((state) => {
             if (key !== "paroi") {
@@ -66,8 +65,9 @@ const useConfiguratorStore = create((set, get) => ({
                 };
             }
 
-            const availableFinitions =
-                nextParoi.finitionsDisponibles ?? [];
+            const availableFinitions = (nextParoi.finitionsDisponibles ?? [])
+                .map((item) => typeof item === 'string' ? item : item?.code)
+                .filter(Boolean);
 
             const availableVerres =
                 nextParoi.verresDisponibles ?? [];
@@ -115,32 +115,10 @@ const useConfiguratorStore = create((set, get) => ({
 
     setCurrentView: (view) => set({ currentView: view }),
 
-    setRealImg: (img) => set({ realImg: img }),
-    setProducts: (products) => set({ products }),
-    setPdf: (pdf) => set({ pdf }),
-
-    reset: () =>
-        set({
-            selection: {
-                finition: 'or-brosse',
-                profile: 'white',
-                niche: false,
-                wall: false,
-                vipanelleft: 'marble',
-                vipanelright: 'marble',
-                vipanelniche: 'marble',
-                shower: 'f',
-                serigraphie: false,
-                receveur: 'black',
-                nicheColor: 'white',
-                triptychLeft: '',
-                triptychRight: '',
-            }
-        }),
-
     //API - first call to load data from the API and set the default selection
 
     loadConfiguratorData: async () => {
+        if (get().isLoading || get().cleanedData) return
 
         set({
             isLoading: true,
@@ -153,9 +131,13 @@ const useConfiguratorStore = create((set, get) => ({
 
             const cleanedData = {
                 ...data,
-                parois: data.parois.filter(
-                    (item) => !hiddenParoiIds.includes(item.id)
-                ),
+                parois: data.parois
+                    .filter((item) => !hiddenParoiIds.includes(item.id))
+                    .map((item) => ({
+                        ...item,
+                        finitionsDisponibles: [...(item.finitionsDisponibles ?? [])],
+                        verresDisponibles: [...(item.verresDisponibles ?? [])],
+                    })),
                 vipanels: data.vipanels.filter(
                     (item) => item.files?.["1500x2550"]
                 ),
@@ -177,11 +159,18 @@ const useConfiguratorStore = create((set, get) => ({
             }
 
             const selection = formatSelectionByDefault(cleanedData);
-            if (!selection) {
+            if (
+                !selection.paroi ||
+                !selection.finitionParoi ||
+                !selection.verre ||
+                !selection.receveur ||
+                !selection.textureReceveur ||
+                !selection.vipanelLeft ||
+                !selection.vipanelRight ||
+                !selection.vipanelNiche
+            ) {
                 throw new Error('Impossible de créer la sélection par défaut')
             }
-
-            console.log('cleanedData:', cleanedData)
 
             set({
                 cleanedData,
@@ -201,42 +190,32 @@ const useConfiguratorStore = create((set, get) => ({
 
     sendConfiguratorData: async () => {
         set({
-            isLoading: true,
+            isSubmitting: true,
             error: null,
         });
         const { selection } = get();
 
         const body = formatSendingBody(selection);
-
-        console.log('data sent to API:', body)
-
-
         try {
-            const response = await sendConfiguratorDatabyAPI(body)
+            const visualizationData = await sendConfiguratorDatabyAPI(body)
 
-            console.log("rrrr" + JSON.stringify(body, null, 2));
+            set({
+                realImg: visualizationData.img,
+                products: visualizationData.products,
+                pdf: visualizationData.pdf,
+            })
 
-            const visualizationData = await response.json();
-
-              console.log('AAAAAAAAAAA:', visualizationData)
-
-            if (response.status === 200 && visualizationData) { 
- 
-                set({
-                    realImg: visualizationData.img,
-                    products: visualizationData.products,
-                    pdf: visualizationData.pdf,
-                    isLoading: false,
-                })
-
-              
-
-            }
-
-
+            return visualizationData
         } catch (error) {
-            console.error("Configurator API error:", error);
-
+            set({
+                error:
+                    error instanceof Error
+                        ? error.message
+                        : 'Erreur inconnue',
+            })
+            throw error
+        } finally {
+            set({ isSubmitting: false })
         }
     },
 }));

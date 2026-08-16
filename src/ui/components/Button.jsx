@@ -5,6 +5,7 @@ export default function Button({  className = '', children, active, onClick,  ..
     <button
       type="button"
       onClick={onClick}
+      aria-pressed={typeof active === 'boolean' ? active : undefined}
       className={`${s.button} ${active ? s.active : ''} ${className}`}
       {...props}
     >

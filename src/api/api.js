@@ -1,7 +1,26 @@
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '')
+
+if (!API_BASE_URL) {
+    throw new Error('VITE_API_BASE_URL is not configured')
+}
+
+const getApiUrl = (path) => `${API_BASE_URL}/${path.replace(/^\/+/, '')}`
+
+const parseJsonResponse = async (response, errorMessage) => {
+    if (!response.ok) {
+        throw new Error(errorMessage)
+    }
+
+    try {
+        return await response.json()
+    } catch {
+        throw new Error(`${errorMessage} : réponse JSON invalide`)
+    }
+}
+
 export async function getConfiguratorDatabyAPI() {
     const response = await fetch(
-        'https://testwww.roth-france.fr/api/xu/getProducts',
-        // '/api/xu/getProducts',
+        getApiUrl('/api/xu/getProducts'),
         {
             method: "GET",
             headers: {
@@ -10,20 +29,35 @@ export async function getConfiguratorDatabyAPI() {
         }
     )
 
-    if (!response.ok) {
-        throw new Error('Impossible de charger les données du configurateur')
+    const data = await parseJsonResponse(
+        response,
+        'Impossible de charger les données du configurateur'
+    )
+
+    const requiredCollections = [
+        'parois',
+        'receveurs',
+        'vipanels',
+        'niches',
+        'profiles',
+    ]
+
+    if (
+        !data ||
+        typeof data !== 'object' ||
+        requiredCollections.some(
+            (key) => !Array.isArray(data[key]) || data[key].length === 0
+        )
+    ) {
+        throw new Error('Les données du configurateur sont incomplètes')
     }
 
-    return response.json()
+    return data
 }
 
 export async function sendConfiguratorDatabyAPI(payload) {
-
-    // console.log('payload sent to API:', payload)
-
     const response = await fetch(
-        'https://testwww.roth-france.fr/api/xu/resultProject',
-        // '/api/xu/resultProject',
+        getApiUrl('/api/xu/resultProject'),
         {
             method: 'POST',
             headers: {
@@ -33,11 +67,48 @@ export async function sendConfiguratorDatabyAPI(payload) {
         })
 
 
-    if (!response.ok) {
-        throw new Error('Impossible d’envoyer la configuration')
+    const data = await parseJsonResponse(
+        response,
+        'Impossible d’envoyer la configuration'
+    )
+
+    const productCollections = [
+        'parois',
+        'receveur',
+        'profile',
+        'niches',
+        'vipanels',
+    ]
+    const hasInvalidProduct = productCollections.some((key) => {
+        const products = data?.products?.[key]
+
+        return Array.isArray(products) && products.some(
+            (product) =>
+                !product ||
+                typeof product !== 'object' ||
+                typeof product.codearticle !== 'string' ||
+                !product.codearticle.trim() ||
+                typeof product.libelle !== 'string'
+        )
+    })
+
+    if (
+        !data ||
+        typeof data !== 'object' ||
+        typeof data.img !== 'string' ||
+        !data.img.trim() ||
+        typeof data.pdf !== 'string' ||
+        !data.pdf.trim() ||
+        !data.products ||
+        typeof data.products !== 'object' ||
+        Array.isArray(data.products) ||
+        productCollections.some(
+            (key) => data.products[key] !== undefined && !Array.isArray(data.products[key])
+        ) ||
+        hasInvalidProduct
+    ) {
+        throw new Error('La réponse de visualisation est incomplète')
     }
 
-    console.log('response from API:', response)
-
-    return response
+    return data
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 import { useShallow } from 'zustand/react/shallow'
@@ -39,7 +39,7 @@ export default function Model(props) {
         mGlass.color.set("#ffffff")
 
         mGlass.needsUpdate = true
-    }, [])
+    }, [materials])
 
     useLayoutEffect(() => {
         const mProtection = materials['+ PROTECTION']
@@ -54,7 +54,7 @@ export default function Model(props) {
         mProtection.color.set("#ffffff")
 
         mProtection.needsUpdate = true
-    }, [])
+    }, [materials])
 
 
     //************************************* */

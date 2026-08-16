@@ -2,7 +2,6 @@ import ConfiguratorLayout from './scene/ConfiguratorLayout'
 import './App.css'
 import VisualisationLayout from './visualisation/VisualisationLayout'
 import useConfiguratorStore from './store/useConfiguratorStore'
-import { useState } from 'react'
 
 function App() {
     const sendConfiguratorData = useConfiguratorStore(
@@ -11,10 +10,15 @@ function App() {
 
     const currentView = useConfiguratorStore((state) => state.currentView)
     const setCurrentView = useConfiguratorStore((state) => state.setCurrentView)
+    const isSubmitting = useConfiguratorStore((state) => state.isSubmitting)
 
     const handleVisualisationClick = async () => {
-        await sendConfiguratorData()
-        setCurrentView('visualisation')
+        try {
+            await sendConfiguratorData()
+            setCurrentView('visualisation')
+        } catch {
+            // The store exposes the error in the configurator view.
+        }
     }
 
     return (
@@ -28,8 +32,11 @@ function App() {
                     <button
                         className="visualise__button"
                         onClick={handleVisualisationClick}
+                        disabled={isSubmitting}
                     >
-                        Visualiser ma salle de bain
+                        {isSubmitting
+                            ? 'Génération en cours...'
+                            : 'Visualiser ma salle de bain'}
                     </button>
                 </div>
             
