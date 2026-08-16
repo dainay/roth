@@ -103,6 +103,35 @@
     overflow: hidden;
 }
 
+.emailButton {
+    gap: 12px;
+    padding: 18px;
+    border: 0;
+    background: #fff;
+    color: #130b0b;
+    font: inherit;
+    cursor: pointer;
+
+    img {
+      width: 54px;
+      height: 54px;
+    }
+
+    span {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    &:hover {
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    &:focus-visible {
+      outline: 3px solid #23be3d;
+      outline-offset: 4px;
+    }
+}
+
 .imgWithWhiteBackground {
           object-fit: contain !important;
     }
@@ -139,6 +168,7 @@
 @media (max-width: 480px) {
   .wrapper_buttonsPDF {
     gap: 12px;
+    flex-wrap: wrap;
   }
 
   .visualisationLayout__products > * {

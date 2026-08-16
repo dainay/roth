@@ -1,11 +1,16 @@
+import { useState } from 'react';
+
 import s from './VisualisationLayout.module.scss';
 import OneProduct from './OneProduct/OneProduct';
 import PdfQrCode from './PdfQrCode';
+import EmailPdfModal from './EmailPdfModal';
 
 import useConfiguratorStore from '../store/useConfiguratorStore';
 
 
 const VisualisationLayout = () => {
+
+    const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
 
     const realImg = useConfiguratorStore((state) => state.realImg);
     const products = useConfiguratorStore((state) => state.products);
@@ -43,6 +48,19 @@ const VisualisationLayout = () => {
                             </div>
 
                          </div>
+                         <div>
+                            <h3>Par e-mail</h3>
+                            <p>Recevoir le PDF</p>
+                            <button
+                                type="button"
+                                className={`${s.buttonPDF} ${s.emailButton}`}
+                                onClick={() => setIsEmailModalOpen(true)}
+                                aria-haspopup="dialog"
+                            >
+                                <img src="./img/icons/mail.svg" alt="" aria-hidden="true" />
+                                <span>Envoyer par e-mail</span>
+                            </button>
+                         </div>
                     </div>
 
                     <p className="text">Vous voulez ajuster quelques détails ou recommencer votre projet ?</p>
@@ -73,6 +91,9 @@ const VisualisationLayout = () => {
                 </div>
                 
             </div>
+            {isEmailModalOpen && (
+                <EmailPdfModal pdf={pdf} onClose={() => setIsEmailModalOpen(false)} />
+            )}
         </>
     );
 };

@@ -1,4 +1,5 @@
 import Scene from "./Scene";
+import SceneLoadingOverlay from './SceneLoadingOverlay';
 import UI from "../ui/UI";
 import s from './ConfiguratorLayout.module.scss'
 import { useEffect } from 'react'
@@ -23,17 +24,17 @@ export default function ConfiguratorLayout() {
         return <div>Erreur : {error}</div>
     }
 
-    if (isLoading || !cleanedData) {
-        return <div className={s.loading}>Chargement...</div>
-    }
-
     return (
-        <div className={s.configuratorLayout}>
-            <UI />
-            <div className={s.sceneWrapper}>
-                <Scene />
-            </div>
-          
-        </div>
+        <>
+            <SceneLoadingOverlay forceVisible={isLoading || !cleanedData} />
+            {!isLoading && cleanedData && (
+                <div className={s.configuratorLayout}>
+                    <UI />
+                    <div className={s.sceneWrapper}>
+                        <Scene />
+                    </div>
+                </div>
+            )}
+        </>
     );
 }

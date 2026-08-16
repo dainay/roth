@@ -1,6 +1,7 @@
+import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
-import { GizmoHelper, GizmoViewport, OrbitControls } from "@react-three/drei";
+import { GizmoHelper, GizmoViewport, OrbitControls, Preload } from "@react-three/drei";
 
 
 import Lighting from "./Lighting";
@@ -25,44 +26,47 @@ export default function Scene() {
             linear={false}
         >
             <color attach="background" args={["#161616"]} />
-            <Lighting />
+            <Suspense fallback={null}>
+                <Lighting />
 
-            {/* **** scene ****** */}
+                {/* **** scene ****** */}
 
-            <Switcher />
+                <Switcher />
 
-            <Decors /> 
-            <Receveurs />
-            <Parois />
-            <Profiles />
-            <Nichepanels />
-            <Vipanels /> 
+                <Decors />
+                <Receveurs />
+                <Parois />
+                <Profiles />
+                <Nichepanels />
+                <Vipanels />
 
-            {/* **** scene ****** */}
+                {/* **** scene ****** */}
  
-            <OrbitControls target={[-0.5, 1, -1]}
-                enablePan={true}
-                enableZoom={true}
-                // minDistance={0}
-                // maxDistance={2.6}
-                // minPolarAngle={Math.PI / 2.6}
-                // maxPolarAngle={Math.PI / 1.6}
-                // minAzimuthAngle={Math.PI / 8}
-                // maxAzimuthAngle={Math.PI / 2.5}
-                enableDamping={false}
-                rotateSpeed={0.1}
-                zoomSpeed={3}
-                dampingFactor={0.08}
-            />
-            <GizmoHelper
-                alignment="bottom-right"
-                margin={[80, 80]}
-            >
-                <GizmoViewport
-                    axisColors={['#ff3653', '#8adb00', '#2c8fff']}
-                    labelColor="white"
+                <OrbitControls target={[-0.5, 1, -1]}
+                    enablePan={true}
+                    enableZoom={true}
+                    // minDistance={0}
+                    // maxDistance={2.6}
+                    // minPolarAngle={Math.PI / 2.6}
+                    // maxPolarAngle={Math.PI / 1.6}
+                    // minAzimuthAngle={Math.PI / 8}
+                    // maxAzimuthAngle={Math.PI / 2.5}
+                    enableDamping={false}
+                    rotateSpeed={0.1}
+                    zoomSpeed={3}
+                    dampingFactor={0.08}
                 />
-            </GizmoHelper>
+                <GizmoHelper
+                    alignment="bottom-right"
+                    margin={[80, 80]}
+                >
+                    <GizmoViewport
+                        axisColors={['#ff3653', '#8adb00', '#2c8fff']}
+                        labelColor="white"
+                    />
+                </GizmoHelper>
+                <Preload all />
+            </Suspense>
         </Canvas>
     );
 }
