@@ -34,6 +34,10 @@ export default function SceneLoadingOverlay({ forceVisible = false }) {
                 <div className={s.spinner} role="status" aria-label="Chargement de la texture" />
             ) : (
                 <div className={s.content} role="status" aria-live="polite">
+                    <div className={s.brandMark}>
+                        <img src="./img/logo.svg" alt="Roth" />
+                    </div>
+                    <span className={s.eyebrow}>Configuration de votre espace douche</span>
                     <h1>Configurateur PASTEL</h1>
                     <div
                         className={s.progressTrack}

@@ -280,7 +280,13 @@ export default function UI() {
                                 }}
                             >
                                 <div className={s.imgVipanelWrapper}>
-                                    <img className={s.imgVipanel} src={getPhotoUrl(item.vignette)} alt={item.decor} />
+                                    <img
+                                        className={s.imgVipanel}
+                                        src={getPhotoUrl(item.vignette)}
+                                        alt={item.decor}
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
                                 </div>
                                 <span>{item.nom}</span>
                             </Button>
