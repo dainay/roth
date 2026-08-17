@@ -123,7 +123,7 @@ useHelper(
 
             <Environment
                 resolution={16}
-                preset="apartment"
+                files="./hdr/lebombo_1k.hdr"
                 environmentIntensity={0.1}
 
             >
