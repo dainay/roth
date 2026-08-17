@@ -40,14 +40,7 @@ const VisualisationLayout = () => {
                     <h2 className="text-center">Recevoir mon récapitulatif PDF</h2>
 
                     <div className={s.wrapper_buttonsPDF}>
-                         <div>
-                             <h3>Sur mon téléphone</h3>
-                            <p>Scanner le QR code</p>
-                            <div className={s.buttonPDF}>
-                                <PdfQrCode className={s.qr} link={pdf} />
-                            </div>
-
-                         </div>
+                        
                          <div>
                             <h3>Par e-mail</h3>
                             <p>Recevoir le PDF</p>
@@ -60,6 +53,14 @@ const VisualisationLayout = () => {
                                 <img src="./img/icons/mail.svg" alt="" aria-hidden="true" />
                                 {/* <span>Envoyer par e-mail</span> */}
                             </button>
+                         </div>
+                          <div>
+                             <h3>Sur mon téléphone</h3>
+                            <p>Télécharger le PDF</p>
+                            <div className={s.buttonPDF}>
+                                <PdfQrCode className={s.qr} link={pdf} />
+                            </div>
+
                          </div>
                     </div>
 

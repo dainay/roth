@@ -35,24 +35,24 @@ export default function SceneLoadingOverlay({ forceVisible = false }) {
             ) : (
                 <div className={s.content} role="status" aria-live="polite">
                     <div className={s.brandMark}>
-                        <img src="./img/logo.svg" alt="Roth" />
+                        <img src="./img/Logo-red.svg" alt="Roth" />
                     </div>
-                    <span className={s.eyebrow}>Configuration de votre espace douche</span>
-                    <h1>Configurateur PASTEL</h1>
+                    <span className={s.eyebrow}>Imaginez votre salle de bain</span>
+                    <h1>Projet d'espace douche <b>PASTEL</b></h1>
                     <div
                         className={s.progressTrack}
                         role="progressbar"
-                        aria-label="Chargement de la scène 3D"
+                        aria-label="Chargement de la scène"
                         aria-valuemin="0"
                         aria-valuemax="100"
                         aria-valuenow={displayedProgress}
                     >
                         <span style={{ width: `${displayedProgress}%` }} />
                     </div>
-                    <p>
+                    <p className="text-center"> 
                         {errors.length > 0
                             ? 'Certaines ressources n’ont pas pu être chargées.'
-                            : `Chargement de la scène 3D… ${displayedProgress} %`}
+                            : `Le configurateur se met en place pour vous… ${displayedProgress} %`}
                     </p>
                 </div>
             )}

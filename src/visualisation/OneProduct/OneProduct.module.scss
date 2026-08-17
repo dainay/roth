@@ -3,6 +3,13 @@
     flex-direction: column;
     width: calc(100% /3 - 10px);
 
+    &:hover {
+         .link {
+            background-color: #0a0a0a;
+            color: #fff;  
+         }
+    }
+
     h3 {
         font-size: 13px; 
         display: -webkit-box;

@@ -1,95 +1,89 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react'
 
-import { sendPdfByEmailFake } from '../api/email';
-
-import s from './EmailPdfModal.module.scss';
+import { sendPdfByEmail } from '../api/api'
+import s from './EmailPdfModal.module.scss'
 
 const EmailPdfModal = ({ pdf, onClose }) => {
-    const titleId = useId();
-    const nameId = useId();
-    const emailId = useId();
-    const modalRef = useRef(null);
-    const nameInputRef = useRef(null);
-    const successButtonRef = useRef(null);
+    const dialogRef = useRef(null)
 
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [status, setStatus] = useState('idle');
-    const [error, setError] = useState('');
+    const [name, setName] = useState('')
+    const [surname, setSurname] = useState('')
+    const [civility, setCivility] = useState('')
+    const [email, setEmail] = useState('')
+    const [status, setStatus] = useState('idle')
+    const [error, setError] = useState('')
 
     useEffect(() => {
-        nameInputRef.current?.focus();
+        const dialog = dialogRef.current
 
-        const handleKeyDown = (event) => {
-            if (event.key === 'Escape') {
-                onClose();
-                return;
-            }
-
-            if (event.key !== 'Tab') return;
-
-            const focusableElements = modalRef.current?.querySelectorAll(
-                'button:not([disabled]), input:not([disabled])',
-            );
-
-            if (!focusableElements?.length) return;
-
-            const firstElement = focusableElements[0];
-            const lastElement = focusableElements[focusableElements.length - 1];
-
-            if (event.shiftKey && document.activeElement === firstElement) {
-                event.preventDefault();
-                lastElement.focus();
-            } else if (!event.shiftKey && document.activeElement === lastElement) {
-                event.preventDefault();
-                firstElement.focus();
-            }
-        };
-
-        document.addEventListener('keydown', handleKeyDown);
-        return () => document.removeEventListener('keydown', handleKeyDown);
-    }, [onClose]);
-
-    useEffect(() => {
-        if (status === 'success') {
-            successButtonRef.current?.focus();
+        if (dialog && !dialog.open) {
+            dialog.showModal()
         }
-    }, [status]);
+
+        return () => {
+            if (dialog?.open) {
+                dialog.close()
+            }
+        }
+    }, [])
+
+    const handleClose = () => {
+        if (status !== 'submitting') {
+            onClose()
+        }
+    }
+
+    const handleCancel = (event) => {
+        event.preventDefault()
+        handleClose()
+    }
+
+    const handleBackdropClick = (event) => {
+        if (event.target === event.currentTarget) {
+            handleClose()
+        }
+    }
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
-        setStatus('submitting');
-        setError('');
+        event.preventDefault()
+        setStatus('submitting')
+        setError('')
 
         try {
-            await sendPdfByEmailFake({ name, email, pdf });
-            setStatus('success');
-        } catch (submissionError) {
-            console.error('[E-mail] Erreur d’envoi du PDF :', submissionError)
-            setError(submissionError.message || 'Une erreur est survenue. Veuillez réessayer.');
-            setStatus('idle');
-        }
-    };
+            await sendPdfByEmail({ name, surname, civility, email, pdf })
+            setStatus('success')
 
-    const handleBackdropMouseDown = (event) => {
-        if (event.target === event.currentTarget && status !== 'submitting') {
-            onClose();
+            //FOR EXPO ONLY: reload the page after 7s
+            // setTimeout(() => {
+            //     window.location.reload()
+            // }, 7000)
+
+        } catch (error) {
+            console.error('[E-mail] Erreur d’envoi du PDF :', error)
+
+            setError(
+                error instanceof Error
+                    ? error.message
+                    : 'Une erreur est survenue. Veuillez réessayer.'
+            )
+
+            setStatus('idle')
         }
-    };
+    }
 
     return (
-        <div className={s.backdrop} onMouseDown={handleBackdropMouseDown}>
-            <section
-                ref={modalRef}
-                className={s.modal}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby={titleId}
-            >
+        <dialog
+            ref={dialogRef}
+            className={s.dialog}
+            aria-labelledby="email-pdf-title"
+            onCancel={handleCancel}
+            onClick={handleBackdropClick}
+        >
+            <section className={s.modal}>
                 <button
                     type="button"
                     className={s.closeButton}
-                    onClick={onClose}
+                    onClick={handleClose}
                     aria-label="Fermer la fenêtre"
                     disabled={status === 'submitting'}
                 >
@@ -98,40 +92,78 @@ const EmailPdfModal = ({ pdf, onClose }) => {
 
                 {status === 'success' ? (
                     <div className={s.success} role="status">
-                        <div className={s.successIcon} aria-hidden="true">✓</div>
-                        <h2 id={titleId}>E-mail envoyé</h2>
-                        <p>Votre récapitulatif a bien été envoyé à {email.trim()}.</p>
+                         
+                        <h2  >E-mail envoyé</h2>
+
+                        <p className="text">
+                            Votre récapitulatif a bien été envoyé à{' '}
+                            <b>{email.trim()}</b>. 
+                        </p>
+                        <p className="text">Cette page sera actualisée automatiquement dans quelques secondes.</p>
+
                         <button
-                            ref={successButtonRef}
                             type="button"
-                            className={s.primaryButton}
-                            onClick={onClose}
+                            className={`${s.primaryButton} btn`}
+                            onClick={handleClose}
                         >
                             Fermer
                         </button>
                     </div>
                 ) : (
                     <>
-                        <h2 id={titleId}>Recevoir mon récapitulatif</h2>
-                        <p className={s.intro}>Indiquez vos coordonnées pour recevoir votre PDF par e-mail.</p>
+                        <h2 >
+                            Recevoir mon récapitulatif
+                        </h2>
+
+                        <p className="text">
+                            Indiquez vos coordonnées pour recevoir votre PDF
+                            par e-mail.
+                        </p>
 
                         <form className={s.form} onSubmit={handleSubmit}>
-                            <label htmlFor={nameId}>Nom</label>
+                            <label htmlFor="customer-civility">Civilité</label>
+                            <select
+                                id="customer-civility"
+                                name="civility"
+                                value={civility}
+                                onChange={(event) => setCivility(event.target.value)}
+                                required
+                                disabled={status === 'submitting'}
+                            >
+                                <option value="">Sélectionner</option>
+                                <option value="M.">M.</option>
+                                <option value="Mme">Mme</option>
+                            </select>
+
+                            <label htmlFor="customer-surname">Nom</label>
                             <input
-                                ref={nameInputRef}
-                                id={nameId}
+                                id="customer-surname"
+                                name="surname"
+                                type="text"
+                                value={surname}
+                                onChange={(event) => setSurname(event.target.value)}
+                                autoComplete="family-name"
+                                required
+                                autoFocus
+                                disabled={status === 'submitting'}
+                            />
+
+                            <label htmlFor="customer-name">Prénom</label>
+                            <input
+                                id="customer-name"
                                 name="name"
                                 type="text"
                                 value={name}
                                 onChange={(event) => setName(event.target.value)}
                                 autoComplete="name"
                                 required
+                                autoFocus
                                 disabled={status === 'submitting'}
                             />
 
-                            <label htmlFor={emailId}>E-mail</label>
+                            <label htmlFor="customer-email">E-mail</label>
                             <input
-                                id={emailId}
+                                id="customer-email"
                                 name="email"
                                 type="email"
                                 value={email}
@@ -141,21 +173,27 @@ const EmailPdfModal = ({ pdf, onClose }) => {
                                 disabled={status === 'submitting'}
                             />
 
-                            {error && <p className={s.error} role="alert">{error}</p>}
+                            {error && (
+                                <p className={s.error} role="alert">
+                                    {error}
+                                </p>
+                            )}
 
                             <button
                                 type="submit"
-                                className={s.primaryButton}
+                                className={`${s.primaryButton} btn`}
                                 disabled={status === 'submitting'}
                             >
-                                {status === 'submitting' ? 'Envoi en cours…' : 'Envoyer mon PDF'}
+                                {status === 'submitting'
+                                    ? 'Envoi en cours…'
+                                    : 'Envoyer mon PDF'}
                             </button>
                         </form>
                     </>
                 )}
             </section>
-        </div>
-    );
-};
+        </dialog>
+    )
+}
 
-export default EmailPdfModal;
+export default EmailPdfModal

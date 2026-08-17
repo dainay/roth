@@ -32,7 +32,7 @@ body {
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #23be3d;
+    background: #E30613;
     border-radius: 10px;
  
 }
@@ -111,5 +111,5 @@ body,
   }
 
   .text-center {
-    text-align: center;
+    text-align: center !important;
   }

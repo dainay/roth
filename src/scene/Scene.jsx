@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
-import { OrbitControls, Preload } from "@react-three/drei";
+import { OrbitControls, Preload, GizmoHelper, GizmoViewport} from "@react-three/drei";
 
 
 import Lighting from "./Lighting";
@@ -16,11 +16,12 @@ import Nichepanels from "../models/Nichepanels";
 import Vipanels from "../models/Vipanels";
 
 export default function Scene() {
+    
     return (
         <Canvas 
             frameloop="demand"
             dpr={1}
-            camera={{ position: [2, 1, 2], fov: 60 }}
+            camera={{ position: [0, 1, 2], fov: 60 }}
             shadows={{ type: THREE.PCFShadowMap }}
             gl={{ antialias: true }}
             linear={false}
@@ -42,21 +43,24 @@ export default function Scene() {
 
                 {/* **** scene ****** */}
  
-                <OrbitControls target={[-0.5, 1, -1]}
-                    enablePan={true}
+                <OrbitControls target={[-0.7, 1, -1]}
+                    enablePan={false}
                     enableZoom={true}
-                    // minDistance={0}
-                    // maxDistance={2.6}
-                    // minPolarAngle={Math.PI / 2.6}
-                    // maxPolarAngle={Math.PI / 1.6}
-                    // minAzimuthAngle={Math.PI / 8}
-                    // maxAzimuthAngle={Math.PI / 2.5}
-                    enableDamping={false}
+                     
+                    minDistance={0}
+                    maxDistance={3}
+                    zoomSpeed={2}
+
+                    minPolarAngle={Math.PI / 2.6}
+                    maxPolarAngle={Math.PI / 1.6}
+                    minAzimuthAngle={Math.PI / 8}
+                    maxAzimuthAngle={Math.PI / 2.5}
                     rotateSpeed={0.1}
-                    zoomSpeed={3}
-                    dampingFactor={0.08}
+
+                    enableDamping={false}
+                    dampingFactor={0.08} 
                 />
-                {/* <GizmoHelper
+                <GizmoHelper
                     alignment="bottom-right"
                     margin={[80, 80]}
                 >
@@ -64,7 +68,7 @@ export default function Scene() {
                         axisColors={['#ff3653', '#8adb00', '#2c8fff']}
                         labelColor="white"
                     />
-                </GizmoHelper> */}
+                </GizmoHelper>
                 <Preload all />
             </Suspense>
         </Canvas>
