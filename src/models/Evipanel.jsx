@@ -3,7 +3,7 @@ import { useTexture, Html } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 import s from './Evipanel.module.css'
 
-useTexture.preload('/img/evipanel.webp')
+useTexture.preload('./img/evipanel.webp')
 
 export default function Evipanel({ onPointerEnter, onPointerLeave, geometry, gradientTexture, visible }) {
 
