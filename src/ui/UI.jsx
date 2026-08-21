@@ -230,7 +230,7 @@ export default function UI() {
             </div>
 
             <div className={s.blockButtons}>
-                <h2>FINITION DES PROFILÉS DE JONCTION</h2>
+                <h2>Finition des profilé d'angle pour VIPANEL®</h2>
 
                 {cleanedData?.profiles[0].finitionsDisponibles
                     .filter((item) => PROFILE_ASSETS[item])

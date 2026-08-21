@@ -122,7 +122,7 @@ useHelper(
             />
 
             <Environment
-                resolution={16}
+                resolution={64}
                 files="./hdr/lebombo_1k.hdr"
                 environmentIntensity={0.1}
 
@@ -146,14 +146,14 @@ useHelper(
                     color="#fff4e8"
                 />
 
-                <Lightformer
+                {/* <Lightformer
                     form="ring"
                     intensity={10}
                     position={[6, -0.5, -6]}
                     target={[0, 0, 2]}
                     scale={[2, 2]}
                     color="#967d62"
-                />
+                /> */}
             </Environment>
         </>
     );

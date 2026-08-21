@@ -1,50 +1,49 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+const backendTarget = 'http://127.0.0.1:8084'
+
 export default defineConfig({
-  plugins: [react()],
-  base: './',
+    plugins: [react()],
+    base: './',
 
-  build: {
-    outDir: 'docs',
-    emptyOutDir: true,
-  },
+    build: {
+        outDir: 'docs',
+        emptyOutDir: true,
+    },
 
-//   server: {
-//     proxy: { 
-     
-//       '/api': {
-//         target: 'https://217.182.192.79',
-//         changeOrigin: true,
-//         secure: false,
+    server: {
+        proxy: {
+            '/api': {
+                target: backendTarget,
+                changeOrigin: true,
 
-//         headers: {
-//           Host: 'testwww.roth-france.fr',
-//         },
+                configure(proxy) {
+                    proxy.on('proxyReq', (proxyReq, req) => {
+                        console.log(
+                            `[api proxy] ${req.method} ${req.url} -> ${proxyReq.path}`
+                        )
+                    })
 
-//         configure(proxy) {
-//           proxy.on('proxyReq', (proxyReq, req) => {
-//             console.log(
-//               `[api proxy] ${req.method} ${req.url} -> ${proxyReq.path}`
-//             )
-//           })
+                    proxy.on('proxyRes', (proxyRes, req) => {
+                        console.log(
+                            `[api proxy] ${req.method} ${req.url} <- ${proxyRes.statusCode}`
+                        )
+                    })
 
-//           proxy.on('proxyRes', (proxyRes, req) => {
-//             console.log(
-//               `[api proxy] ${req.method} ${req.url} <- ${proxyRes.statusCode}`
-//             )
-//           })
+                    proxy.on('error', (error, req) => {
+                        console.error(
+                            `[api proxy error] ${req.method} ${req.url}`,
+                            error
+                        )
+                    })
+                },
+            },
 
-//           proxy.on('error', (error, req) => {
-//             console.error(
-//               `[api proxy error] ${req.method} ${req.url}`,
-//               error
-//             )
-//           })
-//         },
-//       },
-
- 
-//     },
-//   },
+            '/photos': {
+                target: backendTarget,
+                changeOrigin: true,
+            },
+        },
+    },
 })

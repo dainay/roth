@@ -1,11 +1,15 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '')
 
-const getApiUrl = (path) => {
-    if (!API_BASE_URL) {
-        throw new Error('VITE_API_BASE_URL is not configured')
-    }
+// const getApiUrl = (path) => {
+//     if (!API_BASE_URL) {
+//         throw new Error('VITE_API_BASE_URL is not configured')
+//     }
 
-    return `${API_BASE_URL}/${path.replace(/^\/+/, '')}`
+//     return `${API_BASE_URL}/${path.replace(/^\/+/, '')}` 
+// }
+
+const getApiUrl = (path) => {
+    return `/${path.replace(/^\/+/, '')}`
 }
 
 const fetchJson = async (path, options, fallbackMessage) => {

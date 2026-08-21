@@ -9,12 +9,12 @@ import { RECEVEUR_ASSETS } from '../conf/lib'
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/RECEVEURS_compressed.glb')
 
-    const { 
+    const {
         sizeReceveur,
         textureReceveur,
 
     } = useConfiguratorStore(
-        useShallow((state) => ({ 
+        useShallow((state) => ({
             sizeReceveur: state.selection.sizeReceveur,
             textureReceveur: state.selection.textureReceveur
         }))
@@ -22,33 +22,33 @@ export default function Model(props) {
 
     // console.log('Model Receveurs:', sizeReceveur, receveur, textureReceveur);
 
-      const receveur1000 = useMemo(() => {
-            const geometry = nodes.Natura_1000x900_1.geometry.clone()
-            const uv = geometry.attributes.uv
-    
-            for (let i = 0; i < uv.count; i++) {
-                uv.setY(i, uv.getY(i) * 0.5)
-            }
-    
-            uv.needsUpdate = true
-    
-            return geometry
-        }, [nodes])
+    const receveur1000 = useMemo(() => {
+        const geometry = nodes.Natura_1000x900_1.geometry.clone()
+        const uv = geometry.attributes.uv
 
-        
+        for (let i = 0; i < uv.count; i++) {
+            uv.setY(i, uv.getY(i) * 0.5)
+        }
 
-      const receveur1200 = useMemo(() => {
-            const geometry = nodes.Natura_1200x900_1.geometry.clone()
-            const uv = geometry.attributes.uv
-    
-            for (let i = 0; i < uv.count; i++) {
-                uv.setY(i, uv.getY(i) * 0.55)
-            }
-    
-            uv.needsUpdate = true
-    
-            return geometry
-        }, [nodes])
+        uv.needsUpdate = true
+
+        return geometry
+    }, [nodes])
+
+
+
+    const receveur1200 = useMemo(() => {
+        const geometry = nodes.Natura_1200x900_1.geometry.clone()
+        const uv = geometry.attributes.uv
+
+        for (let i = 0; i < uv.count; i++) {
+            uv.setY(i, uv.getY(i) * 0.55)
+        }
+
+        uv.needsUpdate = true
+
+        return geometry
+    }, [nodes])
 
     return (
         <group {...props} dispose={null}>
@@ -91,7 +91,7 @@ export default function Model(props) {
                 material={materials['+GLASS-VOLUMED']}
             />
             <mesh
-
+                position={[-0.01, -0.003, 0.028]}
                 receiveShadow
                 geometry={nodes.Soaps.geometry}
                 material={materials['+SOAP']}
@@ -149,20 +149,53 @@ export default function Model(props) {
                 <mesh
                     castShadow
                     receiveShadow
-                    geometry={nodes.pampas_twigs005.geometry}
+                    geometry={nodes.pampas_twigs001.geometry}
                     material={materials['+PLUME']}
-                />
-                <mesh
-                    castShadow
-
-                    geometry={nodes.pampas_twigs007.geometry}
-                    material={materials['+PLUME']}
+                    position={[-1.683, 0.666, -1.291]}
                 />
                 <mesh
                     castShadow
                     receiveShadow
-                    geometry={nodes.pampas_twigs009.geometry}
+                    geometry={nodes.pampas_twigs002.geometry}
                     material={materials['+PLUME']}
+                    position={[-1.683, 0.671, -1.366]}
+                    rotation={[0, 0, -Math.PI]}
+                    scale={[-1, -1, -0.794]}
+                />
+                <mesh
+                    castShadow
+                    receiveShadow
+                    geometry={nodes.pampas_twigs003.geometry}
+                    material={materials['+PLUME']}
+                    position={[-1.682, 0.683, -1.335]}
+                    rotation={[0.272, 0, -Math.PI]}
+                    scale={[-1, -1.224, -0.81]}
+                />
+                <mesh
+                    castShadow
+                    receiveShadow
+                    geometry={nodes.pampas_twigs004.geometry}
+                    material={materials['+PLUME']}
+                    position={[-1.705, 0.678, -1.366]}
+                    rotation={[0, 0, -Math.PI]}
+                    scale={[-0.737, -1.187, -0.784]}
+                />
+                <mesh
+                    castShadow
+                    receiveShadow
+                    geometry={nodes.pampas_twigs005.geometry}
+                    material={materials['+PLUME']}
+                    position={[-1.743, 0.664, -1.291]}
+                    rotation={[0, 0, 0.419]}
+                />
+                <mesh
+                    castShadow
+                    receiveShadow
+                    geometry={nodes.pampas_twigs006.geometry}
+                    material={materials['+PLUME']}
+                    position={[-1.737, 0.698, -1.341]}
+                    rotation={[-0.377, 0, 0.419]}
+                    scale={[1.095, 1.452, 1.074]}
                 />
             </mesh>
             <mesh
@@ -181,7 +214,7 @@ export default function Model(props) {
                 geometry={nodes.Perfume_Botle_4.geometry}
                 material={materials['+Plastic-Rose']}
             />
-            {(sizeReceveur === 1000 && 
+            {(sizeReceveur === 1000 &&
                 <mesh
                     receiveShadow
                     geometry={receveur1000}
@@ -190,22 +223,22 @@ export default function Model(props) {
                     scale={[0.807, 1, 1]}
                 />
             )}
-                {(sizeReceveur === 1200 && 
-            <mesh 
-                receiveShadow
-                geometry={receveur1200}
-                material={materials['+RECEVEUR']}
-                position={[-0.02, 0, 0.005]}
-                scale={[0.968, 1, 1]}
-            />)}
-             {(sizeReceveur === 1600 && 
-            <mesh
-                receiveShadow
-                geometry={nodes.Natura_1600x900_1.geometry}
-                material={materials['+RECEVEUR']}
-                position={[-1.076, -0.324, -2.086]}
-                scale={[1.143, 1, 1]}
-            />)}
+            {(sizeReceveur === 1200 &&
+                <mesh
+                    receiveShadow
+                    geometry={receveur1200}
+                    material={materials['+RECEVEUR']}
+                    position={[-0.02, 0, 0.005]}
+                    scale={[0.968, 1, 1]}
+                />)}
+            {(sizeReceveur === 1600 &&
+                <mesh
+                    receiveShadow
+                    geometry={nodes.Natura_1600x900_1.geometry}
+                    material={materials['+RECEVEUR']}
+                    position={[-1.076, -0.324, -2.086]}
+                    scale={[1.143, 1, 1]}
+                />)}
         </group>
     )
 }

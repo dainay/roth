@@ -11,7 +11,7 @@ import { FINITION_ASSETS } from '../conf/lib'
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/PAROIS_compressed.glb')
     const invalidate = useThree((state) => state.invalidate)
-    
+
     const protectionMaterial = useMemo(
         () => new THREE.MeshStandardMaterial({
             name: '+ PROTECTION (web)',
@@ -71,10 +71,10 @@ export default function Model(props) {
 
         mSerigraphie.roughness = 0
         mSerigraphie.metalness = 0
-         mSerigraphie.transmission = 0
-    mSerigraphie.opacity = 1
-    mSerigraphie.transparent = true
-    mSerigraphie.depthWrite = false
+        mSerigraphie.transmission = 0
+        mSerigraphie.opacity = 1
+        mSerigraphie.transparent = true
+        mSerigraphie.depthWrite = false
 
         mSerigraphie.needsUpdate = true
         invalidate()
@@ -245,20 +245,19 @@ export default function Model(props) {
 
             {(paroi === 'PL PIF' && montage === 'angle') && (
                 <>
-                    <group position={[-0.883, -0.186, -1.678]}>
+                    <group position={[-0.94, 0.655, -1.668]}>
                         <mesh
-                            castShadow
-                            geometry={nodes.Door_1.geometry}
-                            material={materials['+FINITION']}
-                        />
-                        <mesh
-                            geometry={nodes.Door_2.geometry}
+                            geometry={nodes.Door002_1.geometry}
                             material={materials['+GLASS']}
                         />
                         <mesh
-                            castShadow
-                            geometry={nodes.Door_3.geometry}
+                            geometry={nodes.Door002_2.geometry}
                             material={protectionMaterial}
+                        />
+                        <mesh
+                            castShadow
+                            geometry={nodes.Door002_3.geometry}
+                            material={materials['+FINITION']}
                         />
                     </group>
                     <group position={[-0.883, -0.186, -1.678]}>
@@ -282,20 +281,21 @@ export default function Model(props) {
 
             {(paroi === 'PL PIV' && montage === 'niche') && (
                 <>
-                    <group position={[-1.424, 0.684, -1.666]} rotation={[1.575, 0, -1.571]}>
+                    <group position={[-1.424, 0.689, -1.666]}
+                        rotation={[1.575, 0, -1.571]}>
                         <mesh
                             castShadow
-                            geometry={nodes.PLPIV_1000x2000_2.geometry}
+                            geometry={nodes.PLPIV_1000x2000001_1.geometry}
                             material={materials['+FINITION']}
                         />
                         <mesh
                             castShadow
-                            geometry={nodes.PLPIV_1000x2000_3.geometry}
+                            geometry={nodes.PLPIV_1000x2000001_2.geometry}
                             material={protectionMaterial}
                         />
                     </group>
 
-                    <group position={[-0.955, 0.691, -1.665]} rotation={[-1.567, 0, -Math.PI]}>
+                    <group position={[-1.394, 0.691, -1.665]} rotation={[-1.567, 0, -Math.PI]}>
                         <mesh
                             geometry={nodes.Moving_door001_1.geometry}
                             material={materials['+GLASS']}
@@ -305,6 +305,11 @@ export default function Model(props) {
                             geometry={nodes.Moving_door001_2.geometry}
                             material={materials['+FINITION']}
                         />
+                        <mesh
+                            castShadow
+                            geometry={nodes.Moving_door001_3.geometry}
+                            material={protectionMaterial}
+                        />
                     </group>
 
                 </>
@@ -312,7 +317,7 @@ export default function Model(props) {
 
             {(paroi === 'PL PIV' && montage === 'angle') && (
                 <>
-                    <group position={[-1.391, 0.687, -1.652]} rotation={[1.575, 0, -Math.PI / 2]}>
+                    {/* <group position={[-1.391, 0.687, -1.652]} rotation={[1.575, 0, -Math.PI / 2]}>
                         <mesh
                             castShadow
                             geometry={nodes.Moving_door_1.geometry}
@@ -322,20 +327,38 @@ export default function Model(props) {
                             geometry={nodes.Moving_door_2.geometry}
                             material={materials['+GLASS']}
                         />
+                    </group> */}
+                    <group position={[-0.447, 1.681, -2.517]} rotation={[-3.137, Math.PI / 2, 0]}>
+
+                        <mesh
+                            geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000001_1'].geometry}
+                            material={materials['+ PROTECTION']}
+                        />
+
+                        <mesh
+                            geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000001_2'].geometry}
+                            material={materials['+FINITION']}
+                        />
+
+                        <mesh
+                            geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000001_3'].geometry}
+                            material={materials['+GLASS']}
+                        />
                     </group>
+
                     <group position={[-0.447, 1.681, -2.517]} rotation={[-3.137, Math.PI / 2, 0]}>
                         <mesh
                             castShadow
-                            geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000_2'].geometry}
+                            geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000002_2'].geometry}
                             material={protectionMaterial}
                         />
                         <mesh
                             castShadow
-                            geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000_3'].geometry}
+                            geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000002_1'].geometry}
                             material={materials['+FINITION']}
                         />
                         <mesh
-                            geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000_4'].geometry}
+                            geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000002_3'].geometry}
                             material={materials['+GLASS']}
                         />
                     </group>
@@ -383,12 +406,12 @@ export default function Model(props) {
             )}
 
             {(paroi === 'PL WRU' && verre === 'CR') && (
-            <mesh
-                geometry={nodes.Serigraphie_Chevrons_arondie.geometry}
-                material={materials['Serigraphie Shevrons arrondi']}
-                position={[-0.464, 0.677, -1.665]}
-                scale={[0.317, 0.33, 0.094]}
-            />
+                <mesh
+                    geometry={nodes.Serigraphie_Chevrons_arondie.geometry}
+                    material={materials['Serigraphie Shevrons arrondi']}
+                    position={[-0.464, 0.677, -1.665]}
+                    scale={[0.317, 0.33, 0.094]}
+                />
             )}
 
             {/* <mesh
@@ -431,7 +454,7 @@ export default function Model(props) {
                 geometry={nodes.Towel_rack_1.geometry}
                 material={materials['+FINITION']}
             />
-            <group position={[0.335, 1.022, -2.483]} rotation={[0.051, 0, 0]}>
+            <group position={[0.335, 1.022, -2.483]} >
                 <mesh
 
                     geometry={nodes.towel002_1.geometry}
@@ -443,7 +466,9 @@ export default function Model(props) {
                     material={materials['+TOWEL']}
                 />
             </group>
-            <group position={[0.528, 0.872, -2.42]} rotation={[3.054, 0, 0]} scale={[-1, -1.001, -1.251]}>
+            <group position={[0.502, 0.869, -2.42]}
+                rotation={[3.022, 0, 0]}
+                scale={[-0.995, -1, -1]}>
                 <mesh
                     geometry={nodes.towel002_1.geometry}
                     material={materials['+TOWEL-LINE']}

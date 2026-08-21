@@ -107,6 +107,15 @@ const useConfiguratorStore = create((set, get) => ({
                         state.selection.montage,
                         availableMontages
                     ),
+                    niche:
+                        value === 'PL PIV'
+                            ? null
+                            : state.selection.niche,
+
+                    finitionNiche:
+                        value === 'PL PIV'
+                            ? null
+                            : state.selection.finitionNiche,
 
 
                 },
@@ -153,7 +162,7 @@ const useConfiguratorStore = create((set, get) => ({
                         verresDisponibles: [...(item.verresDisponibles ?? [])],
                     })),
                 vipanels: data.vipanels.filter(
-                    (item) => item.files?.["1500x2550"]
+                    (item) => item.files?.["1500x2550"] && item.files?.["1000x2550"] && item.files?.["1000x2550"].length > 0
                 ),
             };
 

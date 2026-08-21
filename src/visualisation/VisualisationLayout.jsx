@@ -78,8 +78,8 @@ const VisualisationLayout = () => {
                         {products.receveur?.map((product) => (
                             <OneProduct key={`receveur-${product.codearticle}`} product={product} type="Receveur" />
                         ))}
-                        {products.profile?.map((product) => (
-                            <OneProduct key={`profile-${product.codearticle}`} product={product} type="Profilé de jonction" imgClassName={s.imgWithWhiteBackground} />
+                        {products.profiles?.map((product) => (
+                            <OneProduct key={`profile-${product.codearticle}`} product={product} type="Profilé pour VIPANEL®" imgClassName={s.imgWithWhiteBackground} />
                         ))}
                         {products.niches?.map((product) => (
                             <OneProduct key={`niche-${product.codearticle}`} product={product} type="Niche" imgClassName={s.imgWithWhiteBackground} />

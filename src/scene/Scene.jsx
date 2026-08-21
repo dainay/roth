@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
-import { OrbitControls, Preload, GizmoHelper, GizmoViewport} from "@react-three/drei";
+import { OrbitControls, Preload, GizmoHelper, GizmoViewport } from "@react-three/drei";
 
 
 import Lighting from "./Lighting";
@@ -11,19 +11,24 @@ import Switcher from "../models/Switcher";
 import Decors from "../models/Decors";
 import Receveurs from "../models/Receveurs";
 import Parois from "../models/Parois";
-import Profiles from "../models/Profiles"; 
+import Profiles from "../models/Profiles";
 import Nichepanels from "../models/Nichepanels";
 import Vipanels from "../models/Vipanels";
 
+import PerfMonitor from "./Perf";
+
 export default function Scene() {
-    
+
     return (
-        <Canvas 
+        <Canvas
             frameloop="demand"
             dpr={1}
             camera={{ position: [0, 1, 2], fov: 60 }}
             shadows={{ type: THREE.PCFShadowMap }}
-            gl={{ antialias: true }}
+            gl={{
+                antialias: true,
+                transmissionResolutionScale: 0.5,
+            }}
             linear={false}
         >
             <color attach="background" args={["#161616"]} />
@@ -42,11 +47,11 @@ export default function Scene() {
                 <Vipanels />
 
                 {/* **** scene ****** */}
- 
+
                 <OrbitControls target={[-0.7, 1, -1]}
                     enablePan={false}
                     enableZoom={true}
-                     
+
                     minDistance={0}
                     maxDistance={3}
                     zoomSpeed={2}
@@ -57,10 +62,10 @@ export default function Scene() {
                     maxAzimuthAngle={Math.PI / 2.5}
                     rotateSpeed={0.1}
 
-                    enableDamping={false}
-                    dampingFactor={0.08} 
+                    // enableDamping={false}
+                    dampingFactor={0.08}
                 />
-                <GizmoHelper
+                {import.meta.env.DEV && <GizmoHelper
                     alignment="bottom-right"
                     margin={[80, 80]}
                 >
@@ -68,9 +73,12 @@ export default function Scene() {
                         axisColors={['#ff3653', '#8adb00', '#2c8fff']}
                         labelColor="white"
                     />
-                </GizmoHelper>
+                </GizmoHelper>}
                 <Preload all />
             </Suspense>
+
+            {import.meta.env.DEV && <PerfMonitor />}
+
         </Canvas>
     );
 }

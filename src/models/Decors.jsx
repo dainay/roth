@@ -23,73 +23,108 @@ export default function Model(props) {
         <group {...props} dispose={null}>
             <mesh
                 receiveShadow
-                geometry={nodes.Ceiling.geometry}
+                geometry={nodes.Ceiling_1.geometry}
                 material={materials['+CEILING']}
                 position={[-2.042, 2.208, -2.619]}
             />
             <mesh
                 receiveShadow
-                geometry={nodes.Floor.geometry}
+                geometry={nodes.Floor_1.geometry}
                 material={materials['Marble floor']}
                 position={[-2.165, -0.361, -2.545]}
             />
-            <group position={[-1.794, 1.313, 0.138]} rotation={[0, 0, Math.PI]} scale={1.517} >
-                <mesh
-                    geometry={nodes.ampoule_1004_1.geometry}
-                    material={materials['+GLASS']}
-                />
-                {mirrorLight && (
+            <group position={[-1.794, 2.172, 0.138]} rotation={[0, 0, Math.PI]} scale={1.517}>
+                <group position={[0, 0.566, 0]}>
                     <mesh
-                        geometry={nodes.ampoule_1004_2.geometry}
-                        material={materials.lumière}
+                        geometry={nodes.ampoule_1004_1.geometry}
+                        material={materials['+GLASS']}
                     />
-                )}
+                    {mirrorLight && (
+                        <mesh
+                            geometry={nodes.ampoule_1004_2.geometry}
+                            material={materials.lumière}
+                        />
+                    )}
+                    <mesh
+                        geometry={nodes.ampoule_1004_3.geometry}
+                        material={materials['+PLASTIC BLACK']}
+                    />
+                </group>
                 <mesh
-                    geometry={nodes.ampoule_1004_3.geometry}
+                    geometry={nodes.Cylinder054.geometry}
                     material={materials['+PLASTIC BLACK']}
+                    position={[0, 0.536, 0]}
+                />
+                <mesh
+                    castShadow
+                    receiveShadow
+                    geometry={nodes.Cylinder055.geometry}
+                    material={materials['+FINITION']}
+                    position={[0, 0.439, 0]}
+                />
+                <mesh
+                    castShadow
+                    receiveShadow
+                    geometry={nodes.Cylinder056.geometry}
+                    material={materials['+FINITION']}
+                    position={[0, 0.01, 0]}
+                />
+                <mesh
+                    castShadow
+                    geometry={nodes['httpswwwluminairefrplindby-plafonnier-enrique-ambre-003'].geometry}
+                    material={materials['+GLASS-VOLUMED']}
+                    position={[0, 0.573, 0]}
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        toggleMirrorLight(false)
+                    }}
+                    onPointerEnter={handlePointerEnter}
+                    onPointerLeave={handlePointerLeave}
+                />
+
+                <mesh
+                    castShadow
+                    receiveShadow
+                    geometry={nodes.Sphere010.geometry}
+                    material={materials['+FINITION']}
+                    position={[0, 0.516, 0]}
+                />
+                <mesh
+                    castShadow
+                    receiveShadow
+                    geometry={nodes.Sphere011.geometry}
+                    material={materials['+PLASTIC BLACK']}
+                    position={[0, 0.453, 0]}
                 />
             </group>
+
             <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.Cylinder055.geometry}
-                material={materials['+FINITION']}
-                position={[-1.794, 1.507, 0.138]}
-                rotation={[0, 0, Math.PI]}
-                scale={1.517}
-            />
-            <mesh
-                castShadow
-                geometry={nodes['httpswwwluminairefrplindby-plafonnier-enrique-ambre-003'].geometry}
-                material={materials['+GLASS-VOLUMED']}
-                position={[-1.794, 1.303, 0.138]}
-                rotation={[0, 0, Math.PI]}
-                scale={1.517}
-                onClick={(e) => {
-                    e.stopPropagation()
-                    toggleMirrorLight(false)
-                }}
-                onPointerEnter={handlePointerEnter}
-                onPointerLeave={handlePointerLeave}
-            />
-            <mesh
-                geometry={nodes['Mirror-LeftWall'].geometry}
+                geometry={nodes['Mirror-LeftWall_1'].geometry}
                 material={materials['Material.001']}
                 position={[-1.936, 1.267, -0.668]}
                 scale={[1, 0.707, 1.404]}
             />
+
             <group position={[-1.582, -0.346, 0.341]} rotation={[-0.116, 1.032, 0.144]} scale={1.173}>
                 <mesh
                     castShadow
+
                     geometry={nodes.Banana__Plants001_1.geometry}
                     material={materials.Plant_Banan}
                 />
                 <mesh
+
                     geometry={nodes.Banana__Plants001_2.geometry}
+                    material={materials['+PLASTIC BLACK']}
+                />
+                <mesh
+
+                    geometry={nodes.Banana__Plants001_3.geometry}
                     material={materials.Plant_Matti}
                 />
                 <mesh
-                    geometry={nodes.Banana__Plants001_3.geometry}
+
+                    geometry={nodes.Banana__Plants001_4.geometry}
                     material={materials['+Plant_Dali']}
                 />
             </group>
@@ -98,6 +133,21 @@ export default function Model(props) {
                 geometry={nodes.Back_wall.geometry}
                 material={nodes.Back_wall.material}
                 position={[-1.968, 0.911, -2.597]}
+            />
+            <mesh
+
+                geometry={nodes.Corner.geometry}
+                material={nodes.Corner.material}
+                position={[-1.696, 0.922, -2.555]}
+                scale={[10, 1, 0.2]}
+            />
+
+            <mesh
+
+                geometry={nodes.Right_wall.geometry}
+                material={nodes.Right_wall.material}
+                position={[-2.003, 0.927, -2.58]}
+                scale={[0.83, 1, 1]}
             />
 
             <mesh
