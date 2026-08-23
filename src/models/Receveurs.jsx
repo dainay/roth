@@ -20,6 +20,8 @@ export default function Model(props) {
         }))
     );
 
+    const textureAsset = RECEVEUR_ASSETS[textureReceveur]
+
     // console.log('Model Receveurs:', sizeReceveur, receveur, textureReceveur);
 
     const receveur1000 = useMemo(() => {
@@ -52,12 +54,14 @@ export default function Model(props) {
 
     return (
         <group {...props} dispose={null}>
-            <DynamicTextureMaterial
-                url={RECEVEUR_ASSETS[textureReceveur].img}
-                material={materials['+RECEVEUR']}
-                roughness={0.9}
-                metalness={0}
-            />
+            {textureAsset && (
+                <DynamicTextureMaterial
+                    url={textureAsset.img}
+                    material={materials['+RECEVEUR']}
+                    roughness={0.9}
+                    metalness={0}
+                />
+            )}
             <mesh
                 receiveShadow
                 geometry={nodes.Cube001.geometry}

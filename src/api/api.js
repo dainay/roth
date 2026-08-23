@@ -78,6 +78,18 @@ export async function getConfiguratorDatabyAPI() {
         )
     }
 
+    const collectionsWithInvalidItems = requiredCollections.filter(
+        (key) => data[key].some(
+            (item) => !item || typeof item !== 'object' || Array.isArray(item)
+        )
+    )
+
+    if (collectionsWithInvalidItems.length > 0) {
+        throw new Error(
+            `Produits du configurateur invalides : ${collectionsWithInvalidItems.join(', ')}`
+        )
+    }
+
     return data
 }
 
@@ -95,8 +107,42 @@ export async function sendConfiguratorDatabyAPI(payload) {
         'Impossible d’envoyer la configuration'
     )
 
-    if (!data?.img || !data?.pdf || !data?.products) {
+    const hasValidResultUrls =
+        typeof data?.img === 'string' &&
+        data.img.trim() &&
+        typeof data?.pdf === 'string' &&
+        data.pdf.trim()
+
+    if (
+        !hasValidResultUrls ||
+        !data?.products ||
+        typeof data.products !== 'object' ||
+        Array.isArray(data.products)
+    ) {
         throw new Error('La réponse de visualisation est incomplète')
+    }
+
+    const productCollections = [
+        'parois',
+        'receveur',
+        'profiles',
+        'niches',
+        'vipanels',
+    ]
+
+    const invalidProductCollections = productCollections.filter((key) => {
+        const products = data.products[key]
+
+        return products !== undefined && (
+            !Array.isArray(products) ||
+            products.some((product) => !product || typeof product !== 'object')
+        )
+    })
+
+    if (invalidProductCollections.length > 0) {
+        throw new Error(
+            `Liste de produits invalide : ${invalidProductCollections.join(', ')}`
+        )
     }
 
     return data

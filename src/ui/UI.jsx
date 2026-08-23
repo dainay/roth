@@ -61,6 +61,12 @@ export default function UI() {
     ]
 
     const activeZone = vipanelZones.find((zone) => zone.id === activeVipanelZone)
+    const paroiFinitions = selectedParoiData?.finitionsDisponibles ?? []
+    const availableGlasses = selectedParoiData?.verresDisponibles ?? []
+    const nicheFinitions = cleanedData?.niches?.[0]?.finitionsDisponibles ?? []
+    const receveurFinitions = cleanedData?.receveurs?.[0]?.finitionsDisponibles ?? []
+    const profileFinitions = cleanedData?.profiles?.[0]?.finitionsDisponibles ?? []
+    const vipanels = cleanedData?.vipanels ?? []
 
 
     const handleReceveurChange = (item) => {
@@ -141,7 +147,7 @@ export default function UI() {
             <div className={s.blockButtons}>
                 <h2>Finition du profilé</h2>
 
-                {selectedParoiData.finitionsDisponibles
+                {paroiFinitions
                     .filter((item) => FINITION_ASSETS[item.code])
                     .map((item) => (
                     <Button
@@ -171,7 +177,7 @@ export default function UI() {
                         <span>None</span>
                     </Button>
 
-                    {cleanedData?.niches[0].finitionsDisponibles
+                    {nicheFinitions
                         .filter((item) => NICHE_FINITION_ASSETS[item])
                         .map((item) => (
                             <Button
@@ -191,7 +197,7 @@ export default function UI() {
 
             <div className={s.blockButtons}>
                 <h2>Verre</h2>
-                {selectedParoiData.verresDisponibles
+                {availableGlasses
                     .filter((item) => SERIGRAPHIE_ASSETS[item])
                     .map((item) => (
                     <Button
@@ -211,7 +217,7 @@ export default function UI() {
             <div className={s.blockButtons}>
                 <h2>Finition du receveur</h2>
 
-                {cleanedData?.receveurs[0].finitionsDisponibles
+                {receveurFinitions
                     .filter((item) => RECEVEUR_ASSETS[item])
                     .map((item) => (
                     <Button
@@ -232,7 +238,7 @@ export default function UI() {
             <div className={s.blockButtons}>
                 <h2>Finition des profilé d'angle pour VIPANEL®</h2>
 
-                {cleanedData?.profiles[0].finitionsDisponibles
+                {profileFinitions
                     .filter((item) => PROFILE_ASSETS[item])
                     .map((item) => (
                     <Button
@@ -268,7 +274,7 @@ export default function UI() {
                 </div>
 
                 <div id="vipanel-panel" className={s.vipanelGrid} role="tabpanel">
-                        {cleanedData.vipanels.map((item) => (
+                        {vipanels.map((item) => (
                             <Button
                                 data-decor={item.decor}
                                 className={`${s.vipanelButton} ${activeZone?.key && selection[activeZone.key] === item.decor ? s.vipanelButtonActive : ''}`}
