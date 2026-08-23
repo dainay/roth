@@ -31,3 +31,18 @@ npm audit
 ```
 
 Node.js 22 ou une version compatible avec Vite 8 est recommandé.
+
+## Tests
+
+Les tests unitaires vérifient les règles de transformation des données sans
+lancer le navigateur ni la scène 3D.
+
+```bash
+# Exécuter tous les tests une fois
+npm test
+
+# Relancer automatiquement les tests pendant le développement
+npm run test:watch
+```
+
+Les premiers exemples se trouvent dans `src/api/formatPayload.test.js`.
