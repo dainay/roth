@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useGLTF, useTexture } from '@react-three/drei'
 import { useShallow } from 'zustand/react/shallow'
+import * as THREE from 'three'
 
 import useConfiguratorStore from '../store/useConfiguratorStore';
 import DynamicTextureMaterial from './DynamicTextureMaterial'
@@ -87,6 +88,10 @@ export default function Model(props) {
         return geometry
     }, [nodes])
 
+    const eVipanelMaterial = useMemo(() => {
+        return materials['VIPANEL-1500x2550-right'].clone()
+    }, [materials])
+
     return (
         <group {...props} dispose={null}>
             {choosenVipanelLLeft && (
@@ -97,23 +102,31 @@ export default function Model(props) {
                     metalness={FINITION_VIPANELS[choosenVipanelLLeft.finition]?.metalness}
                 />
             )}
-
             {choosenVipanelRight && (
-                <DynamicTextureMaterial
-                    url={getPhotoUrl(choosenVipanelRight.files?.['1500x2550'])}
-                    material={materials['VIPANEL-1500x2550-right']}
-                    roughness={FINITION_VIPANELS[choosenVipanelRight.finition]?.roughness}
-                    metalness={FINITION_VIPANELS[choosenVipanelRight.finition]?.metalness}
-                />
+                <>
+                    <DynamicTextureMaterial
+                        url={getPhotoUrl(choosenVipanelRight.files?.['1500x2550'])}
+                        material={materials['VIPANEL-1500x2550-right']}
+                        roughness={FINITION_VIPANELS[choosenVipanelRight.finition]?.roughness}
+                        metalness={FINITION_VIPANELS[choosenVipanelRight.finition]?.metalness}
+                    />
+                    <DynamicTextureMaterial
+                        url={getPhotoUrl(choosenVipanelRight.files?.['1000x2550'])}
+                        material={eVipanelMaterial}
+                        roughness={FINITION_VIPANELS[choosenVipanelRight.finition]?.roughness}
+                        metalness={FINITION_VIPANELS[choosenVipanelRight.finition]?.metalness}
+                    />
+                </>
             )}
 
             {choosenVipanelNiche && (
+ 
                 <DynamicTextureMaterial
                     url={getPhotoUrl(choosenVipanelNiche.files?.['1500x2550'])}
                     material={materials['VIPANEL-1500x2550-niche']}
                     roughness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.roughness}
                     metalness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.metalness}
-                />
+                /> 
             )}
 
             {(montage === 'niche' &&
@@ -241,20 +254,20 @@ export default function Model(props) {
             <mesh
                 castShadow
                 receiveShadow
-                geometry={vipanelRight1Geometry}
-                material={materials['VIPANEL-1500x2550-right']}
+                geometry={nodes.vipanel_1500x2550x3011.geometry}
+                material={eVipanelMaterial}
                 position={[0.44, 0.917, -2.554]}
                 onPointerEnter={() => setMeshHover(true)}
                 onPointerLeave={() => setMeshHover(false)}
             >
 
-              
-                    <Evipanel gradientTexture={gradientTexture} geometry={vipanelRight1Geometry}
-                     visible={heating}
-                        onPointerEnter={() => setHtmlHover(true)}
-                        onPointerLeave={() => setHtmlHover(false)}
-                    />
-             
+
+                <Evipanel gradientTexture={gradientTexture} geometry={vipanelRight1Geometry}
+                    visible={heating}
+                    onPointerEnter={() => setHtmlHover(true)}
+                    onPointerLeave={() => setHtmlHover(false)}
+                />
+
 
             </mesh>
         </group>

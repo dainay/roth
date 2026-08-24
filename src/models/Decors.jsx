@@ -146,7 +146,7 @@ export default function Model(props) {
 
                 geometry={nodes.Right_wall.geometry}
                 material={nodes.Right_wall.material}
-                position={[-2.003, 0.927, -2.58]}
+                position={[-2.003, 0.916, -2.58]}
                 scale={[0.83, 1, 1]}
             />
 
