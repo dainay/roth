@@ -40,6 +40,7 @@ const useConfiguratorStore = create((set, get) => ({
     realImg: null,
     products: null,
     pdf: null,
+    api_code: null,
 
     setSelectionValue: (key, value) =>
         set((state) => {
@@ -233,6 +234,7 @@ const useConfiguratorStore = create((set, get) => ({
                 realImg: visualizationData.img,
                 products: visualizationData.products,
                 pdf: visualizationData.pdf,
+                api_code: visualizationData.api_code,
             })
 
             return visualizationData

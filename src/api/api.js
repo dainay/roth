@@ -1,16 +1,16 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '')
 
-const getApiUrl = (path) => {
-    if (!API_BASE_URL) {
-        throw new Error('VITE_API_BASE_URL is not configured')
-    }
-
-    return `${API_BASE_URL}/${path.replace(/^\/+/, '')}` 
-}
-
 // const getApiUrl = (path) => {
-//     return `/${path.replace(/^\/+/, '')}`
+//     if (!API_BASE_URL) {
+//         throw new Error('VITE_API_BASE_URL is not configured')
+//     }
+
+//     return `${API_BASE_URL}/${path.replace(/^\/+/, '')}` 
 // }
+
+const getApiUrl = (path) => {
+    return `/${path.replace(/^\/+/, '')}`
+}
 
 const fetchJson = async (path, options, fallbackMessage) => {
     let response
@@ -108,7 +108,7 @@ export async function sendPdfByEmail({
     name,
     surname,
     email,
-    products,
+    api_code,
 }) {
     let response
 
@@ -117,14 +117,14 @@ export async function sendPdfByEmail({
         name: name.trim(),
         surname: surname.trim(),
         email: email.trim(),
-        products,
+        api_code: api_code,
     }
 
-    console.info('[API] POST /api/xu/resultProject', request)
+    console.log('[API] POST /api/xu/sendPDFbyMail', request)
 
     try {
         response = await fetch(
-            getApiUrl('/api/xu/resultProject'),
+            getApiUrl('/api/xu/sendPDFbyMail'),
             {
                 method: 'POST',
                 headers: {
@@ -137,7 +137,24 @@ export async function sendPdfByEmail({
         throw new Error('Serveur inaccessible')
     }
 
-    if (!response.ok) {
-        throw new Error('Impossible d’envoyer la configuration')
+    const data = await response.json()
+
+    if (data.ok === false) {
+        console.error(
+            '[API] Erreur d’envoi du PDF par e-mail',
+            data
+        )
+
+        if (data?.status === 404) {
+            throw new Error("Le projet de configuration n’a pas été créé. Veuillez recréer votre salle de bain dans le configurateur avant de demander l’envoi du PDF par e-mail.")
+        } else {
+            throw new Error(
+                "Impossible d’envoyer le PDF par e-mail. Veuillez réessayer."
+            )
+        }
+
     }
+
+    console.log('[API] PDF envoyé par e-mail', response)
+
 }

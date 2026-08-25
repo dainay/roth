@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { sendPdfByEmail } from '../api/api'
 import s from './EmailPdfModal.module.scss'
+import useConfiguratorStore from '../store/useConfiguratorStore'
 
 const EmailPdfModal = ({ pdf, onClose }) => {
     const dialogRef = useRef(null)
@@ -12,6 +13,8 @@ const EmailPdfModal = ({ pdf, onClose }) => {
     const [email, setEmail] = useState('')
     const [status, setStatus] = useState('idle')
     const [error, setError] = useState('')
+
+    const api_code = useConfiguratorStore((state) => state.api_code)
 
     useEffect(() => {
         const dialog = dialogRef.current
@@ -50,7 +53,7 @@ const EmailPdfModal = ({ pdf, onClose }) => {
         setError('')
 
         try {
-            await sendPdfByEmail({ name, surname, civility, email, pdf })
+            await sendPdfByEmail({ name, surname, civility, email, pdf, api_code })
             setStatus('success')
 
             //FOR EXPO ONLY: reload the page after 7s
@@ -155,7 +158,7 @@ const EmailPdfModal = ({ pdf, onClose }) => {
                                 type="text"
                                 value={name}
                                 onChange={(event) => setName(event.target.value)}
-                                autoComplete="name"
+                                autoComplete="given-name"
                                 required
                                 autoFocus
                                 disabled={status === 'submitting'}
@@ -172,6 +175,17 @@ const EmailPdfModal = ({ pdf, onClose }) => {
                                 required
                                 disabled={status === 'submitting'}
                             />
+                            <p className={s.privacyNotice}>
+                                Vos données sont utilisées par Roth France uniquement pour vous
+                                envoyer votre récapitulatif. Consultez notre{' '}
+                                <a
+                                    href="https://www.roth-france.fr/politique-confidentialite"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    politique de confidentialité
+                                </a>.
+                            </p>
 
                             {error && (
                                 <p className={s.error} role="alert">

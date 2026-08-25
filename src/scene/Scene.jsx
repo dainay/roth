@@ -22,12 +22,15 @@ export default function Scene() {
     return (
         <Canvas
             frameloop="demand"
-            dpr={1}
+            dpr={0.6}
             camera={{ position: [0, 1, 2], fov: 60 }}
-            shadows={{ type: THREE.PCFShadowMap }}
+            // shadows={{ type: THREE.PCFShadowMap }}
             gl={{
-                antialias: true,
-                transmissionResolutionScale: 0.5,
+                // antialias: true,
+                // transmissionResolutionScale: 0.5,
+                 antialias: false,
+                alpha: false,
+                powerPreference: 'high-performance',
             }}
             linear={false}
         >
