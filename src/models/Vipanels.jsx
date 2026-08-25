@@ -16,11 +16,30 @@ export default function Model(props) {
 
     const [meshHover, setMeshHover] = useState(false)
     const [htmlHover, setHtmlHover] = useState(false)
+    const [touchOpen, setTouchOpen] = useState(false)
 
-    const heating = meshHover || htmlHover
+    const heating = meshHover || htmlHover || touchOpen
 
-    // console.log('heating: ', heating, 'meshHover: ', meshHover, 'htmlHover: ', htmlHover)
+    const handleMeshEnter = (event) => {
+    if (event.pointerType === 'mouse') {
+        setMeshHover(true)
+    }
+}
 
+const handleMeshLeave = (event) => {
+    if (event.pointerType === 'mouse') {
+        setMeshHover(false)
+    }
+}
+
+const handleMeshPointerDown = (event) => {
+    event.stopPropagation()
+
+    if (event.pointerType !== 'mouse') {
+        setTouchOpen((current) => !current)
+    }
+}
+     
     const {
         cleanedData,
         sizeReceveur,
@@ -257,17 +276,19 @@ export default function Model(props) {
                 geometry={nodes.vipanel_1500x2550x3011.geometry}
                 material={eVipanelMaterial}
                 position={[0.44, 0.917, -2.554]}
-                onPointerEnter={() => setMeshHover(true)}
-                onPointerLeave={() => setMeshHover(false)}
+                onPointerEnter={handleMeshEnter}
+                onPointerLeave={handleMeshLeave}
+                onPointerDown={handleMeshPointerDown}
+                onPointerMissed={() => setTouchOpen(false)}
             >
 
 
-                <Evipanel gradientTexture={gradientTexture} geometry={vipanelRight1Geometry}
+                <Evipanel 
+                    gradientTexture={gradientTexture} 
+                    geometry={vipanelRight1Geometry}
                     visible={heating}
-                    onPointerDown={() => setMeshHover(true)}
-                    onPointerUp={() => setMeshHover(false)}
-                    onPointerCancel={() => setMeshHover(false)}
-                    onPointerOut={() => setMeshHover(false)}
+                    onHtmlEnter={() => setHtmlHover(true)}
+                    onHtmlLeave={() => setHtmlHover(false)}
                 />
 
 

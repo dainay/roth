@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import s from './UI.module.scss'
 import useConfiguratorStore from '../store/useConfiguratorStore'
 import { useShallow } from 'zustand/react/shallow'
@@ -48,15 +48,15 @@ export default function UI() {
     const nicheAvailable = selectedParoiData?.['montage en niche'] === true
     const montageAvailable = angleAvailable && nicheAvailable
 
-    useEffect(() => {
-        if (angleAvailable && !nicheAvailable) {
-            setSelectionValue('montage', 'angle')
-        }
+    // useEffect(() => {
+    //     if (angleAvailable && !nicheAvailable) {
+    //         setSelectionValue('montage', 'angle')
+    //     }
 
-        if (!angleAvailable && nicheAvailable) {
-            setSelectionValue('montage', 'niche')
-        }
-    }, [angleAvailable, nicheAvailable, setSelectionValue])
+    //     if (!angleAvailable && nicheAvailable) {
+    //         setSelectionValue('montage', 'niche')
+    //     }
+    // }, [angleAvailable, nicheAvailable, setSelectionValue])
 
     const vipanelZones = [
         { id: 'left', label: 'Mur gauche', key: 'vipanelLeft' },

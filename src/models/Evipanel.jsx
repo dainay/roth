@@ -5,7 +5,11 @@ import s from './Evipanel.module.css'
 
 useTexture.preload('./img/evipanel.webp')
 
-export default function Evipanel({ onPointerEnter, onPointerLeave, geometry, gradientTexture, visible }) {
+export default function Evipanel({ geometry,
+    gradientTexture,
+    visible,
+    onHtmlEnter,
+    onHtmlLeave, }) {
 
     const heatRef = useRef()
     const invalidate = useThree((state) => state.invalidate)
@@ -41,10 +45,20 @@ export default function Evipanel({ onPointerEnter, onPointerLeave, geometry, gra
                 transform
                 position={[0, 0.8, 0]}>
                 <div
-                    onPointerEnter={onPointerEnter}
-                    onPointerLeave={onPointerLeave}
+                    onPointerEnter={(event) => {
+                        if (event.pointerType === 'mouse') {
+                            onHtmlEnter()
+                        }
+                    }}
+                    onPointerLeave={(event) => {
+                        if (event.pointerType === 'mouse') {
+                            onHtmlLeave()
+                        }
+                    }}
                     style={{
-                         transform: visible ? 'translateY(0)' : 'translateY(8px)',
+                        transform: visible
+                            ? 'translateY(0)'
+                            : 'translateY(8px)',
                         transition: 'opacity 0.7s ease, transform 0.7s ease',
                         opacity: visible ? 1 : 0,
                         pointerEvents: visible ? 'auto' : 'none',

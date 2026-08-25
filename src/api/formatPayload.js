@@ -6,7 +6,7 @@ const DEFAULT_RECEVEUR_FINITION = 'Soft White'
 const DEFAULT_VIPANEL_LEFT = 'Z2'
 const DEFAULT_VIPANEL_RIGHT = 'X4'
 
-const findBy = (items, key, value) =>
+const findBy = (items = [], key, value) =>
     items.find((item) => item?.[key] === value) ?? items[0] ?? null
 
 
@@ -51,17 +51,17 @@ export function formatSendingBody(selection) {
 }
 
 export function formatSelectionByDefault(data) {
-    const defaultParoi = findBy(data.parois, 'id', DEFAULT_PAROI_ID)
-    const defaultReceveur = data.receveurs[0] ?? null
-    const defaultNiche = data.niches[0] ?? null
-    const defaultProfile = data.profiles[0] ?? null
+    const defaultParoi = findBy(data?.parois, 'id', DEFAULT_PAROI_ID)
+    const defaultReceveur = data?.receveurs?.[0] ?? null
+    const defaultNiche = data?.niches?.[0] ?? null
+    const defaultProfile = data?.profiles?.[0] ?? null
     const defaultVipanelLeft = findBy(
-        data.vipanels,
+        data?.vipanels,
         'decor',
         DEFAULT_VIPANEL_LEFT
     )
     const defaultVipanelRight = findBy(
-        data.vipanels,
+        data?.vipanels,
         'decor',
         DEFAULT_VIPANEL_RIGHT
     )
