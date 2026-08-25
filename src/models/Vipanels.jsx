@@ -264,8 +264,10 @@ export default function Model(props) {
 
                 <Evipanel gradientTexture={gradientTexture} geometry={vipanelRight1Geometry}
                     visible={heating}
-                    onPointerEnter={() => setHtmlHover(true)}
-                    onPointerLeave={() => setHtmlHover(false)}
+                    onPointerDown={() => setMeshHover(true)}
+                    onPointerUp={() => setMeshHover(false)}
+                    onPointerCancel={() => setMeshHover(false)}
+                    onPointerOut={() => setMeshHover(false)}
                 />
 
 

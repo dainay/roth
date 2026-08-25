@@ -70,13 +70,12 @@ export default function Model(props) {
         if (!mSerigraphie) return
 
         mSerigraphie.roughness = 0
-        mSerigraphie.metalness = 0
-        mSerigraphie.transmission = 0
+        mSerigraphie.metalness = 0 
         mSerigraphie.opacity = 1
         mSerigraphie.transparent = true
         mSerigraphie.depthWrite = false
 
-        mSerigraphie.needsUpdate = true
+        // mSerigraphie.needsUpdate = true
         invalidate()
     }, [materials, invalidate])
 
@@ -95,7 +94,7 @@ export default function Model(props) {
         mFinition.metalness = finitionData.metalness
         mFinition.color.set(finitionData.color)
 
-        mFinition.needsUpdate = true
+        // mFinition.needsUpdate = true
         invalidate()
     }, [materials, finitionParoi, invalidate])
 

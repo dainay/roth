@@ -15,6 +15,8 @@ import Profiles from "../models/Profiles";
 import Nichepanels from "../models/Nichepanels";
 import Vipanels from "../models/Vipanels";
 
+import DisableTransmission from "./DisableTransmision";
+
 import PerfMonitor from "./Perf";
 
 export default function Scene() {
@@ -22,14 +24,14 @@ export default function Scene() {
     return (
         <Canvas
             frameloop="demand"
-            dpr={0.6}
+            dpr={1}
             camera={{ position: [0, 1, 2], fov: 60 }}
             // shadows={{ type: THREE.PCFShadowMap }}
             gl={{
-                // antialias: true,
+                antialias: true,
                 // transmissionResolutionScale: 0.5,
-                 antialias: false,
-                alpha: false,
+                //  antialias: false,
+                // alpha: false,
                 powerPreference: 'high-performance',
             }}
             linear={false}
@@ -78,6 +80,7 @@ export default function Scene() {
                     />
                 </GizmoHelper>}
                 <Preload all />
+                <DisableTransmission />
             </Suspense>
 
             {import.meta.env.DEV && <PerfMonitor />}

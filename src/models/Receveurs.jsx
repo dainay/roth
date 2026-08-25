@@ -198,22 +198,22 @@ export default function Model(props) {
                     scale={[1.095, 1.452, 1.074]}
                 />
             </mesh>
-            <mesh
+            {/* <mesh
                 castShadow
                 geometry={nodes.Perfume_Botle_2.geometry}
                 material={materials['+GLASS']}
-            />
-            <mesh
+            /> */}
+            {/* <mesh
 
                 geometry={nodes.Perfume_Botle_3.geometry}
                 material={materials['+LIQUID']}
-            />
-            <mesh
+            /> */}
+            {/* <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Perfume_Botle_4.geometry}
                 material={materials['+Plastic-Rose']}
-            />
+            /> */}
             {(sizeReceveur === 1000 &&
                 <mesh
                     receiveShadow

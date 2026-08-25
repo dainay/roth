@@ -33,7 +33,7 @@ export default function Model(props) {
         mFinition.metalness = finitionData.metalness
         mFinition.color.set(finitionData.color)
 
-        mFinition.needsUpdate = true
+        // mFinition.needsUpdate = true
         invalidate()
     }, [materials, finitionProfile, invalidate])
 

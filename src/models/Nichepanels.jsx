@@ -30,7 +30,7 @@ export default function Model(props) {
         mNiche.metalness = 0.4
         mNiche.roughness = 0.5
 
-        mNiche.needsUpdate = true
+        // mNiche.needsUpdate = true
         invalidate()
     }, [materials, finitionNiche, invalidate])
 

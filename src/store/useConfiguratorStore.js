@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { getConfiguratorDatabyAPI, sendConfiguratorDatabyAPI } from '../api/api';
-
+import { PAROI_ASSETS } from '../conf/lib'
 import { formatSendingBody, formatSelectionByDefault } from '../api/formatPayload';
 
 const useConfiguratorStore = create((set, get) => ({
@@ -57,6 +57,8 @@ const useConfiguratorStore = create((set, get) => ({
                 (item) => item.id === value
             );
 
+            const paroiAsset = PAROI_ASSETS[value]
+
             if (!nextParoi) {
                 return {
                     selection: {
@@ -99,6 +101,14 @@ const useConfiguratorStore = create((set, get) => ({
                         availableFinitions
                     ),
 
+                    sizeParoi:
+                        paroiAsset?.size ??
+                        state.selection.sizeParoi,
+
+                    sizeReceveur:
+                        paroiAsset?.sizeReceveurWithParoi ??
+                        state.selection.sizeReceveur,
+
                     verre: keepOrUseFirst(
                         state.selection.verre,
                         availableVerres
@@ -122,6 +132,14 @@ const useConfiguratorStore = create((set, get) => ({
                 },
             };
         }),
+
+    setSelectionValues: (values) =>
+        set((state) => ({
+            selection: {
+                ...state.selection,
+                ...values,
+            },
+        })),
 
     setCurrentView: (view) => set({ currentView: view }),
 

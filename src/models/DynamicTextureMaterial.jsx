@@ -43,7 +43,7 @@ const loadTexture = (url) => {
     texture.colorSpace = THREE.SRGBColorSpace
     texture.wrapS = THREE.RepeatWrapping
     texture.wrapT = THREE.RepeatWrapping
-    texture.needsUpdate = true
+    // texture.needsUpdate = true
 
     entry.texture = texture
     return texture
@@ -77,7 +77,7 @@ export default function DynamicTextureMaterial({
       currentEntry.current?.materials.delete(material)
       currentEntry.current = null
       material.map = originalMap
-      material.needsUpdate = true
+    //   material.needsUpdate = true
       removeOldTextures()
       invalidate()
     }
@@ -108,7 +108,7 @@ export default function DynamicTextureMaterial({
       if (roughness !== undefined) material.roughness = roughness
       if (metalness !== undefined) material.metalness = metalness
 
-      material.needsUpdate = true
+    //   material.needsUpdate = true
       removeOldTextures()
       invalidate()
     }).catch((error) => {

@@ -125,7 +125,7 @@ useHelper(
                 resolution={64}
                 files="./hdr/lebombo_1k.hdr"
                 environmentIntensity={0.1}
-
+                frames={1}
             >
                 <Lightformer
 
