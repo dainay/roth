@@ -88,7 +88,7 @@ export default function Model(props) {
                 castShadow
                 receiveShadow
                 geometry={nodes.pot.geometry}
-                material={materials['+GLASS-VOLUMED']}
+                material={materials['+BROWB GLASS']}
             />
             <mesh
                 position={[-0.01, -0.003, 0.028]}
@@ -144,7 +144,7 @@ export default function Model(props) {
                 castShadow
                 receiveShadow
                 geometry={nodes.Decoration_vases_with_pampas001.geometry}
-                material={materials['+GLASS-yellow']}
+                material={materials['+BROWB GLASS']}
                 position={[-0.04, 0, 0]}>
                 <mesh
                     castShadow

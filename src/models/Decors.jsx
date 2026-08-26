@@ -39,16 +39,28 @@ export default function Model(props) {
                         geometry={nodes.ampoule_1004_1.geometry}
                         material={materials['+GLASS']}
                     />
-                    {mirrorLight && (
-                        <mesh
+{/*                    
+                         <mesh
                             geometry={nodes.ampoule_1004_2.geometry}
-                            material={materials.lumière}
-                        />
-                    )}
+                             material={materials.lumière}
+                        /> */}
+                       
+                   
                     <mesh
                         geometry={nodes.ampoule_1004_3.geometry}
                         material={materials['+PLASTIC BLACK']}
-                    />
+                    >
+                                {mirrorLight && (
+                                  <meshStandardMaterial
+                                    color="#fff4df"
+                                    emissive="#ff9f3f"
+                                    emissiveIntensity={25}
+                                    roughness={0.25}
+                                    metalness={0}
+                                    toneMapped={false}
+                                />
+                                 )}
+                     </mesh>
                 </group>
                 <mesh
                     geometry={nodes.Cylinder054.geometry}
@@ -72,7 +84,8 @@ export default function Model(props) {
                 <mesh
                     castShadow
                     geometry={nodes['httpswwwluminairefrplindby-plafonnier-enrique-ambre-003'].geometry}
-                    material={materials['+GLASS-VOLUMED']}
+                    // material={materials['+GLASS-VOLUMED']}
+                    // material={glassGlobeMaterial}
                     position={[0, 0.573, 0]}
                     onClick={(e) => {
                         e.stopPropagation()
@@ -80,8 +93,18 @@ export default function Model(props) {
                     }}
                     onPointerEnter={handlePointerEnter}
                     onPointerLeave={handlePointerLeave}
-                />
+                >
+                    <meshStandardMaterial
+                            color="#1d160c"
+                            transparent
+                            opacity={0.5}
+                            roughness={0}
+                            metalness={0}
+                            // envMapIntensity={0.8}
+                            depthWrite={false}
+                        />
 
+                 </mesh>
                 <mesh
                     castShadow
                     receiveShadow

@@ -1,10 +1,7 @@
 import * as THREE from "three";
 import { Environment, Lightformer, useHelper } from "@react-three/drei";
 import { useRef } from "react";
-
-import { RectAreaLightHelper } from
-  "three/addons/helpers/RectAreaLightHelper.js";
-
+ 
 import useSceneStore from "../store/useSceneStore";
 
 const lightingSchemas = [
@@ -43,13 +40,14 @@ const lightingSchemas = [
 export default function Lighting() {
     const mirrorLight = useSceneStore((state) => state.mirrorLight);
 
-    const blueRectLightRef = useRef();
+   const pointLightRef = useRef()
 
-useHelper(
-  blueRectLightRef,
-  RectAreaLightHelper,
-  "#f5dc97"
-);
+// useHelper(
+//     pointLightRef,
+//     THREE.PointLightHelper,
+//     0.02,
+//     '#ff0000'
+// )
 
     const lightingType = useSceneStore((state) => state.lightingType);
 
@@ -89,7 +87,7 @@ useHelper(
             />
 
             <rectAreaLight
-                ref={blueRectLightRef}
+             
                 color="#d6b385"
                 intensity={50}
                 width={0.87}
@@ -100,20 +98,22 @@ useHelper(
  
 
             <pointLight
-                position={[-1.78, 1.2, 0.15]}
-                intensity={mirrorLight ? 0.7 : 0}
-                distance={4}
-                decay={1}
+                // ref={pointLightRef}
+                position={[-1.78, 1.26, 0.15]}
+                intensity={mirrorLight ? 2 : 0}
+                distance={1.2}
+                decay={1.5}
                 // castShadow
-                shadow-mapSize-width={2048}
-                shadow-mapSize-height={2048}
-                shadow-radius={10}
-                shadow-bias={-0.0001}
-                shadow-normalBias={0.005}
+                // shadow-mapSize-width={2048}
+                // shadow-mapSize-height={2048}
+                // shadow-radius={10}
+                // shadow-bias={-0.0001}
+                // shadow-normalBias={0.005}
                 color={new THREE.Color("#fce7b8")}
             />
 
             <pointLight
+           
                 position={[-1, 2.1, -2]}
                 intensity={0.6}
                 distance={4}

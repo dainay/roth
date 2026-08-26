@@ -7,6 +7,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import useConfiguratorStore from '../store/useConfiguratorStore';
 import { FINITION_ASSETS } from '../conf/lib'
+import AnimatedDoor from '../scene/AnimatedDoor'
 
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/PAROIS_compressed.glb')
@@ -70,7 +71,7 @@ export default function Model(props) {
         if (!mSerigraphie) return
 
         mSerigraphie.roughness = 0
-        mSerigraphie.metalness = 0 
+        mSerigraphie.metalness = 0
         mSerigraphie.opacity = 1
         mSerigraphie.transparent = true
         mSerigraphie.depthWrite = false
@@ -120,7 +121,17 @@ export default function Model(props) {
 
             {(paroi === 'PL CLS' && montage === 'niche') && (
                 <>
-                    <group position={[-0.668, 0.755, -1.721]}>
+                    <AnimatedDoor
+                        rotation={[0, 0, 0]}
+                        pivot={[-0.673, 0.749, -1.705]}
+                        // offset={[-0.86, 0.005, 0.95]}
+                         slideX={-0.51}
+                    >
+                        <group
+                            position={[0, 0, 0]}
+                            // rotation={[-1.567, 0, -Math.PI]}
+                        > 
+                    {/* <group position={[-0.668, 0.755, -1.721]}> */}
                         <mesh
                             geometry={nodes.MovingDoor_1.geometry}
                             material={materials['+GLASS']}
@@ -136,6 +147,7 @@ export default function Model(props) {
                             material={protectionMaterial}
                         />
                     </group>
+                    </AnimatedDoor>
 
                     <group position={[-0.819, 0.755, -1.721]}>
                         <mesh
@@ -158,27 +170,38 @@ export default function Model(props) {
 
             {(paroi === 'PL CLS' && montage === 'angle') && (
                 <>
-                    <group position={[-0.673, 0.749, -1.705]}>
-                        <mesh
-                            geometry={nodes.MovingDoor001_1.geometry}
-                            material={materials['+GLASS']}
-                        />
-                        <mesh
-                            castShadow
-                            geometry={nodes.MovingDoor001_2.geometry}
-                            material={materials['+FINITION']}
-                        />
-                        <mesh
-                            castShadow
-                            geometry={nodes.MovingDoor001_3.geometry}
-                            material={protectionMaterial}
-                        />
-                        <mesh
-                            castShadow
-                            geometry={nodes.MovingDoor001_4.geometry}
-                            material={protectionMaterial}
-                        />
-                    </group>
+                    <AnimatedDoor
+                        rotation={[0, 0, 0]}
+                        pivot={[-0.673, 0.749, -1.705]}
+                        // offset={[-0.86, 0.005, 0.95]}
+                         slideX={-0.51}
+                    >
+                        <group
+                            position={[0, 0, 0]}
+                            // rotation={[-1.567, 0, -Math.PI]}
+                        >
+                            {/* <group position={[-0.673, 0.749, -1.705]}> */}
+                            <mesh
+                                geometry={nodes.MovingDoor001_1.geometry}
+                                material={materials['+GLASS']}
+                            />
+                            <mesh
+                                castShadow
+                                geometry={nodes.MovingDoor001_2.geometry}
+                                material={materials['+FINITION']}
+                            />
+                            <mesh
+                                castShadow
+                                geometry={nodes.MovingDoor001_3.geometry}
+                                material={protectionMaterial}
+                            />
+                            <mesh
+                                castShadow
+                                geometry={nodes.MovingDoor001_4.geometry}
+                                material={protectionMaterial}
+                            />
+                        </group>
+                    </AnimatedDoor>
                     <group position={[-0.824, 0.749, -1.705]}>
                         <mesh
                             castShadow
@@ -205,22 +228,33 @@ export default function Model(props) {
 
             {(paroi === 'PL PIF' && montage === 'niche') && (
                 <>
-                    <group >
-                        <mesh
-                            castShadow
-                            geometry={nodes.Moving_door__1.geometry}
-                            material={materials['+FINITION']}
-                        />
-                        <mesh
-                            geometry={nodes.Moving_door__2.geometry}
-                            material={materials['+GLASS']}
-                        />
-                        <mesh
-                            castShadow
-                            geometry={nodes.Moving_door__3.geometry}
-                            material={protectionMaterial}
-                        />
-                    </group>
+                    <AnimatedDoor
+                        rotation={[0, 0, 0]}
+                        pivot={[-0.98, 0.691, -1.665]}
+                        offset={[0.98, -0.691, 1.67]}
+                        openAngle={-Math.PI / 7}
+                    >
+                        <group
+                            position={[0, 0, 0]}
+                        // rotation={[-1.567, 0, -Math.PI]}
+                        >
+                            {/* <group > */}
+                            <mesh
+                                castShadow
+                                geometry={nodes.Moving_door__1.geometry}
+                                material={materials['+FINITION']}
+                            />
+                            <mesh
+                                geometry={nodes.Moving_door__2.geometry}
+                                material={materials['+GLASS']}
+                            />
+                            <mesh
+                                castShadow
+                                geometry={nodes.Moving_door__3.geometry}
+                                material={protectionMaterial}
+                            />
+                        </group>
+                    </AnimatedDoor>
 
                     <group>
                         <mesh
@@ -244,21 +278,32 @@ export default function Model(props) {
 
             {(paroi === 'PL PIF' && montage === 'angle') && (
                 <>
-                    <group position={[-0.94, 0.655, -1.668]}>
-                        <mesh
-                            geometry={nodes.Door002_1.geometry}
-                            material={materials['+GLASS']}
-                        />
-                        <mesh
-                            geometry={nodes.Door002_2.geometry}
-                            material={protectionMaterial}
-                        />
-                        <mesh
-                            castShadow
-                            geometry={nodes.Door002_3.geometry}
-                            material={materials['+FINITION']}
-                        />
-                    </group>
+                    <AnimatedDoor
+                        rotation={[0, 0, 0]}
+                        pivot={[-0.94, 0.655, -1.668]}
+                        // offset={[-0.86, 0.005, 0.95]}
+                        openAngle={-Math.PI / 7}
+                    >
+                        <group
+                            position={[0, 0, 0]}
+                        // rotation={[-1.567, 0, -Math.PI]}
+                        >
+                            {/* <group position={[-0.94, 0.655, -1.668]}> */}
+                            <mesh
+                                geometry={nodes.Door002_1.geometry}
+                                material={materials['+GLASS']}
+                            />
+                            <mesh
+                                geometry={nodes.Door002_2.geometry}
+                                material={protectionMaterial}
+                            />
+                            <mesh
+                                castShadow
+                                geometry={nodes.Door002_3.geometry}
+                                material={materials['+FINITION']}
+                            />
+                        </group>
+                    </AnimatedDoor>
                     <group position={[-0.883, -0.186, -1.678]}>
                         <mesh
                             castShadow
@@ -294,23 +339,34 @@ export default function Model(props) {
                         />
                     </group>
 
-                    <group position={[-1.394, 0.691, -1.665]} rotation={[-1.567, 0, -Math.PI]}>
-                        <mesh
-                            geometry={nodes.Moving_door001_1.geometry}
-                            material={materials['+GLASS']}
-                        />
-                        <mesh
-                            castShadow
-                            geometry={nodes.Moving_door001_2.geometry}
-                            material={materials['+FINITION']}
-                        />
-                        <mesh
-                            castShadow
-                            geometry={nodes.Moving_door001_3.geometry}
-                            material={protectionMaterial}
-                        />
-                    </group>
+                    <AnimatedDoor
+                        rotation={[0, 0, 0]}
+                        pivot={[-1.394, 0.691, -1.665]}
+                        // offset={[-0.86, 0.005, 0.95]}
+                        openAngle={-Math.PI / 7}
+                    >
+                        <group
+                            position={[0, 0, 0]}
+                            rotation={[-1.567, 0, -Math.PI]}
+                        >
 
+                            {/* <group position={[-1.394, 0.691, -1.665]} rotation={[-1.567, 0, -Math.PI]}> */}
+                            <mesh
+                                geometry={nodes.Moving_door001_1.geometry}
+                                material={materials['+GLASS']}
+                            />
+                            <mesh
+                                castShadow
+                                geometry={nodes.Moving_door001_2.geometry}
+                                material={materials['+FINITION']}
+                            />
+                            <mesh
+                                castShadow
+                                geometry={nodes.Moving_door001_3.geometry}
+                                material={protectionMaterial}
+                            />
+                        </group>
+                    </AnimatedDoor>
                 </>
             )}
 
@@ -327,23 +383,36 @@ export default function Model(props) {
                             material={materials['+GLASS']}
                         />
                     </group> */}
-                    <group position={[-0.447, 1.681, -2.517]} rotation={[-3.137, Math.PI / 2, 0]}>
 
-                        <mesh
-                            geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000001_1'].geometry}
-                            material={materials['+ PROTECTION']}
-                        />
+                    <AnimatedDoor
+                        rotation={[-3.137, Math.PI / 2, 0]}
+                        pivot={[-1.38, 1.681, -1.65]}
+                        offset={[-0.86, 0.005, 0.95]}
+                        openAngle={Math.PI / 7}
+                    >
+                        <group
+                            // position={[-0.447, 1.681, -2.517]}
+                            // rotation={[-3.137, Math.PI / 2, 0]}
+                            position={[0, 0, 0]}
+                            rotation={[0, 0, 0]}
+                        >
 
-                        <mesh
-                            geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000001_2'].geometry}
-                            material={materials['+FINITION']}
-                        />
+                            <mesh
+                                geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000001_1'].geometry}
+                                material={materials['+ PROTECTION']}
+                            />
 
-                        <mesh
-                            geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000001_3'].geometry}
-                            material={materials['+GLASS']}
-                        />
-                    </group>
+                            <mesh
+                                geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000001_2'].geometry}
+                                material={materials['+FINITION']}
+                            />
+
+                            <mesh
+                                geometry={nodes['PLPIV_1000x2000_+_PLTWU_900x2000001_3'].geometry}
+                                material={materials['+GLASS']}
+                            />
+                        </group>
+                    </AnimatedDoor>
 
                     <group position={[-0.447, 1.681, -2.517]} rotation={[-3.137, Math.PI / 2, 0]}>
                         <mesh
