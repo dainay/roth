@@ -366,3 +366,14 @@ button[data-receveur="soft white"], button[data-decor="Uni_blanc"] {
     --sizeLarge: calc(50% - 3px);
   }
 }
+
+.finitionLabel {
+  display: block;
+  position: absolute;
+  font-size: 10px !important;
+  line-height: 8px !important;
+  text-align: center;
+  color: rgb(3, 3, 3) !important;
+  bottom: 0px;
+  background: rgba(240, 240, 240, 0.5) !important;
+}

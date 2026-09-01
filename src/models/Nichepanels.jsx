@@ -23,7 +23,7 @@ export default function Model(props) {
 
     useLayoutEffect(() => {
         const mNiche = materials['+NICHE']
-        const nicheData = NICHE_FINITION_ASSETS[finitionNiche] 
+        const nicheData = NICHE_FINITION_ASSETS[finitionNiche]
         if (!mNiche || !nicheData) return
 
         mNiche.color.set(nicheData.color)
@@ -35,13 +35,13 @@ export default function Model(props) {
     }, [materials, finitionNiche, invalidate])
 
 
-    if ( finitionNiche === null || paroi === 'PL PIV') {
+    if (finitionNiche === null || paroi === 'PL PIV') {
         return null
-    } 
+    }
 
     return (
-        <group {...props} dispose={null} 
-        position={[0.00, -0.015, -0.01]}
+        <group {...props} dispose={null}
+            position={[0.00, -0.015, -0.01]}
         >
             <mesh
                 castShadow
@@ -59,7 +59,7 @@ export default function Model(props) {
                 <mesh
                     castShadow
                     geometry={nodes.Niche_Bottles_2.geometry}
-                    material={materials['+BROWB GLASS']} 
+                    material={materials['+BROWB GLASS']}
                 />
             </group>
             <group position={[-0.609, 0.981, -2.573]} rotation={[Math.PI, -1.38, Math.PI]}>
@@ -84,8 +84,8 @@ export default function Model(props) {
                 />
             </group>
 
-              <mesh
-               
+            <mesh
+
                 geometry={nodes.Bottle_3004.geometry}
                 material={materials['+GEL']}
                 position={[-1.115, 0.992, -2.573]}
@@ -96,16 +96,16 @@ export default function Model(props) {
                 receiveShadow
                 geometry={nodes.Meraki_conditioner_Cap001002.geometry}
                 material={materials['+GLASS.001']}
-                 position={[-0.677, 0.984, -2.571]}
-        rotation={[-Math.PI, -0.79, -Math.PI]}
+                position={[-0.677, 0.984, -2.571]}
+                rotation={[-Math.PI, -0.79, -Math.PI]}
             />
             <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Soap001.geometry}
-        material={materials['+SOAP']}
-        position={[-0.856, 0.928, -2.579]}
-        scale={0.744}
+                material={materials['+SOAP']}
+                position={[-0.856, 0.928, -2.579]}
+                scale={0.744}
             />
         </group>
     )

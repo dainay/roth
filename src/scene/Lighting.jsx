@@ -14,6 +14,7 @@ const lightingSchemas = [
         lfColor: '#ffccaa',
         lfIntensity: 11,
         lfScale: [10, 2, 2],
+        ambientIntensity: 0,
     },
     {
         id: 'daylight',
@@ -24,6 +25,7 @@ const lightingSchemas = [
         lfColor: '#fff4ee',
         lfIntensity: 11,
         lfScale: [10, 5, 2],
+         ambientIntensity: 0.6,
     },
     {
         id: 'showroom',
@@ -34,6 +36,7 @@ const lightingSchemas = [
         lfColor: '#ffccaa',
         lfIntensity: 11,
         lfScale: [2, 10, 2],
+         ambientIntensity: 0,
     },
 ]
 
@@ -53,9 +56,9 @@ export default function Lighting() {
 
     return (
         <>
-            {/* <ambientLight intensity={0.8}
+            <ambientLight intensity={lightingSchemas[lightingType].ambientIntensity}
         color = {new THREE.Color("#d3c093")}
-         /> */}
+         />
 
       
             <directionalLight
@@ -86,7 +89,8 @@ export default function Lighting() {
                 rotation={[0, -Math.PI * 0.5, 0]}
             />
 
-            <rectAreaLight
+            {/* nichpanel lighting */}
+            {/* <rectAreaLight
              
                 color="#d6b385"
                 intensity={50}
@@ -94,7 +98,7 @@ export default function Lighting() {
                 height={0.01}
                 position={[-0.83, 1.201, -2.605]}
                 rotation={[-Math.PI /2, 0, 0]}
-            />
+            /> */}
  
 
             <pointLight

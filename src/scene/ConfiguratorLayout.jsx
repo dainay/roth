@@ -29,7 +29,7 @@ export default function ConfiguratorLayout() {
             <section className={s.errorScreen} role="alert">
                 <div className={s.errorCard}>
                     <p className={s.errorLabel}>Une erreur est survenue</p>
-                    <h1>Impossible de continuer</h1>
+                    <h1 className="text-center">Impossible de continuer</h1>
                     <p className={s.errorMessage}>{error}</p>
                     <button type="button" onClick={restartConfigurator}>
                         Recommencer

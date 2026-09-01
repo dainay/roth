@@ -63,7 +63,16 @@ export const FINITION_ASSETS = {
     metalness: 1,
     roughness: 0.28,
     img: './img/finitions/or rosé.jpg',
-  } 
+  },
+   '999': {
+    id: 'acier-brosse',
+    label: 'Acier brossé',
+    color: '#a9aaa7',
+    metalness: 1,
+    roughness: 0.35,
+    img: './img/finitions/acier brossé.jpg',
+  },
+
 }
 export const NICHE_FINITION_ASSETS = {
   Blanc: {
@@ -175,44 +184,50 @@ export const RECEVEUR_ASSETS = {
 export const PAROI_ASSETS = {
   'PL PIV': {
     shortLabel: 'Pivotante',
-    icon: './img/icons/PL PIV.svg',
+    icon: './img/icons/PL PIV.webp',
     size: 1000,
     sizeReceveurWithParoi: 1000,
   },
 
   'PL PIF': {
     shortLabel: 'Pivotante prolongée',
-    icon: './img/icons/PL PIF.svg',
+    icon: './img/icons/PL PIF.webp',
     size: 1200,
     sizeReceveurWithParoi: 1200,
   },
 
   'PL TWU': {
     shortLabel: 'Walk-in',
-    icon: './img/icons/PL TWU.svg',
-    size: 1000,
-    sizeReceveurWithParoi: 1600,
+    icon: './img/icons/PL TWU.webp',
+    size: 1200,
+    sizeReceveurWithParoi: 1400,
   },
 
   'PL CLS': {
     shortLabel: 'Coulissante',
-    icon: './img/icons/PL CLS.svg',
+    icon: './img/icons/PL CLS.webp',
     size: 1200,
     sizeReceveurWithParoi: 1200,
   },
 
   'PL FXP': {
     shortLabel: 'Paroi fixe',
-    icon: './img/icons/fix.svg',
+    icon: './img/icons/fix.webp',
     size: 900,
     sizeReceveurWithParoi: 900,
   },
 
   'PL WRU': {
-    shortLabel: 'Paroi fixe arrondie',
-    icon: './img/icons/PL WRU.svg',
-    size: 1000,
-    sizeReceveurWithParoi: 1600,
+    shortLabel: 'Fixe arrondie',
+    icon: './img/icons/PL WRU.webp',
+    size: 1200,
+    sizeReceveurWithParoi: 1400,
+  },
+  'PL 2BT': {
+    shortLabel: 'A 2 battants',
+    icon: './img/icons/PL 2BT.webp',
+    size: 1200,
+    sizeReceveurWithParoi: 1200,
   },
 }
 

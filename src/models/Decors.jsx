@@ -22,11 +22,17 @@ export default function Model(props) {
     return (
         <group {...props} dispose={null}>
             <mesh
-                receiveShadow
+                // receiveShadow
                 geometry={nodes.Ceiling_1.geometry}
-                material={materials['+CEILING']}
+                // material={materials['+CEILING']}
                 position={[-2.042, 2.208, -2.619]}
-            />
+            >
+                <meshStandardMaterial
+                    color="#fdfdfd"
+                    roughness={0.8}
+                    metalness={0}
+                />
+            </mesh>
             <mesh
                 receiveShadow
                 geometry={nodes.Floor_1.geometry}
@@ -39,28 +45,28 @@ export default function Model(props) {
                         geometry={nodes.ampoule_1004_1.geometry}
                         material={materials['+GLASS']}
                     />
-{/*                    
+                    {/*                    
                          <mesh
                             geometry={nodes.ampoule_1004_2.geometry}
                              material={materials.lumière}
                         /> */}
-                       
-                   
+
+
                     <mesh
                         geometry={nodes.ampoule_1004_3.geometry}
                         material={materials['+PLASTIC BLACK']}
                     >
-                                {mirrorLight && (
-                                  <meshStandardMaterial
-                                    color="#fff4df"
-                                    emissive="#ff9f3f"
-                                    emissiveIntensity={25}
-                                    roughness={0.25}
-                                    metalness={0}
-                                    toneMapped={false}
-                                />
-                                 )}
-                     </mesh>
+                        {mirrorLight && (
+                            <meshStandardMaterial
+                                color="#fff4df"
+                                emissive="#ff9f3f"
+                                emissiveIntensity={25}
+                                roughness={0.25}
+                                metalness={0}
+                                toneMapped={false}
+                            />
+                        )}
+                    </mesh>
                 </group>
                 <mesh
                     geometry={nodes.Cylinder054.geometry}
@@ -95,16 +101,16 @@ export default function Model(props) {
                     onPointerLeave={handlePointerLeave}
                 >
                     <meshStandardMaterial
-                            color="#1d160c"
-                            transparent
-                            opacity={0.5}
-                            roughness={0}
-                            metalness={0}
-                            // envMapIntensity={0.8}
-                            depthWrite={false}
-                        />
+                        color="#1d160c"
+                        transparent
+                        opacity={0.5}
+                        roughness={0}
+                        metalness={0}
+                        // envMapIntensity={0.8}
+                        depthWrite={false}
+                    />
 
-                 </mesh>
+                </mesh>
                 <mesh
                     castShadow
                     receiveShadow

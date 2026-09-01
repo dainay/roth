@@ -1,126 +1,202 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 
-// Keep recent textures so returning to a decor is immediate.
-const MAX_CACHED_TEXTURES = 6
-const loader = new THREE.TextureLoader()
-const cache = new Map()
-
-const markAsRecent = (entry) => {
-  cache.delete(entry.key)
-  cache.set(entry.key, entry)
-}
-
-const removeOldTextures = () => {
-  for (const [key, entry] of cache) {
-    if (cache.size <= MAX_CACHED_TEXTURES) return
-
-    // Never dispose a texture currently displayed by a material.
-    if (entry.materials.size === 0 && entry.texture) {
-      entry.texture.dispose()
-      cache.delete(key)
-    }
-  }
-}
-
-const loadTexture = (url) => {
-  const existingEntry = cache.get(url)
-
-  if (existingEntry) {
-    markAsRecent(existingEntry)
-    return existingEntry
-  }
-
-  const entry = {
-    key: url,
-    texture: null,
-    materials: new Set(),
-  }
-
-  entry.promise = loader.loadAsync(url).then((texture) => {
-    texture.flipY = false
-    texture.colorSpace = THREE.SRGBColorSpace
-    texture.wrapS = THREE.RepeatWrapping
-    texture.wrapT = THREE.RepeatWrapping
-    // texture.needsUpdate = true
-
-    entry.texture = texture
-    return texture
-  }).catch((error) => {
-    cache.delete(url)
-    throw error
-  })
-
-  cache.set(url, entry)
-  return entry
-}
-
 export default function DynamicTextureMaterial({
-  url,
-  material,
-  roughness,
-  metalness,
+    url,
+    material,
+    roughness,
+    metalness,
+    delay = 150,
 }) {
-  const invalidate = useThree((state) => state.invalidate)
-  const currentEntry = useRef(null)
-  const requestNumber = useRef(0)
+    const invalidate = useThree((state) => state.invalidate)
 
-  // Restore the GLB material when this component or material disappears.
-  useEffect(() => {
-    if (!material) return undefined
+    
+    const { canvas, texture } = useMemo(() => {
+        const canvasElement = document.createElement('canvas')
 
-    const originalMap = material.map
+        // Temporary dimensions until the first image is loaded.
+        canvasElement.width = 1
+        canvasElement.height = 1
 
-    return () => {
-      requestNumber.current += 1
-      currentEntry.current?.materials.delete(material)
-      currentEntry.current = null
-      material.map = originalMap
-    //   material.needsUpdate = true
-      removeOldTextures()
-      invalidate()
-    }
-  }, [material, invalidate])
+        const canvasTexture = new THREE.CanvasTexture(canvasElement)
 
-  // Load a new texture without removing the one currently on screen.
-  useEffect(() => {
-    if (!url || !material) return undefined
+        canvasTexture.flipY = false
+        canvasTexture.colorSpace = THREE.SRGBColorSpace
 
-    const thisRequest = ++requestNumber.current
-    const nextEntry = loadTexture(url)
+        canvasTexture.wrapS = THREE.RepeatWrapping
+        canvasTexture.wrapT = THREE.RepeatWrapping
 
-    nextEntry.promise.then((texture) => {
-      // Ignore an old request if another decor is already selected.
-      if (thisRequest !== requestNumber.current) {
-        removeOldTextures()
-        return
-      }
+        // Avoid generating mipmaps after every VIPANEL change.
+        canvasTexture.generateMipmaps = false
+        canvasTexture.minFilter = THREE.LinearFilter
+        canvasTexture.magFilter = THREE.LinearFilter
 
-      currentEntry.current?.materials.delete(material)
-      nextEntry.materials.add(material)
-      currentEntry.current = nextEntry
-      markAsRecent(nextEntry)
+        return {
+            canvas: canvasElement,
+            texture: canvasTexture,
+        }
+    }, [])
 
-      material.map = texture
-      material.color.set('#ffffff')
+     
+    useEffect(() => {
+        if (!material) return
 
-      if (roughness !== undefined) material.roughness = roughness
-      if (metalness !== undefined) material.metalness = metalness
+        if (roughness !== undefined) {
+            material.roughness = roughness
+        }
 
-    //   material.needsUpdate = true
-      removeOldTextures()
-      invalidate()
-    }).catch((error) => {
-      if (thisRequest === requestNumber.current) {
-        console.error(`Texture not loaded: ${url}`, error)
-      }
-    })
+        if (metalness !== undefined) {
+            material.metalness = metalness
+        }
 
-    return () => {
-      requestNumber.current += 1
-    }
-  }, [url, material, roughness, metalness, invalidate])
+        invalidate()
+    }, [
+        material,
+        roughness,
+        metalness,
+        invalidate,
+    ])
 
-  return null
+    
+    useEffect(() => {
+        if (!material) return undefined
+
+        const originalMap = material.map
+
+        return () => {
+            if (material.map === texture) {
+                material.map = originalMap
+                material.needsUpdate = true
+            }
+
+            invalidate()
+        }
+    }, [material, texture, invalidate])
+
+     
+    useEffect(() => {
+        if (!url || !material) return undefined
+
+        let cancelled = false
+
+        const controller = new AbortController()
+
+        
+        const timeout = window.setTimeout(async () => {
+            let bitmap = null
+
+            try {
+                const response = await fetch(url, {
+                    signal: controller.signal,
+
+                     
+                    cache: 'force-cache',
+                })
+
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP ${response.status} for ${url}`
+                    )
+                }
+
+                const blob = await response.blob()
+
+                bitmap = await createImageBitmap(blob)
+
+                if (cancelled) {
+                    bitmap.close()
+                    return
+                }
+
+               
+                if (
+                    canvas.width === 1 &&
+                    canvas.height === 1
+                ) {
+                    canvas.width = bitmap.width
+                    canvas.height = bitmap.height
+                }
+
+                const context = canvas.getContext('2d')
+
+                if (!context) {
+                    throw new Error(
+                        'Canvas 2D context is unavailable'
+                    )
+                }
+
+                context.clearRect(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                )
+
+                context.drawImage(
+                    bitmap,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                )
+
+                
+                bitmap.close()
+                bitmap = null
+
+                if (cancelled) return
+
+                
+                if (material.map !== texture) {
+                    material.map = texture
+                    material.color.set('#ffffff')
+                    material.needsUpdate = true
+                }
+
+               
+                texture.needsUpdate = true
+
+                invalidate()
+            } catch (error) {
+                bitmap?.close()
+
+                if (
+                    error?.name === 'AbortError' ||
+                    cancelled
+                ) {
+                    return
+                }
+
+                console.error(
+                    `VIPANEL texture not loaded: ${url}`,
+                    error
+                )
+            }
+        }, delay)
+
+        return () => {
+            cancelled = true
+
+            window.clearTimeout(timeout)
+
+           
+            controller.abort()
+        }
+    }, [
+        url,
+        material,
+        canvas,
+        texture,
+        delay,
+        invalidate,
+    ])
+ 
+    useEffect(() => {
+        return () => {
+            texture.dispose()
+        }
+    }, [texture])
+
+    return null
 }

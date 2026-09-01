@@ -239,6 +239,15 @@ export default function Model(props) {
                     position={[-1.076, -0.324, -2.086]}
                     scale={[1.143, 1, 1]}
                 />)}
+            {(sizeReceveur === 1400 &&
+                <group position={[-1.117, -0.324, -2.086]}>
+                    <mesh
+                        receiveShadow
+                        geometry={nodes.Mesh014.geometry}
+                        material={materials['+RECEVEUR']}
+                    />
+                </group>
+            )}
         </group>
     )
 }

@@ -165,7 +165,7 @@ const useConfiguratorStore = create((set, get) => ({
             isLoading: true,
             error: null,
         });
-        const hiddenParoiIds = ["PL FXP", "PL WRL", "PL 2BT", "PL BAF"]
+        const hiddenParoiIds = ["PL FXP", "PL WRL", "PL BAF"]
 
         try {
             const data = await getConfiguratorDatabyAPI();
@@ -177,7 +177,13 @@ const useConfiguratorStore = create((set, get) => ({
                     .filter((item) => !hiddenParoiIds.includes(item.id))
                     .map((item) => ({
                         ...item,
-                        finitionsDisponibles: [...(item.finitionsDisponibles ?? [])],
+                        finitionsDisponibles: [
+                            ...(item.finitionsDisponibles ?? []),
+                            {
+                                code: '999',
+                                libelle: 'Profilé Acier brossé',
+                            },
+                        ],
                         verresDisponibles: [...(item.verresDisponibles ?? [])],
                     })),
                 vipanels: data.vipanels.filter(

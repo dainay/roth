@@ -8,6 +8,7 @@ import { useShallow } from 'zustand/react/shallow'
 import useConfiguratorStore from '../store/useConfiguratorStore';
 import { FINITION_ASSETS } from '../conf/lib'
 import AnimatedDoor from '../scene/AnimatedDoor'
+import AnimatedDoubleDoor from '../scene/AnimatedDoubleDoor'
 
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/PAROIS_compressed.glb')
@@ -118,35 +119,179 @@ export default function Model(props) {
                 geometry={nodes.Holder_2.geometry}
                 material={materials['+FINITION']}
             />
+            {(paroi === "PL 2BT" && montage === 'niche') && (
+                <group>
+                    <mesh
+                        castShadow
+                        geometry={nodes.frame001.geometry}
+                        material={materials['+FINITION']}
+                        position={[-0.268, -0.319, -1.644]}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
 
+                    <AnimatedDoubleDoor
+                        leftPivot={[-1.42, 0.687, -1.637]}
+                        leftOffset={[0.47, 0, 0]}
+                        leftOpenAngle={-Math.PI / 4}
+
+                        rightPivot={[-0.28, 0.687, -1.648]}
+                        rightOffset={[-0.466, 0, 0]}
+                        rightOpenAngle={Math.PI / 4}
+                        leftDoor={
+                            <group
+                                // position={[-0.95, 0.687, -1.637]} 
+                                rotation={[-Math.PI / 2, 0, 3.108]}
+                            >
+                                <mesh
+                                    geometry={nodes['BL-P11SC01004'].geometry}
+                                    material={materials['+GLASS']}
+                                />
+                                <mesh
+                                    castShadow
+                                    geometry={nodes['BL-P11SC01004_1'].geometry}
+                                    material={materials['+FINITION']}
+                                />
+                                <mesh
+                                    castShadow
+                                    geometry={nodes['BL-P11SC01004_2'].geometry}
+                                    material={materials['+ PROTECTION']}
+                                />
+                            </group>
+                        }
+                        rightDoor={
+
+                            <group 
+                            // position={[-0.729, 0.687, -1.637]}
+                            rotation={[-Math.PI / 2, 0, 0]}
+                            >
+                                <mesh
+                                    geometry={nodes['BL-P11SC01005'].geometry}
+                                    material={materials['+GLASS']}
+                                />
+                                <mesh
+                                    castShadow
+                                    geometry={nodes['BL-P11SC01005_1'].geometry}
+                                    material={materials['+FINITION']}
+                                />
+                                <mesh
+                                    castShadow
+                                    geometry={nodes['BL-P11SC01005_2'].geometry}
+                                    material={materials['+ PROTECTION']}
+                                />
+                            </group>}
+                    />
+
+                </group>
+            )}
+
+            {(paroi === "PL 2BT" && montage === 'angle') && (
+                <group position={[0, 0.01, 0]}>
+                    <group position={[-0.246, 1.669, -2.378]} rotation={[Math.PI / 2, 0, 3.139]}>
+                        <mesh
+
+                            geometry={nodes.DIANPIAN_1003.geometry}
+                            material={materials['+ PROTECTION']}
+                        />
+                        <mesh
+
+                            geometry={nodes.DIANPIAN_1003_1.geometry}
+                            material={materials['+GLASS']}
+                        />
+                        <mesh
+                            castShadow
+
+                            geometry={nodes.DIANPIAN_1003_2.geometry}
+                            material={materials['+FINITION']}
+                        />
+                    </group>
+
+
+                    <AnimatedDoubleDoor
+                        leftPivot={[-1.42, 0.687, -1.637]}
+                        leftOffset={[0.47, 0, 0]}
+                        leftOpenAngle={-Math.PI / 4}
+
+                        rightPivot={[-0.28, 0.687, -1.648]}
+                        rightOffset={[-0.466, 0, 0]}
+                        rightOpenAngle={Math.PI / 4}
+                        leftDoor={
+                            <group
+                                // position={[-0.961, 0.687, -1.646]} 
+                                rotation={[-Math.PI / 2, 0, -3.139]}
+                            >
+                                <mesh
+
+                                    geometry={nodes.leftDoor_1.geometry}
+                                    material={materials['+GLASS']}
+                                />
+                                <mesh
+                                    castShadow
+                                    geometry={nodes.leftDoor_2.geometry}
+                                    material={materials['+FINITION']}
+                                />
+                                <mesh
+
+                                    geometry={nodes.leftDoor_3.geometry}
+                                    material={materials['+ PROTECTION']}
+                                />
+                            </group>
+
+                        }
+                        rightDoor={ 
+                            <group
+                                // position={[-0.739, 0.687, -1.648]} 
+                                rotation={[-Math.PI / 2, 0, 0.002]}>
+                                <mesh
+
+                                    geometry={nodes.RightDoor_1.geometry}
+                                    material={materials['+GLASS']}
+                                />
+                                <mesh
+                                    castShadow
+
+                                    geometry={nodes.RightDoor_2.geometry}
+                                    material={materials['+FINITION']}
+                                />
+                                <mesh
+
+                                    geometry={nodes.RightDoor_3.geometry}
+                                    material={materials['+ PROTECTION']}
+                                />
+                            </group>
+
+                        }
+                    />
+
+                </group>
+            )}
             {(paroi === 'PL CLS' && montage === 'niche') && (
                 <>
                     <AnimatedDoor
                         rotation={[0, 0, 0]}
                         pivot={[-0.673, 0.749, -1.705]}
                         // offset={[-0.86, 0.005, 0.95]}
-                         slideX={-0.51}
+                        slideX={-0.51}
                     >
                         <group
                             position={[0, 0, 0]}
-                            // rotation={[-1.567, 0, -Math.PI]}
-                        > 
-                    {/* <group position={[-0.668, 0.755, -1.721]}> */}
-                        <mesh
-                            geometry={nodes.MovingDoor_1.geometry}
-                            material={materials['+GLASS']}
-                        />
-                        <mesh
-                            castShadow
-                            geometry={nodes.MovingDoor_2.geometry}
-                            material={materials['+FINITION']}
-                        />
-                        <mesh
-                            castShadow
-                            geometry={nodes.MovingDoor_3.geometry}
-                            material={protectionMaterial}
-                        />
-                    </group>
+                        // rotation={[-1.567, 0, -Math.PI]}
+                        >
+                            {/* <group position={[-0.668, 0.755, -1.721]}> */}
+                            <mesh
+                                geometry={nodes.MovingDoor_1.geometry}
+                                material={materials['+GLASS']}
+                            />
+                            <mesh
+                                castShadow
+                                geometry={nodes.MovingDoor_2.geometry}
+                                material={materials['+FINITION']}
+                            />
+                            <mesh
+                                castShadow
+                                geometry={nodes.MovingDoor_3.geometry}
+                                material={protectionMaterial}
+                            />
+                        </group>
                     </AnimatedDoor>
 
                     <group position={[-0.819, 0.755, -1.721]}>
@@ -174,11 +319,11 @@ export default function Model(props) {
                         rotation={[0, 0, 0]}
                         pivot={[-0.673, 0.749, -1.705]}
                         // offset={[-0.86, 0.005, 0.95]}
-                         slideX={-0.51}
+                        slideX={-0.51}
                     >
                         <group
                             position={[0, 0, 0]}
-                            // rotation={[-1.567, 0, -Math.PI]}
+                        // rotation={[-1.567, 0, -Math.PI]}
                         >
                             {/* <group position={[-0.673, 0.749, -1.705]}> */}
                             <mesh
@@ -437,16 +582,17 @@ export default function Model(props) {
                 <>
                     <group position={[-1.41, -0.333, -1.669]} rotation={[1.567, 0, Math.PI / 2]}>
                         <mesh
-                            geometry={nodes.PLTWU_1000x2000_2.geometry}
-                            material={protectionMaterial}
+
+                            geometry={nodes.PLTWU_1000x2000_1.geometry}
+                            material={materials['+ PROTECTION']}
                         />
                         <mesh
                             castShadow
-                            geometry={nodes.PLTWU_1000x2000_3.geometry}
+                            geometry={nodes.PLTWU_1000x2000_2.geometry}
                             material={materials['+FINITION']}
                         />
                         <mesh
-                            geometry={nodes.PLTWU_1000x2000_4.geometry}
+                            geometry={nodes.PLTWU_1000x2000_3.geometry}
                             material={materials['+GLASS']}
                         />
                     </group>
@@ -455,19 +601,26 @@ export default function Model(props) {
 
             {(paroi === 'PL WRU') && (
                 <>
-                    <group position={[-1.321, 1.674, -1.657]} rotation={[Math.PI / 2, 0, -Math.PI / 2]}>
+                    <group >
+                        <mesh
+
+                            geometry={nodes.PLWRU_1000X2000_1.geometry}
+                            material={materials['+GLASS']}
+                            position={[-1.087, 1.674, -1.657]}
+                            rotation={[Math.PI / 2, 0, -Math.PI / 2]}
+                        />
                         <mesh
                             castShadow
-                            geometry={nodes.PLWRU_1000X2000_2.geometry}
+                            geometry={nodes.PLWRU_1000X2000001.geometry}
                             material={materials['+FINITION']}
+                            position={[-1.321, 1.674, -1.657]}
+                            rotation={[Math.PI / 2, 0, -Math.PI / 2]}
                         />
                         <mesh
-                            geometry={nodes.PLWRU_1000X2000_3.geometry}
-                            material={materials['+GLASS']}
-                        />
-                        <mesh
-                            geometry={nodes.PLWRU_1000X2000_4.geometry}
-                            material={protectionMaterial}
+                            geometry={nodes.PLWRU_1000X2000002.geometry}
+                            material={materials['+BROWB GLASS']}
+                            position={[-1.321, 1.674, -1.657]}
+                            rotation={[Math.PI / 2, 0, -Math.PI / 2]}
                         />
                     </group>
                 </>
@@ -475,26 +628,26 @@ export default function Model(props) {
 
             {(paroi === 'PL WRU' && verre === 'CR') && (
                 <mesh
-                    geometry={nodes.Serigraphie_Chevrons_arondie.geometry}
-                    material={materials['Serigraphie Shevrons arrondi']}
-                    position={[-0.464, 0.677, -1.665]}
+                    geometry={nodes.Serigraphie_Chevrons_arondie001.geometry}
+                    material={materials['Serigraphie Shevrons arrondi.001']}
+                    position={[-0.229, 0.677, -1.665]}
                     scale={[0.317, 0.33, 0.094]}
                 />
             )}
 
             {/* <mesh
-                geometry={nodes.Serigraphie_Geometrie_arondie.geometry}
-                material={materials['Serigraphie Geometrie arrondie']}
-                position={[-0.464, 0.677, -1.665]}
-                scale={[0.317, 0.33, 0.094]}
+                  geometry={nodes.Serigraphie_Geometrie_arondie001.geometry}
+                    material={materials['Serigraphie Geometrie arrondie.001']}
+                    position={[-0.237, 0.677, -1.665]}
+                    scale={[0.317, 0.33, 0.094]}
             /> */}
 
             {(paroi === 'PL TWU' && verre === 'MP') && (
                 <>
                     <mesh
-                        geometry={nodes.Serigraphie_Chevrons_carrée.geometry}
-                        material={materials['Serigraphie Shevrons']}
-                        position={[-0.948, 0.682, -1.67]}
+                        geometry={nodes.Serigraphie_Chevrons_carrée001.geometry}
+                        material={materials['Serigraphie Shevrons.001']}
+                        position={[-0.952, 0.682, -1.67]}
                     />
                 </>
             )}
@@ -502,9 +655,9 @@ export default function Model(props) {
             {(paroi === 'PL TWU' && verre === 'GP') && (
                 <>
                     <mesh
-                        geometry={nodes.Serigraphie_Geometrie_carré.geometry}
-                        material={materials['Serigraphie Geometrie.001']}
-                        position={[-0.948, 0.682, -1.66]}
+                        geometry={nodes.Serigraphie_Geometrie_carré001.geometry}
+                        material={materials['Serigraphie Geometrie.002']}
+                        position={[-0.952, 0.682, -1.66]}
                     />
                 </>
             )}

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import s from './UI.module.scss'
 import useConfiguratorStore from '../store/useConfiguratorStore'
 import { useShallow } from 'zustand/react/shallow'
-import { FINITION_ASSETS, NICHE_FINITION_ASSETS, PROFILE_ASSETS, RECEVEUR_ASSETS, PAROI_ASSETS, SERIGRAPHIE_ASSETS } from '../conf/lib'
+import { FINITION_ASSETS, NICHE_FINITION_ASSETS, PROFILE_ASSETS, RECEVEUR_ASSETS, PAROI_ASSETS, SERIGRAPHIE_ASSETS, FINITION_VIPANELS } from '../conf/lib'
 import { getPhotoUrl } from '../helpers/getPhotoUrl'
 
 
@@ -162,7 +162,7 @@ export default function UI() {
                             onClick={() => setSelectionValue('finitionParoi', item.code)}
                         >
                             <img className={s.finitionImage} src={FINITION_ASSETS[item.code].img} alt={item.libelle} />
-                            <span>{item.libelle}</span>
+                            <span>{FINITION_ASSETS[item.code].label}</span>
                         </Button>
                     ))}
             </div>
@@ -299,6 +299,9 @@ export default function UI() {
                                 />
                             </div>
                             <span>{item.nom}</span>
+                            <span className={s.finitionLabel}>
+                                {FINITION_VIPANELS[item.finition].label}
+                            </span>
                         </Button>
                     ))}
                 </div>

@@ -36,7 +36,7 @@ export default function Scene() {
             }}
             linear={false}
         >
-            <color attach="background" args={["#161616"]} />
+            <color attach="background" args={["#141312"]} />
             <Suspense fallback={null}>
                 <Lighting />
 
@@ -54,20 +54,20 @@ export default function Scene() {
                 {/* **** scene ****** */}
 
                 <OrbitControls target={[-0.7, 1, -1]}
-                    // enablePan={false}
-                    // enableZoom={true}
+                    enablePan={false}
+                    enableZoom={true}
 
-                    // minDistance={0}
-                    // maxDistance={3}
-                    // zoomSpeed={2}
+                    minDistance={0}
+                    maxDistance={3}
+                    zoomSpeed={2}
 
-                    // minPolarAngle={Math.PI / 2.6}
-                    // maxPolarAngle={Math.PI / 1.6}
-                    // minAzimuthAngle={Math.PI / 8}
-                    // maxAzimuthAngle={Math.PI / 2.5}
-                    // rotateSpeed={0.1}
+                    minPolarAngle={Math.PI / 2.6}
+                    maxPolarAngle={Math.PI / 1.6}
+                    minAzimuthAngle={Math.PI / 8}
+                    maxAzimuthAngle={Math.PI / 2.5}
+                    rotateSpeed={0.1}
 
-                    // enableDamping={false}
+                    enableDamping={false}
                     dampingFactor={0.08}
                 />
                 {import.meta.env.DEV && <GizmoHelper
