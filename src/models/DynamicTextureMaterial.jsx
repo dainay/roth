@@ -7,11 +7,11 @@ export default function DynamicTextureMaterial({
     material,
     roughness,
     metalness,
-    delay = 150,
+    delay = 200,
 }) {
     const invalidate = useThree((state) => state.invalidate)
 
-    
+
     const { canvas, texture } = useMemo(() => {
         const canvasElement = document.createElement('canvas')
 
@@ -38,7 +38,7 @@ export default function DynamicTextureMaterial({
         }
     }, [])
 
-     
+
     useEffect(() => {
         if (!material) return
 
@@ -58,7 +58,7 @@ export default function DynamicTextureMaterial({
         invalidate,
     ])
 
-    
+
     useEffect(() => {
         if (!material) return undefined
 
@@ -74,7 +74,7 @@ export default function DynamicTextureMaterial({
         }
     }, [material, texture, invalidate])
 
-     
+
     useEffect(() => {
         if (!url || !material) return undefined
 
@@ -82,7 +82,7 @@ export default function DynamicTextureMaterial({
 
         const controller = new AbortController()
 
-        
+
         const timeout = window.setTimeout(async () => {
             let bitmap = null
 
@@ -90,7 +90,7 @@ export default function DynamicTextureMaterial({
                 const response = await fetch(url, {
                     signal: controller.signal,
 
-                     
+
                     cache: 'force-cache',
                 })
 
@@ -109,13 +109,25 @@ export default function DynamicTextureMaterial({
                     return
                 }
 
-               
+                const MAX_WIDTH = 1024
+                const MAX_HEIGHT = 2048
+
+                const scale = Math.min(
+                    1,
+                    MAX_WIDTH / bitmap.width,
+                    MAX_HEIGHT / bitmap.height
+                )
+
+                const width = Math.round(bitmap.width * scale)
+                const height = Math.round(bitmap.height * scale)
+
+
                 if (
                     canvas.width === 1 &&
                     canvas.height === 1
                 ) {
-                    canvas.width = bitmap.width
-                    canvas.height = bitmap.height
+                    canvas.width = Math.max(1, width)
+                    canvas.height = Math.max(1, height)
                 }
 
                 const context = canvas.getContext('2d')
@@ -133,6 +145,7 @@ export default function DynamicTextureMaterial({
                     canvas.height
                 )
 
+
                 context.drawImage(
                     bitmap,
                     0,
@@ -141,20 +154,20 @@ export default function DynamicTextureMaterial({
                     canvas.height
                 )
 
-                
+
                 bitmap.close()
                 bitmap = null
 
                 if (cancelled) return
 
-                
+
                 if (material.map !== texture) {
                     material.map = texture
                     material.color.set('#ffffff')
                     material.needsUpdate = true
                 }
 
-               
+
                 texture.needsUpdate = true
 
                 invalidate()
@@ -180,7 +193,7 @@ export default function DynamicTextureMaterial({
 
             window.clearTimeout(timeout)
 
-           
+
             controller.abort()
         }
     }, [
@@ -191,7 +204,7 @@ export default function DynamicTextureMaterial({
         delay,
         invalidate,
     ])
- 
+
     useEffect(() => {
         return () => {
             texture.dispose()

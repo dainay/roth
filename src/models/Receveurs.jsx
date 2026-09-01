@@ -5,9 +5,15 @@ import { useShallow } from 'zustand/react/shallow'
 import useConfiguratorStore from '../store/useConfiguratorStore';
 import DynamicTextureMaterial from './DynamicTextureMaterial'
 import { RECEVEUR_ASSETS } from '../conf/lib'
+import { useLayoutEffect } from 'react'
+import optimizeMaterials from '../scene/optimizeMaterials'
 
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/RECEVEURS_compressed.glb')
+
+    useLayoutEffect(() => {
+        optimizeMaterials(materials)
+    }, [materials])
 
     const {
         sizeReceveur,

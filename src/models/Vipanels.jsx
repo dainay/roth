@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useGLTF, useTexture } from '@react-three/drei'
 import { useShallow } from 'zustand/react/shallow'
 import * as THREE from 'three'
@@ -8,9 +8,16 @@ import DynamicTextureMaterial from './DynamicTextureMaterial'
 import { FINITION_VIPANELS } from '../conf/lib'
 import Evipanel from './Evipanel'
 import { getPhotoUrl } from '../helpers/getPhotoUrl'
+import { useLayoutEffect } from 'react'
+import optimizeMaterials from '../scene/optimizeMaterials'
 
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/VIPANELS_compressed.glb')
+
+    useLayoutEffect(() => {
+        optimizeMaterials(materials)
+
+    }, [materials])
 
     const gradientTexture = useTexture('./img/evipanel.webp');
 
@@ -21,25 +28,25 @@ export default function Model(props) {
     const heating = meshHover || htmlHover || touchOpen
 
     const handleMeshEnter = (event) => {
-    if (event.pointerType === 'mouse') {
-        setMeshHover(true)
+        if (event.pointerType === 'mouse') {
+            setMeshHover(true)
+        }
     }
-}
 
-const handleMeshLeave = (event) => {
-    if (event.pointerType === 'mouse') {
-        setMeshHover(false)
+    const handleMeshLeave = (event) => {
+        if (event.pointerType === 'mouse') {
+            setMeshHover(false)
+        }
     }
-}
 
-const handleMeshPointerDown = (event) => {
-    event.stopPropagation()
+    const handleMeshPointerDown = (event) => {
+        event.stopPropagation()
 
-    if (event.pointerType !== 'mouse') {
-        setTouchOpen((current) => !current)
+        if (event.pointerType !== 'mouse') {
+            setTouchOpen((current) => !current)
+        }
     }
-}
-     
+
     const {
         cleanedData,
         sizeReceveur,
@@ -59,6 +66,28 @@ const handleMeshPointerDown = (event) => {
             montage: state.selection.montage
         }))
     );
+
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                closeEvipanel()
+            }
+        }
+
+        window.addEventListener('blur', closeEvipanel)
+        document.addEventListener(
+            'visibilitychange',
+            handleVisibilityChange
+        )
+
+        return () => {
+            window.removeEventListener('blur', closeEvipanel)
+            document.removeEventListener(
+                'visibilitychange',
+                handleVisibilityChange
+            )
+        }
+    }, [])
 
 
     // // console.log('sizeReceveur Vipanels: ', sizeReceveur)
@@ -108,8 +137,19 @@ const handleMeshPointerDown = (event) => {
     }, [nodes])
 
     const eVipanelMaterial = useMemo(() => {
-        return materials['VIPANEL-1500x2550-right'].clone()
+        const material =
+            materials['VIPANEL-1500x2550-right'].clone()
+
+        material.side = THREE.FrontSide
+
+        return material
     }, [materials])
+
+    const closeEvipanel = () => {
+        setMeshHover(false)
+        setHtmlHover(false)
+        setTouchOpen(false)
+    }
 
     return (
         <group {...props} dispose={null}>
@@ -139,13 +179,13 @@ const handleMeshPointerDown = (event) => {
             )}
 
             {choosenVipanelNiche && (
- 
+
                 <DynamicTextureMaterial
                     url={getPhotoUrl(choosenVipanelNiche.files?.['1500x2550'])}
                     material={materials['VIPANEL-1500x2550-niche']}
                     roughness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.roughness}
                     metalness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.metalness}
-                /> 
+                />
             )}
 
             {(montage === 'niche' &&
@@ -279,12 +319,13 @@ const handleMeshPointerDown = (event) => {
                 onPointerEnter={handleMeshEnter}
                 onPointerLeave={handleMeshLeave}
                 onPointerDown={handleMeshPointerDown}
-                onPointerMissed={() => setTouchOpen(false)}
+                onPointerCancel={closeEvipanel}
+                onPointerMissed={closeEvipanel}
             >
 
 
-                <Evipanel 
-                    gradientTexture={gradientTexture} 
+                <Evipanel
+                    gradientTexture={gradientTexture}
                     geometry={vipanelRight1Geometry}
                     visible={heating}
                     onHtmlEnter={() => setHtmlHover(true)}

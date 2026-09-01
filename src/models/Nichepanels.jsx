@@ -5,10 +5,16 @@ import { useShallow } from 'zustand/shallow'
 
 import useConfiguratorStore from '../store/useConfiguratorStore';
 import { NICHE_FINITION_ASSETS } from '../conf/lib';
+import optimizeMaterials from '../scene/optimizeMaterials'
 
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/NICHEPANEL_compressed.glb')
     const invalidate = useThree((state) => state.invalidate)
+
+    useLayoutEffect(() => {
+        optimizeMaterials(materials)
+        invalidate()
+    }, [materials, invalidate])
 
     const {
         finitionNiche,

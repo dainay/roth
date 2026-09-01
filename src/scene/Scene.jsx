@@ -3,7 +3,6 @@ import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls, Preload, GizmoHelper, GizmoViewport } from "@react-three/drei";
 
-
 import Lighting from "./Lighting";
 
 import Switcher from "../models/Switcher";
@@ -15,7 +14,6 @@ import Profiles from "../models/Profiles";
 import Nichepanels from "../models/Nichepanels";
 import Vipanels from "../models/Vipanels";
 
-import DisableTransmission from "./DisableTransmision";
 
 import PerfMonitor from "./Perf";
 
@@ -80,7 +78,7 @@ export default function Scene() {
                     />
                 </GizmoHelper>}
                 <Preload all />
-                <DisableTransmission />
+           
             </Suspense>
 
             {import.meta.env.DEV && <PerfMonitor />}

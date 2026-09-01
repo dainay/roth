@@ -5,10 +5,16 @@ import { useShallow } from 'zustand/shallow'
 
 import useConfiguratorStore from '../store/useConfiguratorStore';
 import { PROFILE_ASSETS } from '../conf/lib'
+import optimizeMaterials from '../scene/optimizeMaterials'
 
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/PROFILES_compressed.glb')
     const invalidate = useThree((state) => state.invalidate)
+
+    useLayoutEffect(() => {
+        optimizeMaterials(materials)
+        invalidate()
+    }, [materials, invalidate])
 
     const {
         finitionProfile,
@@ -47,7 +53,7 @@ export default function Model(props) {
                 position={[-1.412, 0, 0.064]}
             />
             {montage === 'niche' && (
-                <group position={ sizeReceveur === 1000 ? [-0.159, 0, 0] : [0, 0, 0] }>
+                <group position={sizeReceveur === 1000 ? [-0.159, 0, 0] : [0, 0, 0]}>
                     <mesh
 
                         geometry={nodes.shower_profile_FIXED001.geometry}

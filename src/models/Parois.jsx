@@ -9,10 +9,16 @@ import useConfiguratorStore from '../store/useConfiguratorStore';
 import { FINITION_ASSETS } from '../conf/lib'
 import AnimatedDoor from '../scene/AnimatedDoor'
 import AnimatedDoubleDoor from '../scene/AnimatedDoubleDoor'
+import optimizeMaterials from '../scene/optimizeMaterials'
 
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/PAROIS_compressed.glb')
     const invalidate = useThree((state) => state.invalidate)
+
+    useLayoutEffect(() => {
+        optimizeMaterials(materials)
+        invalidate()
+    }, [materials, invalidate])
 
     const protectionMaterial = useMemo(
         () => new THREE.MeshStandardMaterial({
@@ -160,9 +166,9 @@ export default function Model(props) {
                         }
                         rightDoor={
 
-                            <group 
-                            // position={[-0.729, 0.687, -1.637]}
-                            rotation={[-Math.PI / 2, 0, 0]}
+                            <group
+                                // position={[-0.729, 0.687, -1.637]}
+                                rotation={[-Math.PI / 2, 0, 0]}
                             >
                                 <mesh
                                     geometry={nodes['BL-P11SC01005'].geometry}
@@ -237,7 +243,7 @@ export default function Model(props) {
                             </group>
 
                         }
-                        rightDoor={ 
+                        rightDoor={
                             <group
                                 // position={[-0.739, 0.687, -1.648]} 
                                 rotation={[-Math.PI / 2, 0, 0.002]}>
@@ -618,7 +624,7 @@ export default function Model(props) {
                         />
                         <mesh
                             geometry={nodes.PLWRU_1000X2000002.geometry}
-                            material={materials['+BROWB GLASS']}
+                            material={materials['+ PROTECTION']}
                             position={[-1.321, 1.674, -1.657]}
                             rotation={[Math.PI / 2, 0, -Math.PI / 2]}
                         />

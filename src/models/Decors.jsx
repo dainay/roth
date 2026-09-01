@@ -1,9 +1,16 @@
 import { useGLTF } from '@react-three/drei'
+import { useLayoutEffect } from 'react'
+import optimizeMaterials from '../scene/optimizeMaterials'
 
 import useSceneStore from '../store/useSceneStore';
 
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/DECOR_compressed.glb')
+
+    // useLayoutEffect(() => {
+    //     optimizeMaterials(materials)
+
+    // }, [materials])
 
     const toggleMirrorLight = useSceneStore((state) => state.toggleMirrorLight);
     const mirrorLight = useSceneStore((state) => state.mirrorLight);
