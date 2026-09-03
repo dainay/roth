@@ -193,7 +193,7 @@ export default function UI() {
                             >
                                 <img className={s.finitionImage}
                                     src={NICHE_FINITION_ASSETS[item].img} alt={item} />
-                                <span>{NICHE_FINITION_ASSETS[item].label}</span>
+                                {/* <span>{NICHE_FINITION_ASSETS[item].label}</span> */}
                             </Button>
                         ))}
                 </div>

@@ -78,7 +78,7 @@ export default function Evipanel({ geometry,
                     )}
                     {FEATURES.buttonEVipanel ? (<a target="_blank" className="btn" href="https://www.roth-france.fr/espace-douche/panneaux-vipanel/e-vipanel">Découvrir</a>) : (
                         <ProductLinkModal
-
+                            className="btn-black"
                             url="https://www.roth-france.fr/espace-douche/panneaux-vipanel/e-vipanel"
                             title="Panneau mural E-VIPANEL"
                         >

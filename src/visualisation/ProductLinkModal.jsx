@@ -5,6 +5,7 @@ export default function ProductLinkModal({
     url,
     title = 'Produit Roth',
     children = 'Voir le produit',
+    className 
 }) {
     const dialogRef = useRef()
     const [isOpen, setIsOpen] = useState(false)
@@ -37,7 +38,7 @@ export default function ProductLinkModal({
         <>
             <button
                 type="button"
-                className="btn-product"
+                className={`btn-product ${className}`}
                 onClick={openProduct}
                 disabled={!url}
             >
