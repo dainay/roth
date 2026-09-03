@@ -11,5 +11,7 @@ export const IS_EXPO_MODE =
 
 export const FEATURES = Object.freeze({
     buttonEVipanel: IS_SITE_MODE,
-    styleTextEVipanel: IS_EXPO_MODE,
+    styleTextEVipanel: IS_SITE_MODE,
+    logoLink: IS_EXPO_MODE,
+    modalWindow: IS_EXPO_MODE,
 })

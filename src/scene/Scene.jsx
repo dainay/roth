@@ -3,6 +3,8 @@ import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls, Preload, GizmoHelper, GizmoViewport } from "@react-three/drei";
 
+import CameraControls from "./CameraControls";
+
 import Lighting from "./Lighting";
 
 import Switcher from "../models/Switcher";
@@ -51,23 +53,8 @@ export default function Scene() {
 
                 {/* **** scene ****** */}
 
-                <OrbitControls target={[-0.7, 1, -1]}
-                    enablePan={false}
-                    enableZoom={true}
 
-                    minDistance={0}
-                    maxDistance={3}
-                    zoomSpeed={2}
-
-                    minPolarAngle={Math.PI / 2.6}
-                    maxPolarAngle={Math.PI / 1.6}
-                    minAzimuthAngle={Math.PI / 8}
-                    maxAzimuthAngle={Math.PI / 2.5}
-                    rotateSpeed={0.1}
-
-                    enableDamping={false}
-                    dampingFactor={0.08}
-                />
+                <CameraControls />
                 {import.meta.env.DEV && <GizmoHelper
                     alignment="bottom-right"
                     margin={[80, 80]}
@@ -78,7 +65,7 @@ export default function Scene() {
                     />
                 </GizmoHelper>}
                 <Preload all />
-           
+
             </Suspense>
 
             {import.meta.env.DEV && <PerfMonitor />}

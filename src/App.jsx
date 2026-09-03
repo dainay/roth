@@ -3,6 +3,8 @@ import './App.css'
 import VisualisationLayout from './visualisation/VisualisationLayout'
 import useConfiguratorStore from './store/useConfiguratorStore'
 
+import {FEATURES} from './conf/appMode'
+
 function App() {
     const sendConfiguratorData = useConfiguratorStore(
         (state) => state.sendConfiguratorData
@@ -17,12 +19,17 @@ function App() {
             await sendConfiguratorData()
             setCurrentView('visualisation')
         } catch {
-            // The store exposes the error in the configurator view.
+            console.error('Error while sending configurator data')
         }
     }
 
     return (
         <div>
+            {FEATURES.logoLink ? (
+            <a href="https://admin.roth-france.fr/salons/menu"><img src="./img/logo.svg" alt="Logo" className="logo-roth" /></a>
+            ) : (
+                <img src="./img/logo.svg" alt="Logo" className="logo-roth" />
+            )}
             
                 <div style={{
                     visibility: currentView === "configurateur" ? "visible" : "hidden",
