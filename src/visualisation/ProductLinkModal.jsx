@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import './ProductLink.css'
 
-export default function ProductLink({
+export default function ProductLinkModal({
     url,
     title = 'Produit Roth',
     children = 'Voir le produit',

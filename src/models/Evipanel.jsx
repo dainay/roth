@@ -4,7 +4,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import s from './Evipanel.module.css'
 
 import { FEATURES } from '../conf/appMode'
-import modalWindow from '../visualisation/modalWindow';
+import ProductLinkModal from '../visualisation/ProductLinkModal'
 
 useTexture.preload('./img/evipanel.webp')
 
@@ -74,11 +74,16 @@ export default function Evipanel({ geometry,
                     ) : (
                         <h4 style={{ fontSize: '23px', marginTop: '0.5rem' }} >
                             Panneau mural chauffant pour salle de bain
-                        </h4> 
+                        </h4>
                     )}
-                    {FEATURES.buttonEVipanel ? (<a target="_blank" className="btn" href="https://testwww.roth-france.fr/espace-douche/panneaux-vipanel/e-vipanel">Découvrir</a>) : (
-                        <button  className="btn" style={{fontSize: '20px', marginTop: '14px', paddingInline: '30px', cursor: 'pointer'
-                        }}  type='button' onClick={() => modalWindow('https://testwww.roth-france.fr/espace-douche/panneaux-vipanel/e-vipanel')}>Découvrir</button>
+                    {FEATURES.buttonEVipanel ? (<a target="_blank" className="btn" href="https://www.roth-france.fr/espace-douche/panneaux-vipanel/e-vipanel">Découvrir</a>) : (
+                        <ProductLinkModal
+
+                            url="https://www.roth-france.fr/espace-douche/panneaux-vipanel/e-vipanel"
+                            title="Panneau mural E-VIPANEL"
+                        >
+                            Découvrir
+                        </ProductLinkModal>
                     )}
                 </div>
             </Html>

@@ -1,24 +1,29 @@
-.product-link-button {
-    min-height: 44px;
-    padding: 10px 18px;
-
-    border: 0;
-    border-radius: 4px;
-
-    background: #111;
-    color: #fff;
-
-    font: inherit;
+.btn-product{
+       color: #050505;
+    font-weight: 500;
+    font-size: 14px;
+    border: 0.5px solid #0a0a0a;
+    padding: 5px 0;
+    border-radius: 30px;
+    margin: auto;
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 5px;
+    transition: all 0.3s ease-in-out;
     cursor: pointer;
+    background-color: #fff;
 }
 
-.product-link-button:hover {
-    background: #333;
+.btn-product:hover {
+        background-color: #0a0a0a;
+    color: #fff;
 }
 
-.product-link-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.btn-product:disabled {
+    opacity: 0;
+    cursor: unset;
 }
 
 .product-link-dialog {
