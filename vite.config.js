@@ -1,16 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-const backendTarget = 'http://127.0.0.1:8084'
+export default defineConfig(({ mode }) => {
+    const isExpo = mode === 'expo'
 
-export default defineConfig({
-    plugins: [react()],
-    base: './',
+    return {
+        plugins: [react()],
 
-    build: {
-        outDir: 'docs',
-        emptyOutDir: true,
-    },
+        base: './',
+
+        build: {
+            outDir: isExpo
+                ? 'docs-expo'
+                : 'docs-site',
+
+            emptyOutDir: true,
+        },
 
     // server: {
     //     proxy: {
@@ -46,4 +51,5 @@ export default defineConfig({
     //         },
     //     },
     // },
+    }
 })

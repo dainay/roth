@@ -27,9 +27,9 @@ export default function Model(props) {
             roughness: 0,
             metalness: 0,
             transparent: true,
-            opacity: 0.3,
+            opacity: 0.4,
             depthWrite: false,
-            side: THREE.DoubleSide,
+            side: THREE.FrontSide,
         }),
         []
     )
@@ -276,10 +276,10 @@ export default function Model(props) {
                         rotation={[0, 0, 0]}
                         pivot={[-0.673, 0.749, -1.705]}
                         // offset={[-0.86, 0.005, 0.95]}
-                        slideX={-0.51}
+                        slideX={-0.54}
                     >
                         <group
-                            position={[0, 0, 0]}
+                            position={[0, 0, -0.018]}
                         // rotation={[-1.567, 0, -Math.PI]}
                         >
                             {/* <group position={[-0.668, 0.755, -1.721]}> */}
@@ -328,7 +328,7 @@ export default function Model(props) {
                         slideX={-0.51}
                     >
                         <group
-                            position={[0, 0, 0]}
+                            position={[0, 0, -0.018]}
                         // rotation={[-1.567, 0, -Math.PI]}
                         >
                             {/* <group position={[-0.673, 0.749, -1.705]}> */}
@@ -634,26 +634,19 @@ export default function Model(props) {
 
             {(paroi === 'PL WRU' && verre === 'CR') && (
                 <mesh
-                    geometry={nodes.Serigraphie_Chevrons_arondie001.geometry}
-                    material={materials['Serigraphie Shevrons arrondi.001']}
-                    position={[-0.229, 0.677, -1.665]}
+                    geometry={nodes.Serigraphie_Chevrons_arondie.geometry}
+                    material={materials['Serigraphie Shevrons arrondi']}
+                    position={[-0.237, 0.677, -1.665]}
                     scale={[0.317, 0.33, 0.094]}
                 />
             )}
 
-            {/* <mesh
-                  geometry={nodes.Serigraphie_Geometrie_arondie001.geometry}
-                    material={materials['Serigraphie Geometrie arrondie.001']}
-                    position={[-0.237, 0.677, -1.665]}
-                    scale={[0.317, 0.33, 0.094]}
-            /> */}
-
             {(paroi === 'PL TWU' && verre === 'MP') && (
                 <>
                     <mesh
-                        geometry={nodes.Serigraphie_Chevrons_carrée001.geometry}
-                        material={materials['Serigraphie Shevrons.001']}
-                        position={[-0.952, 0.682, -1.67]}
+                        geometry={nodes.Serigraphie_Chevrons_carrée.geometry}
+                        material={materials['Serigraphie Shevrons']}
+                        position={[-0.955, 0.682, -1.67]}
                     />
                 </>
             )}
@@ -661,9 +654,9 @@ export default function Model(props) {
             {(paroi === 'PL TWU' && verre === 'GP') && (
                 <>
                     <mesh
-                        geometry={nodes.Serigraphie_Geometrie_carré001.geometry}
-                        material={materials['Serigraphie Geometrie.002']}
-                        position={[-0.952, 0.682, -1.66]}
+                        geometry={nodes.Serigraphie_Geometrie_carré.geometry}
+                        material={materials['Serigraphie Geometrie.001']}
+                        position={[-0.955, 0.682, -1.66]}
                     />
                 </>
             )}

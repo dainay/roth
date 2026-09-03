@@ -118,7 +118,7 @@ export const PROFILE_ASSETS = {
     color: '#a9aaa7',
     metalness: 0.6,
     roughness: 0.8,
-    img: './img/finitions/argent brossé.jpg',
+    img: './img/finitions/acier brossé.jpg',
   },
 
   Blanc: {

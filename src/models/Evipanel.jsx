@@ -3,6 +3,8 @@ import { useTexture, Html } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 import s from './Evipanel.module.css'
 
+import { FEATURES } from '../conf/appMode'
+
 useTexture.preload('./img/evipanel.webp')
 
 export default function Evipanel({ geometry,
@@ -64,8 +66,16 @@ export default function Evipanel({ geometry,
                         pointerEvents: visible ? 'auto' : 'none',
                     }}>
                     <h3>E-VIPANEL</h3>
-                    <h4>Panneau mural chauffant pour salle de bain</h4>
-                    <a target="_blank" className="btn" href="https://www.roth-france.fr/espace-douche/panneaux-vipanel/e-vipanel">Découvrir</a>
+                    {FEATURES.styleTextEVipanel ? (
+                        <h4>
+                            Panneau mural chauffant pour salle de bain
+                        </h4>
+                    ) : (
+                        <h4 style={{ fontSize: '25px', marginTop: '0.5rem' }} >
+                            Panneau mural chauffant pour salle de bain
+                        </h4> 
+                    )}
+                    {FEATURES.buttonEVipanel && (<a target="_blank" className="btn" href="https://www.roth-france.fr/espace-douche/panneaux-vipanel/e-vipanel">Découvrir</a>)}
                 </div>
             </Html>
             <rectAreaLight

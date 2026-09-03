@@ -179,10 +179,10 @@ const useConfiguratorStore = create((set, get) => ({
                         ...item,
                         finitionsDisponibles: [
                             ...(item.finitionsDisponibles ?? []),
-                            {
-                                code: '999',
-                                libelle: 'Profilé Acier brossé',
-                            },
+                            // {
+                            //     code: '999',
+                            //     libelle: 'Profilé Acier brossé',
+                            // },
                         ],
                         verresDisponibles: [...(item.verresDisponibles ?? [])],
                     })),
