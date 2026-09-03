@@ -25,7 +25,7 @@ export default function Scene() {
         <Canvas
             frameloop="demand"
             dpr={1}
-            camera={{ position: [0, 1, 2], fov: 60 }}
+            camera={{ position: [0, 1, 2.79], fov: 45}}
             // shadows={{ type: THREE.PCFShadowMap }}
             gl={{
                 antialias: true,
@@ -54,7 +54,8 @@ export default function Scene() {
                 {/* **** scene ****** */}
 
 
-                <CameraControls />
+
+                <CameraControls showHelpers={import.meta.env.DEV} />
                 {import.meta.env.DEV && <GizmoHelper
                     alignment="bottom-right"
                     margin={[80, 80]}

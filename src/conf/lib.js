@@ -1,13 +1,4 @@
 export const FINITION_ASSETS = {
-  'argent brosse': {
-    id: 'argent-brosse',
-    label: 'Argent brossé',
-    color: '#8b8d88',
-    metalness: 1,
-    roughness: 0.3,
-    img: './img/finitions/argent brossé.jpg',
-  },
-
   'v': {
     id: 'argent-poli',
     label: 'Argent poli',
@@ -64,7 +55,7 @@ export const FINITION_ASSETS = {
     roughness: 0.28,
     img: './img/finitions/or rosé.jpg',
   },
-   '999': {
+   '998': {
     id: 'acier-brosse',
     label: 'Acier brossé',
     color: '#a9aaa7',
@@ -112,7 +103,7 @@ export const NICHE_FINITION_ASSETS = {
 }
 
 export const PROFILE_ASSETS = {
-  'Argent mat': {
+  'Argent': {
     id: 'Argent mat',
     label: 'Argent mat',
     color: '#a9aaa7',

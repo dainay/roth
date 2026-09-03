@@ -179,7 +179,7 @@ const EmailPdfModal = ({ pdf, onClose }) => {
                                 Vos données sont utilisées par Roth France uniquement pour vous
                                 envoyer votre récapitulatif. Consultez notre{' '}
                                 <a
-                                    href="https://www.roth-france.fr/politique-confidentialite"
+                                    href="https://testwww.roth-france.fr/politique-confidentialite"
                                     target="_blank"
                                     rel="noreferrer"
                                 >

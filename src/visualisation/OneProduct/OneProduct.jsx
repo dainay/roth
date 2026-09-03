@@ -1,14 +1,14 @@
 import s from './OneProduct.module.scss'
 import { getPhotoUrl, getProductUrl } from '../../helpers/getPhotoUrl'
-import modalWindow from '../modalWindow';
+import ProductLink from '../ProductLink'
 import { FEATURES } from '../../conf/appMode';
 
 const OneProduct = ({ product, type, imgClassName }) => {
     return (
         <div className={s.wrapper}>
             {FEATURES.modalWindow ? (
-                <button
-                    onClick={() => modalWindow(getProductUrl(product.codearticle))}
+                <div
+                    // onClick={() => modalWindow(getProductUrl(product.codearticle))}
                     type="button"
                     className={s.btnClean}
                 >
@@ -19,8 +19,13 @@ const OneProduct = ({ product, type, imgClassName }) => {
                     <h3 className={s.title}>{product.libelle}</h3>
                     <p className={s.textSmall}>à partir de {product.prix_min_ppht}€ PPHT</p>
                     <div className={s.link}>Découvrir</div>
-
-                </button>
+                    <ProductLink
+                        url={getProductUrl(product.codearticle)}
+                        title={product.libelle}
+                    >
+                        Découvrir 
+                    </ProductLink>
+                </div>
             ) : (
                 <a href={getProductUrl(product.codearticle)} target="_blank" rel="noopener noreferrer">
 

@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig(({ mode }) => {
     const isExpo = mode === 'expo'
-
+const backendTarget = 'https://217.182.192.79'
     return {
         plugins: [react()],
 
@@ -17,39 +17,47 @@ export default defineConfig(({ mode }) => {
             emptyOutDir: true,
         },
 
-    // server: {
-    //     proxy: {
-    //         '/api': {
-    //             target: backendTarget,
-    //             changeOrigin: true,
+    server: {
+        proxy: {
+            '/api': {
+                target: backendTarget,
+                changeOrigin: true,
+                 secure: false,
+            headers: {
+                Host: 'testwww.roth-france.fr',
+            },
 
-    //             configure(proxy) {
-    //                 proxy.on('proxyReq', (proxyReq, req) => {
-    //                     console.log(
-    //                         `[api proxy] ${req.method} ${req.url} -> ${proxyReq.path}`
-    //                     )
-    //                 })
+                configure(proxy) {
+                    proxy.on('proxyReq', (proxyReq, req) => {
+                        console.log(
+                            `[api proxy] ${req.method} ${req.url} -> ${proxyReq.path}`
+                        )
+                    })
 
-    //                 proxy.on('proxyRes', (proxyRes, req) => {
-    //                     console.log(
-    //                         `[api proxy] ${req.method} ${req.url} <- ${proxyRes.statusCode}`
-    //                     )
-    //                 })
+                    proxy.on('proxyRes', (proxyRes, req) => {
+                        console.log(
+                            `[api proxy] ${req.method} ${req.url} <- ${proxyRes.statusCode}`
+                        )
+                    })
 
-    //                 proxy.on('error', (error, req) => {
-    //                     console.error(
-    //                         `[api proxy error] ${req.method} ${req.url}`,
-    //                         error
-    //                     )
-    //                 })
-    //             },
-    //         },
+                    proxy.on('error', (error, req) => {
+                        console.error(
+                            `[api proxy error] ${req.method} ${req.url}`,
+                            error
+                        )
+                    })
+                },
+            },
 
-    //         '/photos': {
-    //             target: backendTarget,
-    //             changeOrigin: true,
-    //         },
-    //     },
-    // },
+            '/photos': {
+                target: backendTarget,
+                changeOrigin: true,
+                 secure: false,
+            headers: {
+                Host: 'testwww.roth-france.fr',
+            },
+            },
+        },
+    },
     }
 })
