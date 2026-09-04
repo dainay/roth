@@ -3,9 +3,10 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig(({ mode }) => {
     const isExpo = mode === 'expo'
+
     // const backendTarget = 'https://217.182.192.79'
-   const backendTarget = 'http://127.0.0.1:8084'
-   
+    //    const backendTarget = 'http://127.0.0.1:8084'
+
     return {
         plugins: [react()],
 

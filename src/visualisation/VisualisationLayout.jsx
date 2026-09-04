@@ -34,7 +34,7 @@ const VisualisationLayout = () => {
                 </div>
 
                 <div className={s.visualisationLayout__content}>
-                    <h1>Votre projet en image</h1>
+                    <h1>Votre projet PASTEL en image</h1>
                     <p className="text">Découvrez vos produits Roth dans une ambiance réaliste pour mieux vous projeter.</p>
 
                     <h2 className="text-center">Recevoir mon récapitulatif PDF</h2>

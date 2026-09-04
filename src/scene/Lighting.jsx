@@ -1,6 +1,5 @@
 import * as THREE from "three";
-import { Environment, Lightformer, useHelper } from "@react-three/drei";
-import { useRef } from "react";
+import { Environment, Lightformer } from "@react-three/drei";
  
 import useSceneStore from "../store/useSceneStore";
 
@@ -41,17 +40,7 @@ const lightingSchemas = [
 ]
 
 export default function Lighting() {
-    const mirrorLight = useSceneStore((state) => state.mirrorLight);
-
-   const pointLightRef = useRef()
-
-// useHelper(
-//     pointLightRef,
-//     THREE.PointLightHelper,
-//     0.02,
-//     '#ff0000'
-// )
-
+    const mirrorLight = useSceneStore((state) => state.mirrorLight); 
     const lightingType = useSceneStore((state) => state.lightingType);
 
     return (

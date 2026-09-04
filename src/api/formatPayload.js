@@ -25,7 +25,7 @@ export function formatSendingBody(selection) {
                 ? [
                     {
                         "modele": "PL TWU",
-                        "largeur": 1000,
+                        "largeur": 900,
                     },
                 ]
                 : []),

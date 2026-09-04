@@ -1,6 +1,6 @@
 import { useGLTF } from '@react-three/drei'
-import { useLayoutEffect } from 'react'
-import optimizeMaterials from '../scene/optimizeMaterials'
+// import { useLayoutEffect } from 'react'
+// import optimizeMaterials from '../scene/optimizeMaterials'
 
 import useSceneStore from '../store/useSceneStore';
 

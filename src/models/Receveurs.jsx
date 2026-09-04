@@ -56,16 +56,18 @@ export default function Model(props) {
         return geometry
     }, [nodes])
 
+    const selectedReceveurAsset = RECEVEUR_ASSETS[textureReceveur]
+
     return (
         <group {...props} dispose={null}>
-            <DynamicTextureMaterial
-                url={RECEVEUR_ASSETS[textureReceveur].img}
-                material={materials['+RECEVEUR']}
-                roughness={0.9}
-                metalness={0}
-                maxWidth = {512}
-                maxHeight = {1082}
-            />
+            {selectedReceveurAsset && (
+                <DynamicTextureMaterial
+                    url={selectedReceveurAsset.img}
+                    material={materials['+RECEVEUR']}
+                    maxWidth={512}
+                    maxHeight={1082}
+                />
+            )}
             <mesh
                 receiveShadow
                 geometry={nodes.Cube001.geometry}

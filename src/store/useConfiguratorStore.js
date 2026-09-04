@@ -1,7 +1,43 @@
 import { create } from 'zustand';
 import { getConfiguratorDatabyAPI, sendConfiguratorDatabyAPI } from '../api/api';
-import { PAROI_ASSETS } from '../conf/lib'
+import {
+    FINITION_ASSETS,
+    NICHE_FINITION_ASSETS,
+    PAROI_ASSETS,
+    PROFILE_ASSETS,
+    RECEVEUR_ASSETS,
+    SERIGRAPHIE_ASSETS,
+} from '../conf/lib'
 import { formatSendingBody, formatSelectionByDefault } from '../api/formatPayload';
+
+const normalizeParoiFinitions = (items = []) =>
+    items
+        .map((item) => {
+            if (typeof item === 'string') {
+                return {
+                    code: item,
+                    libelle:
+                        FINITION_ASSETS[item]?.label ??
+                        item,
+                }
+            }
+
+            return item
+        })
+        .filter(
+            (item) =>
+                item?.code &&
+                FINITION_ASSETS[item.code]
+        )
+
+const normalizeCodes = (items = []) =>
+    items
+        .map((item) =>
+            typeof item === 'string'
+                ? item
+                : item?.code
+        )
+        .filter(Boolean)
 
 const useConfiguratorStore = create((set, get) => ({
 
@@ -172,23 +208,103 @@ const useConfiguratorStore = create((set, get) => ({
 
             const cleanedData = {
                 ...data,
+
+                //
+                // Parois
+                //
                 parois: data.parois
-                    .filter((item) => PAROI_ASSETS[item.id]) // filter only parois that have assets defined in PAROI_ASSETS
+                    .filter(
+                        (item) =>
+                            item?.id &&
+                            PAROI_ASSETS[item.id]
+                    )
                     .map((item) => ({
                         ...item,
-                        finitionsDisponibles: [
-                            ...(item.finitionsDisponibles ?? []),
-                            // {
-                            //     code: '999',
-                            //     libelle: 'Profilé Acier brossé',
-                            // },
-                        ],
-                        verresDisponibles: [...(item.verresDisponibles ?? [])],
+
+                        finitionsDisponibles:
+                            normalizeParoiFinitions(
+                                item.finitionsDisponibles
+                            ),
+
+                        verresDisponibles:
+                            normalizeCodes(
+                                item.verresDisponibles
+                            ).filter(
+                                (code) =>
+                                    SERIGRAPHIE_ASSETS[code]
+                            ),
                     })),
+
+                //
+                // Receveurs
+                //
+                receveurs: data.receveurs
+                    .map((item) => ({
+                        ...item,
+
+                        finitionsDisponibles:
+                            normalizeCodes(
+                                item.finitionsDisponibles
+                            ).filter(
+                                (code) =>
+                                    RECEVEUR_ASSETS[code]
+                            ),
+                    }))
+                    .filter(
+                        (item) =>
+                            item.finitionsDisponibles.length > 0
+                    ),
+
+                //
+                // Niches
+                //
+                niches: data.niches
+                    .map((item) => ({
+                        ...item,
+
+                        finitionsDisponibles:
+                            normalizeCodes(
+                                item.finitionsDisponibles
+                            ).filter(
+                                (code) =>
+                                    NICHE_FINITION_ASSETS[code]
+                            ),
+                    }))
+                    .filter(
+                        (item) =>
+                            item.finitionsDisponibles.length > 0
+                    ),
+
+                //
+                // Profiles
+                //
+                profiles: data.profiles
+                    .map((item) => ({
+                        ...item,
+
+                        finitionsDisponibles:
+                            normalizeCodes(
+                                item.finitionsDisponibles
+                            ).filter(
+                                (code) =>
+                                    PROFILE_ASSETS[code]
+                            ),
+                    }))
+                    .filter(
+                        (item) =>
+                            item.finitionsDisponibles.length > 0
+                    ),
+
+                //
+                // VIPANEL
+                //
                 vipanels: data.vipanels.filter(
-                    (item) => item.files?.["1500x2550"] && item.files?.["1000x2550"]
+                    (item) =>
+                        item?.decor &&
+                        item.files?.['1500x2550'] &&
+                        item.files?.['1000x2550']
                 ),
-            };
+            }
 
             // //delte repeating arrondie - merging glasses
             const plWru = cleanedData.parois.find((item) => item.id === 'PL WRU')
@@ -238,6 +354,8 @@ const useConfiguratorStore = create((set, get) => ({
             });
         }
     },
+
+
 
     sendConfiguratorData: async () => {
         set({

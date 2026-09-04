@@ -1,56 +1,105 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '')
+const API_TIMEOUT_MS = 20000
 
 const getApiUrl = (path) => {
     if (!API_BASE_URL) {
         throw new Error('VITE_API_BASE_URL is not configured')
     }
 
-    return `${API_BASE_URL}/${path.replace(/^\/+/, '')}` 
+    return `${API_BASE_URL}/${path.replace(/^\/+/, '')}`
 }
 
 // const getApiUrl = (path) => {
 //     return `/${path.replace(/^\/+/, '')}`
 // }
 
-const fetchJson = async (path, options, fallbackMessage) => {
-    let response
+const fetchJson = async (
+    path,
+    options = {},
+    fallbackMessage
+) => {
+    const url = getApiUrl(path)
+    const controller = new AbortController()
 
-    try {  
-        response = await fetch(getApiUrl(path), options)
-    } catch(error) {
-         console.error('[API network error]', {
-            url,
-            message: error?.message,
-            error,
-        })
-        throw new Error(`${fallbackMessage} : serveur inaccessible`)
-    }
+    let timedOut = false
 
-    let data
+    const timeoutId = window.setTimeout(() => {
+        timedOut = true
+        controller.abort()
+    }, API_TIMEOUT_MS)
 
     try {
-        data = await response.json()
-    } catch {
-        throw new Error(`${fallbackMessage} : réponse JSON invalide`)
+        let response
+
+        try {
+            response = await fetch(url, {
+                ...options,
+                signal: controller.signal,
+            })
+        } catch (error) {
+            if (timedOut) {
+                throw new Error(
+                    `${fallbackMessage} : délai d’attente dépassé`
+                )
+            }
+
+            if (error?.name === 'AbortError') {
+                throw new Error(
+                    `${fallbackMessage} : requête annulée`
+                )
+            }
+
+            console.error('[API network error]', {
+                url,
+                message: error?.message,
+            })
+
+            throw new Error(
+                `${fallbackMessage} : serveur inaccessible`
+            )
+        }
+
+        let data
+
+        try {
+            data = await response.json()
+        } catch (error) {
+            if (timedOut || error?.name === 'AbortError') {
+                throw new Error(
+                    `${fallbackMessage} : délai d’attente dépassé`
+                )
+            }
+
+            throw new Error(
+                `${fallbackMessage} : réponse JSON invalide`
+            )
+        }
+
+        const backendReturnedError =
+            data?.success === false ||
+            data?.ok === false ||
+            Boolean(data?.error)
+
+        if (!response.ok || backendReturnedError) {
+            const apiMessage =
+                typeof data?.message === 'string'
+                    ? data.message
+                    : typeof data?.error === 'string'
+                        ? data.error
+                        : `${fallbackMessage} (HTTP ${response.status})`
+
+            const apiError = new Error(apiMessage)
+
+            apiError.status = response.status
+            apiError.data = data
+
+            throw apiError
+        }
+
+        return data
+    } finally {
+        window.clearTimeout(timeoutId)
     }
-
-    const backendReturnedError =
-        data?.success === false ||
-        data?.ok === false ||
-        Boolean(data?.error)
-
-    if (!response.ok || backendReturnedError) {
-        const apiMessage =
-            typeof data?.message === 'string'
-                ? data.message
-                : typeof data?.error === 'string'
-                    ? data.error
-                    : fallbackMessage
-
-        throw new Error(apiMessage)
-    }
-
-    return data
 }
 
 export async function getConfiguratorDatabyAPI() {
@@ -128,38 +177,36 @@ export async function sendPdfByEmail({
     console.log('[API] POST /api/xu/sendPDFbyMail', request)
 
     try {
-        response = await fetch(
-            getApiUrl('/api/xu/sendPDFbyMail'),
+         return await fetchJson(
+            '/api/xu/sendPDFbyMail',
             {
                 method: 'POST',
                 headers: {
+                    Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(request),
-            }
+            },
+            'Impossible d’envoyer le PDF par e-mail'
         )
-    } catch {
-        throw new Error('Serveur inaccessible')
-    }
+    } catch (error) {
+     
+        const isProjectNotFound =
+            error?.status === 404 ||
+            error?.data?.status === 404
 
-    const data = await response.json()
-
-    if (data.ok === false) {
-        console.error(
-            '[API] Erreur d’envoi du PDF par e-mail',
-            data
-        )
-
-        if (data?.status === 404) {
-            throw new Error("Le projet de configuration n’a pas été créé. Veuillez recréer votre salle de bain dans le configurateur avant de demander l’envoi du PDF par e-mail.")
-        } else {
+        if (isProjectNotFound) {
             throw new Error(
-                "Impossible d’envoyer le PDF par e-mail. Veuillez réessayer."
+                'Le projet de configuration n’a pas été créé. ' +
+                'Veuillez recréer votre salle de bain dans le configurateur ' +
+                'avant de demander l’envoi du PDF par e-mail.'
             )
         }
 
+        throw error
     }
-
-    console.log('[API] PDF envoyé par e-mail', response)
-
 }
+
+ 
+
+ 
