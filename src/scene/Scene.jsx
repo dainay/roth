@@ -25,7 +25,7 @@ export default function Scene() {
         <Canvas
             frameloop="demand"
             dpr={1}
-            camera={{ position: [0, 1, 2.79], fov: 45}}
+            camera={{ position: [0, 1, 2.79], fov: 45 }}
             // shadows={{ type: THREE.PCFShadowMap }}
             gl={{
                 antialias: true,

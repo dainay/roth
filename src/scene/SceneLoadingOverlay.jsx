@@ -35,7 +35,7 @@ export default function SceneLoadingOverlay({ forceVisible = false }) {
             ) : (
                 <div className={s.content} role="status" aria-live="polite">
                     <div className={s.brandMark}>
-                        <img src="./img/Logo-red.svg" alt="Roth" />
+                        <img src="./img/Logo-red.jpg" alt="Roth" />
                     </div>
                     <span className={s.eyebrow}>Imaginez votre salle de bain</span>
                     <h1>Projet d'espace douche <b>PASTEL</b></h1>
