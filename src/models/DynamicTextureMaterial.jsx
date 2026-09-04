@@ -5,8 +5,8 @@ import * as THREE from 'three'
 export default function DynamicTextureMaterial({
     url,
     material,
-    roughness,
-    metalness,
+    // roughness,
+    // metalness,
     delay = 200,
 }) {
     const invalidate = useThree((state) => state.invalidate)
@@ -42,19 +42,19 @@ export default function DynamicTextureMaterial({
     useEffect(() => {
         if (!material) return
 
-        if (roughness !== undefined) {
-            material.roughness = roughness
-        }
+        // if (roughness !== undefined) {
+        //     material.roughness = roughness
+        // }
 
-        if (metalness !== undefined) {
-            material.metalness = metalness
-        }
+        // if (metalness !== undefined) {
+        //     material.metalness = metalness
+        // }
 
         invalidate()
     }, [
         material,
-        roughness,
-        metalness,
+        // roughness,
+        // metalness,
         invalidate,
     ])
 
@@ -89,8 +89,6 @@ export default function DynamicTextureMaterial({
             try {
                 const response = await fetch(url, {
                     signal: controller.signal,
-
-
                     cache: 'force-cache',
                 })
 
@@ -109,8 +107,11 @@ export default function DynamicTextureMaterial({
                     return
                 }
 
-                const MAX_WIDTH = 1024
-                const MAX_HEIGHT = 2048
+                // const MAX_WIDTH = 1024
+                // const MAX_HEIGHT = 2048
+
+                const MAX_WIDTH = 768
+                const MAX_HEIGHT = 1280
 
                 const scale = Math.min(
                     1,

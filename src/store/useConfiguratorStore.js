@@ -165,7 +165,6 @@ const useConfiguratorStore = create((set, get) => ({
             isLoading: true,
             error: null,
         });
-        const hiddenParoiIds = ["PL FXP", "PL WRL", "PL BAF"]
 
         try {
             const data = await getConfiguratorDatabyAPI();
@@ -174,7 +173,7 @@ const useConfiguratorStore = create((set, get) => ({
             const cleanedData = {
                 ...data,
                 parois: data.parois
-                    .filter((item) => !hiddenParoiIds.includes(item.id))
+                    .filter((item) => PAROI_ASSETS[item.id]) // filter only parois that have assets defined in PAROI_ASSETS
                     .map((item) => ({
                         ...item,
                         finitionsDisponibles: [
@@ -187,11 +186,11 @@ const useConfiguratorStore = create((set, get) => ({
                         verresDisponibles: [...(item.verresDisponibles ?? [])],
                     })),
                 vipanels: data.vipanels.filter(
-                    (item) => item.files?.["1500x2550"] && item.files?.["1000x2550"] && item.files?.["1000x2550"].length > 0
+                    (item) => item.files?.["1500x2550"] && item.files?.["1000x2550"]
                 ),
             };
 
-            //delte repeating arrondie fix mergin glasses
+            // //delte repeating arrondie - merging glasses
             const plWru = cleanedData.parois.find((item) => item.id === 'PL WRU')
             const plWrr = cleanedData.parois.find((item) => item.id === 'PL WRR')
 

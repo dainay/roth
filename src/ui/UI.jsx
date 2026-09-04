@@ -193,7 +193,7 @@ export default function UI() {
                             >
                                 <img className={s.finitionImage}
                                     src={NICHE_FINITION_ASSETS[item].img} alt={item} />
-                                {/* <span>{NICHE_FINITION_ASSETS[item].label}</span> */}
+                                <span>{NICHE_FINITION_ASSETS[item].label}</span>
                             </Button>
                         ))}
                 </div>
@@ -299,9 +299,9 @@ export default function UI() {
                                 />
                             </div>
                             <span>{item.nom}</span>
-                            <span className={s.finitionLabel}>
+                            {/* <span className={s.finitionLabel}>
                                 {FINITION_VIPANELS[item.finition].label}
-                            </span>
+                            </span> */}
                         </Button>
                     ))}
                 </div>
