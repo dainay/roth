@@ -39,13 +39,15 @@ const fetchJson = async (
         } catch (error) {
             if (timedOut) {
                 throw new Error(
-                    `${fallbackMessage} : délai d’attente dépassé`
+                    `${fallbackMessage} : délai d’attente dépassé`,
+                    { cause: error }
                 )
             }
 
             if (error?.name === 'AbortError') {
                 throw new Error(
-                    `${fallbackMessage} : requête annulée`
+                    `${fallbackMessage} : requête annulée`,
+                    { cause: error }
                 )
             }
 
@@ -55,7 +57,8 @@ const fetchJson = async (
             })
 
             throw new Error(
-                `${fallbackMessage} : serveur inaccessible`
+                `${fallbackMessage} : serveur inaccessible`,
+                { cause: error }
             )
         }
 
@@ -64,14 +67,19 @@ const fetchJson = async (
         try {
             data = await response.json()
         } catch (error) {
-            if (timedOut || error?.name === 'AbortError') {
+            if (
+                timedOut ||
+                error?.name === 'AbortError'
+            ) {
                 throw new Error(
-                    `${fallbackMessage} : délai d’attente dépassé`
+                    `${fallbackMessage} : délai d’attente dépassé`,
+                    { cause: error }
                 )
             }
 
             throw new Error(
-                `${fallbackMessage} : réponse JSON invalide`
+                `${fallbackMessage} : réponse JSON invalide`,
+                { cause: error }
             )
         }
 
@@ -164,20 +172,16 @@ export async function sendPdfByEmail({
     email,
     api_code,
 }) {
-    let response
-
     const request = {
-        civility: civility,
+        civility,
         name: name.trim(),
         surname: surname.trim(),
         email: email.trim(),
-        api_code: api_code,
+        api_code,
     }
 
-    console.log('[API] POST /api/xu/sendPDFbyMail', request)
-
     try {
-         return await fetchJson(
+        return await fetchJson(
             '/api/xu/sendPDFbyMail',
             {
                 method: 'POST',
@@ -190,16 +194,14 @@ export async function sendPdfByEmail({
             'Impossible d’envoyer le PDF par e-mail'
         )
     } catch (error) {
-     
         const isProjectNotFound =
             error?.status === 404 ||
             error?.data?.status === 404
 
         if (isProjectNotFound) {
             throw new Error(
-                'Le projet de configuration n’a pas été créé. ' +
-                'Veuillez recréer votre salle de bain dans le configurateur ' +
-                'avant de demander l’envoi du PDF par e-mail.'
+                'Le projet de configuration n’a pas été créé. Veuillez recréer votre salle de bain dans le configurateur avant de demander l’envoi du PDF par e-mail.',
+                { cause: error }
             )
         }
 
