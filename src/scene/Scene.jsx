@@ -16,17 +16,19 @@ import Profiles from "../models/Profiles";
 import Nichepanels from "../models/Nichepanels";
 import Vipanels from "../models/Vipanels";
 
-
 import PerfMonitor from "./Perf";
+import { IS_EXPO_MODE } from "../conf/appMode";
 
 export default function Scene() {
+
+    const dpr = IS_EXPO_MODE ? 2 : 1
 
     return (
         <Canvas
             frameloop="demand"
-            dpr={1}
+            dpr={dpr}
             camera={{ position: [0, 1, 2.79], fov: 45 }}
-            // shadows={{ type: THREE.PCFShadowMap }}
+            shadows={{ type: THREE.PCFShadowMap }}
             gl={{
                 antialias: true,
                 // transmissionResolutionScale: 0.5,
