@@ -15,9 +15,14 @@ const getApiUrl = (path) => {
 const fetchJson = async (path, options, fallbackMessage) => {
     let response
 
-    try {
+    try {  
         response = await fetch(getApiUrl(path), options)
-    } catch {
+    } catch(error) {
+         console.error('[API network error]', {
+            url,
+            message: error?.message,
+            error,
+        })
         throw new Error(`${fallbackMessage} : serveur inaccessible`)
     }
 
