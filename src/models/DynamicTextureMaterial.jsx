@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 import { useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 
-import { IS_EXPO_MODE } from '../conf/appMode'
+
 
 export default function DynamicTextureMaterial({
     url,
@@ -10,6 +10,8 @@ export default function DynamicTextureMaterial({
     // roughness,
     // metalness,
     delay = 200,
+    maxWidth = 512,
+    maxHeight = 1082
 }) {
     const invalidate = useThree((state) => state.invalidate)
 
@@ -109,8 +111,8 @@ export default function DynamicTextureMaterial({
                     return
                 }
 
-                const MAX_WIDTH = IS_EXPO_MODE ? 1027 : 768
-                const MAX_HEIGHT = IS_EXPO_MODE ? 1280 : 1024
+                const MAX_WIDTH = maxWidth
+                const MAX_HEIGHT = maxHeight
 
                 const scale = Math.min(
                     1,

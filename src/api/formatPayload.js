@@ -92,7 +92,11 @@ export function formatSelectionByDefault(data) {
         niche: defaultNiche?.id ?? null,
         finitionNiche: defaultNiche?.finitionsDisponibles?.[0] ?? null,
 
-        montage: "angle",
+        montage: defaultParoi?.['montage en angle']
+            ? 'angle'
+            : defaultParoi?.['montage en niche']
+                ? 'niche'
+                : null,
 
         profile: defaultProfile?.id ?? null,
         finitionProfile: defaultProfile?.finitionsDisponibles?.[0] ?? null,

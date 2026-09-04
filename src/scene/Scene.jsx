@@ -21,7 +21,7 @@ import { IS_EXPO_MODE } from "../conf/appMode";
 
 export default function Scene() {
 
-    const dpr = IS_EXPO_MODE ? 2 : 1
+    const dpr = IS_EXPO_MODE ? 1 : 1
 
     return (
         <Canvas

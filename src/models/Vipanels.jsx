@@ -11,6 +11,8 @@ import { getPhotoUrl } from '../helpers/getPhotoUrl'
 import { useLayoutEffect } from 'react'
 import optimizeMaterials from '../scene/optimizeMaterials'
 
+import { IS_EXPO_MODE } from '../conf/appMode'
+
 export default function Model(props) {
     const { nodes, materials } = useGLTF('./models/VIPANELS_compressed.glb')
 
@@ -151,6 +153,9 @@ export default function Model(props) {
         setTouchOpen(false)
     }
 
+      const MAX_WIDTH = IS_EXPO_MODE ? 1027 : 768
+        const MAX_HEIGHT = IS_EXPO_MODE ? 1280 : 1024
+
     return (
         <group {...props} dispose={null}>
             {choosenVipanelLLeft && (
@@ -159,6 +164,8 @@ export default function Model(props) {
                     material={materials['VIPANEL-1500x2550-left']}
                     roughness={FINITION_VIPANELS[choosenVipanelLLeft.finition]?.roughness}
                     metalness={FINITION_VIPANELS[choosenVipanelLLeft.finition]?.metalness}
+                    maxWidth = {MAX_WIDTH}
+                    maxHeight = {MAX_HEIGHT}
                 />
             )}
             {choosenVipanelRight && (
@@ -168,12 +175,16 @@ export default function Model(props) {
                         material={materials['VIPANEL-1500x2550-right']}
                         roughness={FINITION_VIPANELS[choosenVipanelRight.finition]?.roughness}
                         metalness={FINITION_VIPANELS[choosenVipanelRight.finition]?.metalness}
+                        maxWidth = {MAX_WIDTH}
+                        maxHeight = {MAX_HEIGHT}
                     />
                     <DynamicTextureMaterial
                         url={getPhotoUrl(choosenVipanelRight.files?.['1000x2550'])}
                         material={eVipanelMaterial}
                         roughness={FINITION_VIPANELS[choosenVipanelRight.finition]?.roughness}
                         metalness={FINITION_VIPANELS[choosenVipanelRight.finition]?.metalness}
+                            maxWidth = {MAX_WIDTH}
+                        maxHeight = {MAX_HEIGHT}
                     />
                 </>
             )}
@@ -185,6 +196,8 @@ export default function Model(props) {
                     material={materials['VIPANEL-1500x2550-niche']}
                     roughness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.roughness}
                     metalness={FINITION_VIPANELS[choosenVipanelNiche.finition]?.metalness}
+                        maxWidth = {MAX_WIDTH}
+                        maxHeight = {MAX_HEIGHT}
                 />
             )}
 

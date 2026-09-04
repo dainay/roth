@@ -63,6 +63,8 @@ export default function Model(props) {
                 material={materials['+RECEVEUR']}
                 roughness={0.9}
                 metalness={0}
+                maxWidth = {512}
+                maxHeight = {1082}
             />
             <mesh
                 receiveShadow
