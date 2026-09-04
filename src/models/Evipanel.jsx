@@ -26,7 +26,7 @@ export default function Evipanel({ geometry,
         gradientTexture.repeat.x = 0.5 + Math.sin(t * 5) * 1
         gradientTexture.repeat.y = 1 + Math.sin(t * -2) * 0.1
 
-        // heatRef.current.intensity = 10 + Math.sin(t * 5) * 5
+        heatRef.current.intensity = 10 + Math.sin(t * 5) * 8
         invalidate()
     })
 

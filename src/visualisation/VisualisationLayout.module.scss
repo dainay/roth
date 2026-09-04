@@ -53,15 +53,19 @@
 
 .link { 
     font-weight: 500; 
-    margin-block: 20px 40px;
-    border: 0;
-    background: transparent;
+    margin-block: 20px 30px;
+    border: 1px solid #0e0d0d;
+    // background: transparent;
     cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-
+    // text-decoration: underline;
+    // text-underline-offset: 2px;
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+   
     &:hover {
-      text-decoration: none;
+      background-color: #ffffff;
+      color: #0e0d0d; 
+          border: #0e0d0d 1px solid;
     }
 
     &:focus-visible {

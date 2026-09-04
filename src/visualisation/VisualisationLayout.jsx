@@ -66,7 +66,7 @@ const VisualisationLayout = () => {
 
                     <p className="text">Vous voulez ajuster quelques détails ou recommencer votre projet ?</p>
 
-                    <button type="button" className={`link text-center ${s.link}`} onClick={() => setCurrentView('configurateur')}>
+                    <button type="button" className={`btn text-center ${s.link}`} onClick={() => setCurrentView('configurateur')}>
                         Modifier ma configuration
                     </button>
 
