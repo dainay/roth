@@ -4,6 +4,8 @@ import { sendPdfByEmail } from '../api/api'
 import s from './EmailPdfModal.module.scss'
 import useConfiguratorStore from '../store/useConfiguratorStore'
 
+import {FEATURES} from '../conf/appMode'
+
 const EmailPdfModal = ({ pdf, onClose }) => {
     const dialogRef = useRef(null)
 
@@ -56,10 +58,11 @@ const EmailPdfModal = ({ pdf, onClose }) => {
             await sendPdfByEmail({ name, surname, civility, email, pdf, api_code })
             setStatus('success')
 
-            //FOR EXPO ONLY: reload the page after 7s
-            // setTimeout(() => {
-            //     window.location.reload()
-            // }, 7000)
+            if (FEATURES.reloadAfterMail) {
+                setTimeout(() => {
+                    window.location.reload()
+                }, 10000)
+            }
 
         } catch (error) {
             console.error('[E-mail] Erreur d’envoi du PDF :', error)
@@ -81,8 +84,11 @@ const EmailPdfModal = ({ pdf, onClose }) => {
             aria-labelledby="email-pdf-title"
             onCancel={handleCancel}
             onClick={handleBackdropClick}
+          
         >
-            <section className={s.modal}>
+            <section className={s.modal}
+              style={FEATURES.dialogHiger && { transform: 'translate(-50%, -78%)' }} 
+              >
                 <button
                     type="button"
                     className={s.closeButton}
@@ -96,7 +102,7 @@ const EmailPdfModal = ({ pdf, onClose }) => {
                 {status === 'success' ? (
                     <div className={s.success} role="status">
                          
-                        <h2  >E-mail envoyé</h2>
+                        <h2>E-mail envoyé</h2>
 
                         <p className="text">
                             Votre récapitulatif a bien été envoyé à{' '}

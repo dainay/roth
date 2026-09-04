@@ -65,7 +65,7 @@ export default function ProductLinkModal({
                         onClick={closeProduct}
                         aria-label="Fermer la page produit"
                     >
-                        Fermer ×
+                        Fermer
                     </button>
                 </header>
 
