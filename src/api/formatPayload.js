@@ -10,7 +10,7 @@ const findBy = (items = [], key, value) =>
     items.find((item) => item?.[key] === value) ?? items[0] ?? null
 
 
-export function formatSendingBody(selection) {
+export function formatSendingBody(  selection, cleanedData) {
     const hasNiche = Boolean(selection.niche && selection.finitionNiche)
 
     const body = {
