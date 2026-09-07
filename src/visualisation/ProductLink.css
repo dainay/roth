@@ -107,12 +107,7 @@
     border: 0;
     background: #fff;
 }
-
-
-
-
-
-
+ 
 .product-link-dialog {
     position: relative;
     pointer-events: auto;
@@ -144,4 +139,13 @@
     border: 0;
 
     pointer-events: auto !important;
+}
+
+.modalAroundQRcode {
+    border: none;
+    margin-top: 10px !important;
+
+    &:hover {
+        background-color: #ffffff;   
+    }
 }
