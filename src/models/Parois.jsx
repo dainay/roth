@@ -20,6 +20,10 @@ export default function Model(props) {
         invalidate()
     }, [materials, invalidate])
 
+    useLayoutEffect(() => {
+        invalidate()
+    }, [verre, invalidate])
+
     const protectionMaterial = useMemo(
         () => new THREE.MeshStandardMaterial({
             name: '+ PROTECTION (web)',
