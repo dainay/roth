@@ -3,17 +3,17 @@ const LOAD_TIMEOUT_MS = 20000
 const PROJECT_TIMEOUT_MS = 90000
 const EMAIL_TIMEOUT_MS = 30000
 
-const getApiUrl = (path) => {
-    if (!API_BASE_URL) {
-        throw new Error('VITE_API_BASE_URL is not configured')
-    }
-
-    return `${API_BASE_URL}/${path.replace(/^\/+/, '')}`
-}
-
 // const getApiUrl = (path) => {
-//     return `/${path.replace(/^\/+/, '')}`
+//     if (!API_BASE_URL) {
+//         throw new Error('VITE_API_BASE_URL is not configured')
+//     }
+
+//     return `${API_BASE_URL}/${path.replace(/^\/+/, '')}`
 // }
+
+const getApiUrl = (path) => {
+    return `/${path.replace(/^\/+/, '')}`
+}
 
 const fetchJson = async (
     path,
