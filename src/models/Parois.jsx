@@ -18,11 +18,7 @@ export default function Model(props) {
     useLayoutEffect(() => {
         optimizeMaterials(materials)
         invalidate()
-    }, [materials, invalidate])
-
-    useLayoutEffect(() => {
-        invalidate()
-    }, [verre, invalidate])
+    }, [materials, invalidate]) 
 
     const protectionMaterial = useMemo(
         () => new THREE.MeshStandardMaterial({
@@ -55,7 +51,11 @@ export default function Model(props) {
             paroi: state.selection.paroi,
             montage: state.selection.montage
         }))
-    );
+    ); 
+    
+    useLayoutEffect(() => {
+        invalidate()
+    }, [verre, invalidate])
 
     //************************************* */
     //CHANGE Glass MATERIAL for better web
