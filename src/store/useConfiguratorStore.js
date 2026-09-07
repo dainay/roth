@@ -10,34 +10,6 @@ import {
 } from '../conf/lib'
 import { formatSendingBody, formatSelectionByDefault } from '../api/formatPayload';
 
-const normalizeParoiFinitions = (items = []) =>
-    items
-        .map((item) => {
-            if (typeof item === 'string') {
-                return {
-                    code: item,
-                    libelle:
-                        FINITION_ASSETS[item]?.label ??
-                        item,
-                }
-            }
-
-            return item
-        })
-        .filter(
-            (item) =>
-                item?.code &&
-                FINITION_ASSETS[item.code]
-        )
-
-const normalizeCodes = (items = []) =>
-    items
-        .map((item) =>
-            typeof item === 'string'
-                ? item
-                : item?.code
-        )
-        .filter(Boolean)
 
 const useConfiguratorStore = create((set, get) => ({
 
@@ -105,9 +77,10 @@ const useConfiguratorStore = create((set, get) => ({
                 };
             }
 
-            const availableFinitions = (nextParoi.finitionsDisponibles ?? [])
-                .map((item) => typeof item === 'string' ? item : item?.code)
-                .filter(Boolean);
+            const availableFinitions =
+                nextParoi.finitionsDisponibles.map(
+                    (finition) => finition.code
+                )
 
             const availableVerres =
                 nextParoi.verresDisponibles ?? [];
@@ -195,8 +168,7 @@ const useConfiguratorStore = create((set, get) => ({
         await get().loadConfiguratorData()
     },
 
-    //API - first call to load data from the API and set the default selection
-
+    //API - first call to load data from the API and set the default selection 
     loadConfiguratorData: async () => {
         if (get().isLoading || get().cleanedData) return
 
@@ -225,16 +197,14 @@ const useConfiguratorStore = create((set, get) => ({
                         ...item,
 
                         finitionsDisponibles:
-                            normalizeParoiFinitions(
-                                item.finitionsDisponibles
+                            item.finitionsDisponibles.filter(
+                                (finition) =>
+                                    FINITION_ASSETS[finition.code]
                             ),
-
                         verresDisponibles:
-                            normalizeCodes(
-                                item.verresDisponibles
-                            ).filter(
-                                (code) =>
-                                    SERIGRAPHIE_ASSETS[code]
+                            item.verresDisponibles.filter(
+                                (verre) =>
+                                    SERIGRAPHIE_ASSETS[verre]
                             ),
                     })),
 
@@ -246,11 +216,9 @@ const useConfiguratorStore = create((set, get) => ({
                         ...item,
 
                         finitionsDisponibles:
-                            normalizeCodes(
-                                item.finitionsDisponibles
-                            ).filter(
-                                (code) =>
-                                    RECEVEUR_ASSETS[code]
+                            item.finitionsDisponibles.filter(
+                                (finition) =>
+                                    RECEVEUR_ASSETS[finition]
                             ),
                     }))
                     .filter(
@@ -266,11 +234,9 @@ const useConfiguratorStore = create((set, get) => ({
                         ...item,
 
                         finitionsDisponibles:
-                            normalizeCodes(
-                                item.finitionsDisponibles
-                            ).filter(
-                                (code) =>
-                                    NICHE_FINITION_ASSETS[code]
+                            item.finitionsDisponibles.filter(
+                                (finition) =>
+                                    NICHE_FINITION_ASSETS[finition]
                             ),
                     }))
                     .filter(
@@ -286,11 +252,9 @@ const useConfiguratorStore = create((set, get) => ({
                         ...item,
 
                         finitionsDisponibles:
-                            normalizeCodes(
-                                item.finitionsDisponibles
-                            ).filter(
-                                (code) =>
-                                    PROFILE_ASSETS[code]
+                            item.finitionsDisponibles.filter(
+                                (finition) =>
+                                    PROFILE_ASSETS[finition]
                             ),
                     }))
                     .filter(
