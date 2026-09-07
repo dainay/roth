@@ -7,6 +7,7 @@ import {
 import { sendPdfByEmail } from '../api/api'
 import useConfiguratorStore from '../store/useConfiguratorStore'
 import { FEATURES } from '../conf/appMode'
+import ProductLinkModal from './ProductLinkModal'
 
 import s from './EmailPdfModal.module.scss'
 
@@ -273,19 +274,29 @@ const EmailPdfModal = ({ onClose }) => {
                                 }
                             />
 
-                            <p className={s.privacyNotice}>
-                                Vos données sont utilisées par
-                                Roth France uniquement pour
-                                vous envoyer votre
-                                récapitulatif. Consultez notre{' '}
-                                <a
-                                    href="https://www.roth-france.fr/politique-confidentialite"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    politique de confidentialité
-                                </a>.
-                            </p>
+                            <div className={s.privacyNotice}>
+                                <span >
+                                    Vos données sont utilisées par Roth France uniquement pour vous envoyer votre récapitulatif. Consultez notre{' '}
+                                </span>
+                                        {FEATURES.modalWindow ? (
+                                        <ProductLinkModal
+                                            className={s.privacyLink}
+                                            url="https://www.roth-france.fr/politique-confidentialite"
+                                            title="Politique de confidentialité"
+                                        >
+                                            politique de confidentialité
+                                        </ProductLinkModal>
+                                    ) : (
+                                        <a
+                                            href="https://www.roth-france.fr/politique-confidentialite"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            politique de confidentialité
+                                        </a>
+                                    )}
+                            </div>
+                       
 
                             {error && (
                                 <p

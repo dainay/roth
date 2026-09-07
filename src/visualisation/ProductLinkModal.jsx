@@ -38,7 +38,7 @@ export default function ProductLinkModal({
         <>
             <button
                 type="button"
-                className={`btn-product ${className}`}
+                className={`btn-product ${className ?? ''}`}
                 onClick={openProduct}
                 disabled={!url}
             >

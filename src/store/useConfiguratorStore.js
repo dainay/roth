@@ -46,6 +46,7 @@ const useConfiguratorStore = create((set, get) => ({
     cleanedData: null,
     isLoading: false,
     isSubmitting: false,
+    submitError: null,
     error: null,
     selection: {
         paroi: null,
@@ -186,7 +187,9 @@ const useConfiguratorStore = create((set, get) => ({
             realImg: null,
             products: null,
             pdf: null,
+            api_code: null,
             error: null,
+            submitError: null,
         })
 
         await get().loadConfiguratorData()
@@ -319,7 +322,15 @@ const useConfiguratorStore = create((set, get) => ({
                 ]
 
                 cleanedData.parois = cleanedData.parois.filter((item) => item.id !== 'PL WRR')
+
             }
+
+            //delete parois with no available finitions or verres to not explose the app
+            cleanedData.parois = cleanedData.parois.filter(
+                (item) =>
+                    item.finitionsDisponibles.length > 0 &&
+                    item.verresDisponibles.length > 0
+            )
 
             console.log('[Configurateur] Données nettoyées :', cleanedData)
 
@@ -355,21 +366,32 @@ const useConfiguratorStore = create((set, get) => ({
         }
     },
 
-
-
     sendConfiguratorData: async () => {
         set({
             isSubmitting: true,
-            error: null,
-        });
-        const { selection } = get();
-
-        const body = formatSendingBody(selection);
-        console.log('[API] Données envoyées pour la visualisation :', body)
+            submitError: null,
+        })
 
         try {
-            const visualizationData = await sendConfiguratorDatabyAPI(body)
-            console.log('[API] Réponse de visualisation reçue :', visualizationData)
+            const { selection } = get()
+            const body = formatSendingBody(selection)
+
+            if (import.meta.env.DEV) {
+                console.log(
+                    '[API] Données envoyées pour la visualisation :',
+                    body
+                )
+            }
+
+            const visualizationData =
+                await sendConfiguratorDatabyAPI(body)
+
+            if (import.meta.env.DEV) {
+                console.log(
+                    '[API] Réponse de visualisation reçue :',
+                    visualizationData
+                )
+            }
 
             set({
                 realImg: visualizationData.img,
@@ -380,15 +402,21 @@ const useConfiguratorStore = create((set, get) => ({
 
             return visualizationData
         } catch (error) {
-            if (!error?.alreadyLogged) {
-                console.error('[API] Erreur de génération de la visualisation :', error)
-            }
+            console.error(
+                '[API] Erreur de génération de la visualisation :',
+                error
+            )
+
             set({
-                error: 'Impossible de générer la visualisation. Veuillez réessayer.',
+                submitError:
+                    'Impossible de générer la visualisation. Veuillez réessayer.',
             })
+
             throw error
         } finally {
-            set({ isSubmitting: false })
+            set({
+                isSubmitting: false,
+            })
         }
     },
 }));

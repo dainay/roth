@@ -1,5 +1,7 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '')
-const API_TIMEOUT_MS = 20000
+const LOAD_TIMEOUT_MS = 20000
+const PROJECT_TIMEOUT_MS = 90000
+const EMAIL_TIMEOUT_MS = 30000
 
 const getApiUrl = (path) => {
     if (!API_BASE_URL) {
@@ -16,7 +18,8 @@ const getApiUrl = (path) => {
 const fetchJson = async (
     path,
     options = {},
-    fallbackMessage
+    fallbackMessage,
+     timeoutMs = LOAD_TIMEOUT_MS
 ) => {
     const url = getApiUrl(path)
     const controller = new AbortController()
@@ -26,7 +29,7 @@ const fetchJson = async (
     const timeoutId = window.setTimeout(() => {
         timedOut = true
         controller.abort()
-    }, API_TIMEOUT_MS)
+    }, timeoutMs)
 
     try {
         let response
@@ -154,7 +157,8 @@ export async function sendConfiguratorDatabyAPI(payload) {
             },
             body: JSON.stringify(payload),
         },
-        'Impossible d’envoyer la configuration'
+        'Impossible d’envoyer la configuration',
+        PROJECT_TIMEOUT_MS
     )
 
     if (!data?.img || !data?.pdf || !data?.products) {
@@ -191,7 +195,8 @@ export async function sendPdfByEmail({
                 },
                 body: JSON.stringify(request),
             },
-            'Impossible d’envoyer le PDF par e-mail'
+            'Impossible d’envoyer le PDF par e-mail',
+            EMAIL_TIMEOUT_MS
         )
     } catch (error) {
         const isProjectNotFound =

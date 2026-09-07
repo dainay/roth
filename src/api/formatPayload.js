@@ -21,18 +21,25 @@ export function formatSendingBody(selection) {
 
         "parois": [
             { "modele": selection.paroi, "largeur": selection.sizeParoi },
-            ...(selection.montage === "angle"
-                ? [
-                    {
-                        "modele": "PL TWU",
-                        "largeur": 900,
-                    },
-                ]
-                : []),
+            ...(
+                selection.montage === 'angle' &&
+                    cleanedData.parois.some(
+                        (item) =>
+                            item.id === selection.paroi &&
+                            item.type_paroi !== 'w'
+                    )
+                    ? [
+                        {
+                            modele: 'PL TWU',
+                            largeur: 900,
+                        },
+                    ]
+                    : []
+            ),
         ],
 
-        "receveur": selection.receveur, 
-        "finition_receveur": selection.textureReceveur, 
+        "receveur": selection.receveur,
+        "finition_receveur": selection.textureReceveur,
         "largeur_receveur": selection.sizeReceveur,
         "profondeur_receveur": 900,
 
