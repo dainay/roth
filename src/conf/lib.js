@@ -103,7 +103,7 @@ export const NICHE_FINITION_ASSETS = {
 }
 
 export const PROFILE_ASSETS = {
-    'Argent': {
+    'Argent mat': {
         id: 'Argent mat',
         label: 'Argent mat',
         color: '#a9aaa7',

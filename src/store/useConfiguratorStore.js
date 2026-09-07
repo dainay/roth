@@ -1,7 +1,15 @@
 import { create } from 'zustand';
 import { getConfiguratorDatabyAPI, sendConfiguratorDatabyAPI } from '../api/api';
-import { PAROI_ASSETS } from '../conf/lib'
+import {
+    FINITION_ASSETS,
+    NICHE_FINITION_ASSETS,
+    PAROI_ASSETS,
+    PROFILE_ASSETS,
+    RECEVEUR_ASSETS,
+    SERIGRAPHIE_ASSETS,
+} from '../conf/lib'
 import { formatSendingBody, formatSelectionByDefault } from '../api/formatPayload';
+
 
 const useConfiguratorStore = create((set, get) => ({
 
@@ -10,6 +18,7 @@ const useConfiguratorStore = create((set, get) => ({
     cleanedData: null,
     isLoading: false,
     isSubmitting: false,
+    submitError: null,
     error: null,
     selection: {
         paroi: null,
@@ -68,9 +77,10 @@ const useConfiguratorStore = create((set, get) => ({
                 };
             }
 
-            const availableFinitions = (nextParoi.finitionsDisponibles ?? [])
-                .map((item) => typeof item === 'string' ? item : item?.code)
-                .filter(Boolean);
+            const availableFinitions =
+                nextParoi.finitionsDisponibles.map(
+                    (finition) => finition.code
+                )
 
             const availableVerres =
                 nextParoi.verresDisponibles ?? [];
@@ -150,14 +160,15 @@ const useConfiguratorStore = create((set, get) => ({
             realImg: null,
             products: null,
             pdf: null,
+            api_code: null,
             error: null,
+            submitError: null,
         })
 
         await get().loadConfiguratorData()
     },
 
-    //API - first call to load data from the API and set the default selection
-
+    //API - first call to load data from the API and set the default selection 
     loadConfiguratorData: async () => {
         if (get().isLoading || get().cleanedData) return
 
@@ -172,23 +183,95 @@ const useConfiguratorStore = create((set, get) => ({
 
             const cleanedData = {
                 ...data,
+
+                //
+                // Parois
+                //
                 parois: data.parois
-                    .filter((item) => PAROI_ASSETS[item.id]) // filter only parois that have assets defined in PAROI_ASSETS
+                    .filter(
+                        (item) =>
+                            item?.id &&
+                            PAROI_ASSETS[item.id]
+                    )
                     .map((item) => ({
                         ...item,
-                        finitionsDisponibles: [
-                            ...(item.finitionsDisponibles ?? []),
-                            // {
-                            //     code: '999',
-                            //     libelle: 'Profilé Acier brossé',
-                            // },
-                        ],
-                        verresDisponibles: [...(item.verresDisponibles ?? [])],
+
+                        finitionsDisponibles:
+                            item.finitionsDisponibles.filter(
+                                (finition) =>
+                                    FINITION_ASSETS[finition.code]
+                            ),
+                        verresDisponibles:
+                            item.verresDisponibles.filter(
+                                (verre) =>
+                                    SERIGRAPHIE_ASSETS[verre]
+                            ),
                     })),
+
+                //
+                // Receveurs
+                //
+                receveurs: data.receveurs
+                    .map((item) => ({
+                        ...item,
+
+                        finitionsDisponibles:
+                            item.finitionsDisponibles.filter(
+                                (finition) =>
+                                    RECEVEUR_ASSETS[finition]
+                            ),
+                    }))
+                    .filter(
+                        (item) =>
+                            item.finitionsDisponibles.length > 0
+                    ),
+
+                //
+                // Niches
+                //
+                niches: data.niches
+                    .map((item) => ({
+                        ...item,
+
+                        finitionsDisponibles:
+                            item.finitionsDisponibles.filter(
+                                (finition) =>
+                                    NICHE_FINITION_ASSETS[finition]
+                            ),
+                    }))
+                    .filter(
+                        (item) =>
+                            item.finitionsDisponibles.length > 0
+                    ),
+
+                //
+                // Profiles
+                //
+                profiles: data.profiles
+                    .map((item) => ({
+                        ...item,
+
+                        finitionsDisponibles:
+                            item.finitionsDisponibles.filter(
+                                (finition) =>
+                                    PROFILE_ASSETS[finition]
+                            ),
+                    }))
+                    .filter(
+                        (item) =>
+                            item.finitionsDisponibles.length > 0
+                    ),
+
+                //
+                // VIPANEL
+                //
                 vipanels: data.vipanels.filter(
-                    (item) => item.files?.["1500x2550"] && item.files?.["1000x2550"]
+                    (item) =>
+                        item?.decor &&
+                        item.files?.['1500x2550'] &&
+                        item.files?.['1000x2550']
                 ),
-            };
+            }
 
             // //delte repeating arrondie - merging glasses
             const plWru = cleanedData.parois.find((item) => item.id === 'PL WRU')
@@ -203,7 +286,15 @@ const useConfiguratorStore = create((set, get) => ({
                 ]
 
                 cleanedData.parois = cleanedData.parois.filter((item) => item.id !== 'PL WRR')
+
             }
+
+            //delete parois with no available finitions or verres to not explose the app
+            cleanedData.parois = cleanedData.parois.filter(
+                (item) =>
+                    item.finitionsDisponibles.length > 0 &&
+                    item.verresDisponibles.length > 0
+            )
 
             console.log('[Configurateur] Données nettoyées :', cleanedData)
 
@@ -242,16 +333,29 @@ const useConfiguratorStore = create((set, get) => ({
     sendConfiguratorData: async () => {
         set({
             isSubmitting: true,
-            error: null,
-        });
-        const { selection } = get();
-
-        const body = formatSendingBody(selection);
-        console.log('[API] Données envoyées pour la visualisation :', body)
+            submitError: null,
+        })
 
         try {
-            const visualizationData = await sendConfiguratorDatabyAPI(body)
-            console.log('[API] Réponse de visualisation reçue :', visualizationData)
+            const { selection } = get()
+            const body = formatSendingBody(selection)
+
+            if (import.meta.env.DEV) {
+                console.log(
+                    '[API] Données envoyées pour la visualisation :',
+                    body
+                )
+            }
+
+            const visualizationData =
+                await sendConfiguratorDatabyAPI(body)
+
+            if (import.meta.env.DEV) {
+                console.log(
+                    '[API] Réponse de visualisation reçue :',
+                    visualizationData
+                )
+            }
 
             set({
                 realImg: visualizationData.img,
@@ -262,15 +366,21 @@ const useConfiguratorStore = create((set, get) => ({
 
             return visualizationData
         } catch (error) {
-            if (!error?.alreadyLogged) {
-                console.error('[API] Erreur de génération de la visualisation :', error)
-            }
+            console.error(
+                '[API] Erreur de génération de la visualisation :',
+                error
+            )
+
             set({
-                error: 'Impossible de générer la visualisation. Veuillez réessayer.',
+                submitError:
+                    'Impossible de générer la visualisation. Veuillez réessayer.',
             })
+
             throw error
         } finally {
-            set({ isSubmitting: false })
+            set({
+                isSubmitting: false,
+            })
         }
     },
 }));

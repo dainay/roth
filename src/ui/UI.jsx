@@ -2,7 +2,7 @@ import { useState } from 'react'
 import s from './UI.module.scss'
 import useConfiguratorStore from '../store/useConfiguratorStore'
 import { useShallow } from 'zustand/react/shallow'
-import { FINITION_ASSETS, NICHE_FINITION_ASSETS, PROFILE_ASSETS, RECEVEUR_ASSETS, PAROI_ASSETS, SERIGRAPHIE_ASSETS, FINITION_VIPANELS } from '../conf/lib'
+import { FINITION_ASSETS, NICHE_FINITION_ASSETS, PROFILE_ASSETS, RECEVEUR_ASSETS, PAROI_ASSETS, SERIGRAPHIE_ASSETS } from '../conf/lib'
 import { getPhotoUrl } from '../helpers/getPhotoUrl'
 
 
@@ -40,23 +40,41 @@ export default function UI() {
         (state) => state.setSelectionValues
     )
 
-    const cleanedData = useConfiguratorStore((state) => state.cleanedData)
-    const selectedParoiData = cleanedData?.parois?.find(
+    const cleanedData = useConfiguratorStore(
+        (state) => state.cleanedData
+    )
+
+    const parois = cleanedData?.parois ?? []
+    const vipanels = cleanedData?.vipanels ?? []
+
+    const nicheFinitions =
+        cleanedData?.niches?.[0]
+            ?.finitionsDisponibles ?? []
+
+    const receveurFinitions =
+        cleanedData?.receveurs?.[0]
+            ?.finitionsDisponibles ?? []
+
+    const profileFinitions =
+        cleanedData?.profiles?.[0]
+            ?.finitionsDisponibles ?? []
+
+    const selectedParoiData = parois.find(
         (item) => item.id === selection.paroi
     )
+
+    const paroiFinitions =
+        selectedParoiData?.finitionsDisponibles ?? []
+
+    const paroiVerres =
+        selectedParoiData?.verresDisponibles ?? []
+
+
     const angleAvailable = selectedParoiData?.['montage en angle'] === true
     const nicheAvailable = selectedParoiData?.['montage en niche'] === true
     const montageAvailable = angleAvailable && nicheAvailable
 
-    // useEffect(() => {
-    //     if (angleAvailable && !nicheAvailable) {
-    //         setSelectionValue('montage', 'angle')
-    //     }
 
-    //     if (!angleAvailable && nicheAvailable) {
-    //         setSelectionValue('montage', 'niche')
-    //     }
-    // }, [angleAvailable, nicheAvailable, setSelectionValue])
 
     const vipanelZones = [
         { id: 'left', label: 'Mur gauche', key: 'vipanelLeft' },
@@ -104,10 +122,10 @@ export default function UI() {
     return (
         <div className={s.uiWrapper}>
             <div className={s.blockButtons}>
-                <h2>Type de paroi</h2>
+                <h2>Type de paroi PASTEL</h2>
 
                 <div className={s.paroisWrapper}>
-                    {cleanedData?.parois
+                    {parois
                         .filter((item) => PAROI_ASSETS[item.id])
                         .map((item) => (
                             <Button
@@ -151,7 +169,7 @@ export default function UI() {
             <div className={s.blockButtons}>
                 <h2>Finition du profilé</h2>
 
-                {selectedParoiData.finitionsDisponibles
+                {paroiFinitions
                     .filter((item) => FINITION_ASSETS[item.code])
                     .map((item) => (
                         <Button
@@ -167,41 +185,42 @@ export default function UI() {
                     ))}
             </div>
 
-            {selectedParoiData?.id !== "PL PIV" && (
-                <div className={s.blockButtons}>
-                    <h2>Niche dans l'espace douche</h2>
-                    <Button
-                        key={'None'}
-                        data-niche={'None'}
-                        active={selection.niche === null}
-                        className={`${s.vipanelButton}  ${s.largeButton} ${selection.niche === null ? s.finitionButtonActive : ''}`}
-                        onClick={() => handleNicheChange('None')}
-                    >
-                        <img className={s.finitionImage} src='./img/None.svg' alt={'Pas de niche'} />
-                        <span>None</span>
-                    </Button>
+            {selectedParoiData &&
+                selectedParoiData.id !== 'PL PIV' && (
+                    <div className={s.blockButtons}>
+                        <h2>Niche dans l'espace douche</h2>
+                        <Button
+                            key={'None'}
+                            data-niche={'None'}
+                            active={selection.niche === null}
+                            className={`${s.vipanelButton}  ${s.largeButton} ${selection.niche === null ? s.finitionButtonActive : ''}`}
+                            onClick={() => handleNicheChange('None')}
+                        >
+                            <img className={s.finitionImage} src='./img/None.svg' alt={'Pas de niche'} />
+                            <span>None</span>
+                        </Button>
 
-                    {cleanedData?.niches[0].finitionsDisponibles
-                        .filter((item) => NICHE_FINITION_ASSETS[item])
-                        .map((item) => (
-                            <Button
-                                key={item}
-                                data-niche={item}
-                                active={selection.finitionNiche === item}
-                                className={`${s.vipanelButton} ${s.largeButton} ${selection.finitionNiche === item ? s.finitionButtonActive : ''}`}
-                                onClick={() => handleNicheChange(item)}
-                            >
-                                <img className={s.finitionImage}
-                                    src={NICHE_FINITION_ASSETS[item].img} alt={item} />
-                                <span>{NICHE_FINITION_ASSETS[item].label}</span>
-                            </Button>
-                        ))}
-                </div>
-            )}
+                        {nicheFinitions
+                            .filter((item) => NICHE_FINITION_ASSETS[item])
+                            .map((item) => (
+                                <Button
+                                    key={item}
+                                    data-niche={item}
+                                    active={selection.finitionNiche === item}
+                                    className={`${s.vipanelButton} ${s.largeButton} ${selection.finitionNiche === item ? s.finitionButtonActive : ''}`}
+                                    onClick={() => handleNicheChange(item)}
+                                >
+                                    <img className={s.finitionImage}
+                                        src={NICHE_FINITION_ASSETS[item].img} alt={item} />
+                                    <span>{NICHE_FINITION_ASSETS[item].label}</span>
+                                </Button>
+                            ))}
+                    </div>
+                )}
 
             <div className={s.blockButtons}>
                 <h2>Verre</h2>
-                {selectedParoiData.verresDisponibles
+                {paroiVerres
                     .filter((item) => SERIGRAPHIE_ASSETS[item])
                     .map((item) => (
                         <Button
@@ -221,7 +240,7 @@ export default function UI() {
             <div className={s.blockButtons}>
                 <h2>Finition du receveur</h2>
 
-                {cleanedData?.receveurs[0].finitionsDisponibles
+                {receveurFinitions
                     .filter((item) => RECEVEUR_ASSETS[item])
                     .map((item) => (
                         <Button
@@ -242,7 +261,7 @@ export default function UI() {
             <div className={s.blockButtons}>
                 <h2>Finition des profilé d'angle pour VIPANEL®</h2>
 
-                {cleanedData?.profiles[0].finitionsDisponibles
+                {profileFinitions
                     .filter((item) => PROFILE_ASSETS[item])
                     .map((item) => (
                         <Button
@@ -278,7 +297,7 @@ export default function UI() {
                 </div>
 
                 <div id="vipanel-panel" className={s.vipanelGrid} role="tabpanel">
-                    {cleanedData.vipanels.map((item) => (
+                    {vipanels.map((item) => (
                         <Button
                             data-decor={item.decor}
                             className={`${s.vipanelButton} ${activeZone?.key && selection[activeZone.key] === item.decor ? s.vipanelButtonActive : ''}`}

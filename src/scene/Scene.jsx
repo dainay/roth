@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
-import { OrbitControls, Preload, GizmoHelper, GizmoViewport } from "@react-three/drei";
+import {  Preload, GizmoHelper, GizmoViewport } from "@react-three/drei";
 
 import CameraControls from "./CameraControls";
 

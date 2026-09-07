@@ -76,7 +76,9 @@ export default function Evipanel({ geometry,
                             Panneau mural chauffant pour salle de bain
                         </h4>
                     )}
-                    {FEATURES.buttonEVipanel ? (<a target="_blank" className="btn" href="https://www.roth-france.fr/espace-douche/panneaux-vipanel/e-vipanel">Découvrir</a>) : (
+                    {FEATURES.buttonEVipanel ? (
+                        <a target="_blank" className="btn" rel="noopener noreferrer" href="https://www.roth-france.fr/espace-douche/panneaux-vipanel/e-vipanel">Découvrir</a>
+                    ) : (
                         <ProductLinkModal
                             className="btn-black"
                             url="https://www.roth-france.fr/espace-douche/panneaux-vipanel/e-vipanel"

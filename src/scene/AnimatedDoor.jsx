@@ -10,7 +10,7 @@ export default function AnimatedDoor({
     openAngle = 0, 
     slideX = 0, 
     speed = 3,
-    showPivot = import.meta.env.DEV,
+    
 }) {
        const doorRef = useRef()
     const opened = useRef(false)
