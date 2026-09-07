@@ -337,8 +337,15 @@ const useConfiguratorStore = create((set, get) => ({
         })
 
         try {
-            const { selection } = get()
-            const body = formatSendingBody(selection)
+            const {
+                selection,
+                cleanedData,
+            } = get()
+
+            const body = formatSendingBody(
+                selection,
+                cleanedData
+            )
 
             if (import.meta.env.DEV) {
                 console.log(
