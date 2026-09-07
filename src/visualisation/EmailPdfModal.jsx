@@ -1,13 +1,18 @@
-import { useEffect, useRef, useState } from 'react'
+import {
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 
 import { sendPdfByEmail } from '../api/api'
-import s from './EmailPdfModal.module.scss'
 import useConfiguratorStore from '../store/useConfiguratorStore'
+import { FEATURES } from '../conf/appMode'
 
-import {FEATURES} from '../conf/appMode'
+import s from './EmailPdfModal.module.scss'
 
-const EmailPdfModal = ({ pdf, onClose }) => {
+const EmailPdfModal = ({ onClose }) => {
     const dialogRef = useRef(null)
+    const reloadTimeoutRef = useRef(null)
 
     const [name, setName] = useState('')
     const [surname, setSurname] = useState('')
@@ -16,7 +21,9 @@ const EmailPdfModal = ({ pdf, onClose }) => {
     const [status, setStatus] = useState('idle')
     const [error, setError] = useState('')
 
-    const api_code = useConfiguratorStore((state) => state.api_code)
+    const api_code = useConfiguratorStore(
+        (state) => state.api_code
+    )
 
     useEffect(() => {
         const dialog = dialogRef.current
@@ -26,6 +33,12 @@ const EmailPdfModal = ({ pdf, onClose }) => {
         }
 
         return () => {
+            if (reloadTimeoutRef.current !== null) {
+                window.clearTimeout(
+                    reloadTimeoutRef.current
+                )
+            }
+
             if (dialog?.open) {
                 dialog.close()
             }
@@ -33,9 +46,9 @@ const EmailPdfModal = ({ pdf, onClose }) => {
     }, [])
 
     const handleClose = () => {
-        if (status !== 'submitting') {
-            onClose()
-        }
+        if (status === 'submitting') return
+
+        onClose()
     }
 
     const handleCancel = (event) => {
@@ -51,21 +64,32 @@ const EmailPdfModal = ({ pdf, onClose }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+
         setStatus('submitting')
         setError('')
 
         try {
-            await sendPdfByEmail({ name, surname, civility, email, pdf, api_code })
+            await sendPdfByEmail({
+                name,
+                surname,
+                civility,
+                email,
+                api_code,
+            })
+
             setStatus('success')
 
             if (FEATURES.reloadAfterMail) {
-                setTimeout(() => {
-                    window.location.reload()
-                }, 10000)
+                reloadTimeoutRef.current =
+                    window.setTimeout(() => {
+                        window.location.reload()
+                    }, 10000)
             }
-
         } catch (error) {
-            console.error('[E-mail] Erreur d’envoi du PDF :', error)
+            console.error(
+                '[E-mail] Erreur d’envoi du PDF :',
+                error
+            )
 
             setError(
                 error instanceof Error
@@ -84,11 +108,18 @@ const EmailPdfModal = ({ pdf, onClose }) => {
             aria-labelledby="email-pdf-title"
             onCancel={handleCancel}
             onClick={handleBackdropClick}
-          
         >
-            <section className={s.modal}
-              style={FEATURES.dialogHiger && { transform: 'translate(-50%, -78%)' }} 
-              >
+            <section
+                className={s.modal}
+                style={
+                    FEATURES.dialogHiger
+                        ? {
+                            transform:
+                                'translate(-50%, -78%)',
+                        }
+                        : undefined
+                }
+            >
                 <button
                     type="button"
                     className={s.closeButton}
@@ -100,19 +131,33 @@ const EmailPdfModal = ({ pdf, onClose }) => {
                 </button>
 
                 {status === 'success' ? (
-                    <div className={s.success} role="status">
-                         
-                        <h2>E-mail envoyé</h2>
+                    <div
+                        className={s.success}
+                        role="status"
+                    >
+                        <h2 id="email-pdf-title">
+                            E-mail envoyé
+                        </h2>
 
                         <p className="text">
-                            Votre récapitulatif a bien été envoyé à{' '}
-                            <b>{email.trim()}</b>. 
+                            Votre récapitulatif a bien été
+                            envoyé à{' '}
+                            <b>{email.trim()}</b>.
                         </p>
-                        <p className="text">Cette page sera actualisée automatiquement dans quelques secondes.</p>
+
+                        {FEATURES.reloadAfterMail && (
+                            <p className="text">
+                                Cette page sera actualisée
+                                automatiquement dans quelques
+                                secondes.
+                            </p>
+                        )}
 
                         <button
                             type="button"
-                            className={`${s.primaryButton} btn`}
+                            className={
+                                `${s.primaryButton} btn`
+                            }
                             onClick={handleClose}
                         >
                             Fermer
@@ -120,89 +165,145 @@ const EmailPdfModal = ({ pdf, onClose }) => {
                     </div>
                 ) : (
                     <>
-                        <h2 >
+                        <h2 id="email-pdf-title">
                             Recevoir mon récapitulatif
                         </h2>
 
                         <p className="text">
-                            Indiquez vos coordonnées pour recevoir votre PDF
-                            par e-mail.
+                            Indiquez vos coordonnées pour
+                            recevoir votre PDF par e-mail.
                         </p>
 
-                        <form className={s.form} onSubmit={handleSubmit}>
-                            <label htmlFor="customer-civility">Civilité</label>
+                        <form
+                            className={s.form}
+                            onSubmit={handleSubmit}
+                        >
+                            <label htmlFor="customer-civility">
+                                Civilité
+                            </label>
+
                             <select
                                 id="customer-civility"
                                 name="civility"
                                 value={civility}
-                                onChange={(event) => setCivility(event.target.value)}
+                                onChange={(event) =>
+                                    setCivility(
+                                        event.target.value
+                                    )
+                                }
                                 required
-                                disabled={status === 'submitting'}
+                                disabled={
+                                    status === 'submitting'
+                                }
                             >
-                                <option value="">Sélectionner</option>
-                                <option value="M.">M.</option>
-                                <option value="Mme">Mme</option>
+                                <option value="">
+                                    Sélectionner
+                                </option>
+
+                                <option value="M.">
+                                    M.
+                                </option>
+
+                                <option value="Mme">
+                                    Mme
+                                </option>
                             </select>
 
-                            <label htmlFor="customer-surname">Nom</label>
+                            <label htmlFor="customer-surname">
+                                Nom
+                            </label>
+
                             <input
                                 id="customer-surname"
                                 name="surname"
                                 type="text"
                                 value={surname}
-                                onChange={(event) => setSurname(event.target.value)}
+                                onChange={(event) =>
+                                    setSurname(
+                                        event.target.value
+                                    )
+                                }
                                 autoComplete="family-name"
                                 required
                                 autoFocus
-                                disabled={status === 'submitting'}
+                                disabled={
+                                    status === 'submitting'
+                                }
                             />
 
-                            <label htmlFor="customer-name">Prénom</label>
+                            <label htmlFor="customer-name">
+                                Prénom
+                            </label>
+
                             <input
                                 id="customer-name"
                                 name="name"
                                 type="text"
                                 value={name}
-                                onChange={(event) => setName(event.target.value)}
+                                onChange={(event) =>
+                                    setName(
+                                        event.target.value
+                                    )
+                                }
                                 autoComplete="given-name"
                                 required
-                                autoFocus
-                                disabled={status === 'submitting'}
+                                disabled={
+                                    status === 'submitting'
+                                }
                             />
 
-                            <label htmlFor="customer-email">E-mail</label>
+                            <label htmlFor="customer-email">
+                                E-mail
+                            </label>
+
                             <input
                                 id="customer-email"
                                 name="email"
                                 type="email"
                                 value={email}
-                                onChange={(event) => setEmail(event.target.value)}
+                                onChange={(event) =>
+                                    setEmail(
+                                        event.target.value
+                                    )
+                                }
                                 autoComplete="email"
                                 required
-                                disabled={status === 'submitting'}
+                                disabled={
+                                    status === 'submitting'
+                                }
                             />
+
                             <p className={s.privacyNotice}>
-                                Vos données sont utilisées par Roth France uniquement pour vous
-                                envoyer votre récapitulatif. Consultez notre{' '}
+                                Vos données sont utilisées par
+                                Roth France uniquement pour
+                                vous envoyer votre
+                                récapitulatif. Consultez notre{' '}
                                 <a
-                                    href="https://testwww.roth-france.fr/politique-confidentialite"
+                                    href="https://www.roth-france.fr/politique-confidentialite"
                                     target="_blank"
-                                    rel="noreferrer"
+                                    rel="noopener noreferrer"
                                 >
                                     politique de confidentialité
                                 </a>.
                             </p>
 
                             {error && (
-                                <p className={s.error} role="alert">
+                                <p
+                                    className={s.error}
+                                    role="alert"
+                                >
                                     {error}
                                 </p>
                             )}
 
                             <button
                                 type="submit"
-                                className={`${s.primaryButton} btn`}
-                                disabled={status === 'submitting'}
+                                className={
+                                    `${s.primaryButton} btn`
+                                }
+                                disabled={
+                                    status === 'submitting'
+                                }
                             >
                                 {status === 'submitting'
                                     ? 'Envoi en cours…'

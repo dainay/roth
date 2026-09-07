@@ -93,7 +93,7 @@ const VisualisationLayout = () => {
                 
             </div>
             {isEmailModalOpen && (
-                <EmailPdfModal pdf={pdf} onClose={() => setIsEmailModalOpen(false)} />
+                <EmailPdfModal onClose={() => setIsEmailModalOpen(false)} />
             )}
         </>
     );
