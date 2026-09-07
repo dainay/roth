@@ -4,6 +4,8 @@ import s from './VisualisationLayout.module.scss';
 import OneProduct from './OneProduct/OneProduct';
 import PdfQrCode from './PdfQrCode';
 import EmailPdfModal from './EmailPdfModal';
+import { FEATURES } from '../conf/appMode';
+import ProductLinkModal from './ProductLinkModal';
 
 import useConfiguratorStore from '../store/useConfiguratorStore';
 
@@ -31,6 +33,9 @@ const VisualisationLayout = () => {
             <div className={s.visualisationLayout}>
                 <div className={s.visualisationLayout__img}>
                     <img src={realImg} alt="Visualisation" />
+                     <button type="button" className={`btn text-center ${s.closeImg}`} onClick={() => setCurrentView('configurateur')}>
+                       ×
+                    </button>
                 </div>
 
                 <div className={s.visualisationLayout__content}>
@@ -58,7 +63,15 @@ const VisualisationLayout = () => {
                              <h3>Sur mon téléphone</h3>
                             <p>Télécharger le PDF</p>
                             <div className={s.buttonPDF}>
-                                <PdfQrCode className={s.qr} link={pdf} />
+                                {FEATURES.modalWindow ? (
+                                    <ProductLinkModal url={pdf} title="Récapitulatif PDF" className="modalAroundQRcode">                               
+                                        <PdfQrCode className={s.qr} link={pdf} />
+                                    </ProductLinkModal>
+                                ) : (
+                                    <a href={pdf} target="_blank" rel="noopener noreferrer">
+                                        <PdfQrCode className={s.qr} link={pdf} />
+                                    </a>
+                                )}
                             </div>
 
                          </div>

@@ -16,5 +16,4 @@ export const FEATURES = Object.freeze({
     modalWindow: IS_EXPO_MODE,
     reloadAfterMail: IS_EXPO_MODE,
     dialogHiger: IS_EXPO_MODE,
-    
 })

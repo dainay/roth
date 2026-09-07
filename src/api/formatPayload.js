@@ -10,8 +10,22 @@ const findBy = (items = [], key, value) =>
     items.find((item) => item?.[key] === value) ?? items[0] ?? null
 
 
-export function formatSendingBody(  selection, cleanedData) {
+export function formatSendingBody(selection, cleanedData) {
     const hasNiche = Boolean(selection.niche && selection.finitionNiche)
+
+    const selectedParoi = cleanedData.parois.find(
+        (item) => item.id === selection.paroi
+    )
+
+    const addSecondParoi =
+        selection.montage === 'angle' &&
+        selectedParoi.type_paroi !== 'w'
+
+    const paroiModele =
+        selection.paroi === 'PL WRU' &&
+            selection.verre !== 'PE'
+            ? 'PL WRR'
+            : selection.paroi
 
     const body = {
         "scene": "PASTEL02",
@@ -20,22 +34,19 @@ export function formatSendingBody(  selection, cleanedData) {
         "verre": selection.verre,
 
         "parois": [
-            { "modele": selection.paroi, "largeur": selection.sizeParoi },
-            ...(
-                selection.montage === 'angle' &&
-                    cleanedData.parois.some(
-                        (item) =>
-                            item.id === selection.paroi &&
-                            item.type_paroi !== 'w'
-                    )
-                    ? [
-                        {
-                            modele: 'PL TWU',
-                            largeur: 900,
-                        },
-                    ]
-                    : []
-            ),
+            {
+                modele: paroiModele,
+                largeur: selection.sizeParoi,
+            },
+
+            ...(addSecondParoi
+                ? [
+                    {
+                        modele: 'PL TWU',
+                        largeur: 900,
+                    },
+                ]
+                : []),
         ],
 
         "receveur": selection.receveur,

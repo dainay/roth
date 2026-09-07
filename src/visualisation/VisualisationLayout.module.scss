@@ -1,58 +1,59 @@
 .visualisationLayout {
-  display: flex;  
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
     top: 0;
-    left: 0; 
+    left: 0;
 
-  h2 {
-    margin-block: 10px 0 ;
-    text-align: left;
-  }
+    h2 {
+        margin-block: 10px 0;
+        text-align: left;
+    }
 }
 
-.visualisationLayout__img  {
+.visualisationLayout__img {
     width: calc(100% - 550px);
+    position: relative;
 }
 
 .visualisationLayout__content {
     width: 550px;
     min-width: 550px;
     max-width: 550px;
-    padding-inline: 30px; 
+    padding-inline: 30px;
     height: 100vh;
     overflow-y: auto;
 }
 
-.visualisationLayout__img img  { 
+.visualisationLayout__img img {
     width: 100%;
-    height: 100%; 
+    height: 100%;
     object-fit: cover;
     display: block;
     aspect-ratio: 1400/1000;
-  }
+}
 
 
 .visualisationLayout__products {
-    display: flex;  
-    gap: 15px; 
+    display: flex;
+    gap: 15px;
     flex-wrap: wrap;
-    width: 100%;     
+    width: 100%;
     margin-block: 20px;
-  align-content: flex-start;
-  
+    align-content: flex-start;
+
     align-items: flex-start;
     justify-content: flex-start;
 }
 
 .button {
-  margin-block: 30px 8px;
-  font-size: 16px;
+    margin-block: 30px 8px;
+    font-size: 16px;
 }
 
-.link { 
-    font-weight: 500; 
+.link {
+    font-weight: 500;
     margin-block: 20px 30px;
     border: 1px solid #0e0d0d;
     // background: transparent;
@@ -61,16 +62,16 @@
     // text-underline-offset: 2px;
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
-   
+
     &:hover {
-      background-color: #ffffff;
-      color: #0e0d0d; 
-          border: #0e0d0d 1px solid;
+        background-color: #ffffff;
+        color: #0e0d0d;
+        border: #0e0d0d 1px solid;
     }
 
     &:focus-visible {
-      outline: 3px solid #E30613;
-      outline-offset: 4px;
+        outline: 3px solid #E30613;
+        outline-offset: 4px;
     }
 }
 
@@ -91,6 +92,7 @@
         text-align: center;
         margin: 0;
     }
+
     p {
         font-size: 12px;
         font-weight: 400;
@@ -111,6 +113,10 @@
     border-radius: 10px;
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.192);
     overflow: hidden;
+
+    &:has(.modalAroundQRcode):hover {
+        background-color: #414141 !important;
+    }
 }
 
 .emailButton {
@@ -123,65 +129,84 @@
     cursor: pointer;
 
     img {
-      width: 54px;
-      height: 54px;
+        width: 54px;
+        height: 54px;
     }
 
     span {
-      font-size: 13px;
-      font-weight: 600;
+        font-size: 13px;
+        font-weight: 600;
     }
 
     &:hover {
-      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
     }
 
     &:focus-visible {
-      outline: 3px solid #E30613;
-      outline-offset: 4px;
+        outline: 3px solid #E30613;
+        outline-offset: 4px;
     }
 }
 
 .imgWithWhiteBackground {
-          object-fit: contain !important;
-    }
+    object-fit: contain !important;
+}
 
 .visualisationLayout__error {
-  padding: 24px;
+    padding: 24px;
 }
 
 @media (max-width: 900px) {
-  .visualisationLayout {
-    position: relative;
-    flex-direction: column;
-    width: 100%;
-    height: auto;
-    min-height: 100vh;
-  }
+    .visualisationLayout {
+        position: relative;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+    }
 
-  .visualisationLayout__img {
-    width: 100%;
-    height: 45vh;
-    min-height: 280px;
-  }
+    .visualisationLayout__img {
+        width: 100%;
+        height: 45vh;
+        min-height: 280px;
+    }
 
-  .visualisationLayout__content {
-    width: 100%;
-    min-width: 0;
-    max-width: none;
-    height: auto;
-    overflow: visible;
-    padding: 20px;
-  }
+    .visualisationLayout__content {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        height: auto;
+        overflow: visible;
+        padding: 20px;
+    }
 }
 
 @media (max-width: 480px) {
-  .wrapper_buttonsPDF {
-    gap: 12px;
-    flex-wrap: wrap;
-  }
+    .wrapper_buttonsPDF {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
 
-  .visualisationLayout__products > * {
-    width: calc(50% - 8px);
-  }
+    .visualisationLayout__products>* {
+        width: calc(50% - 8px);
+    }
+}
+
+.closeImg {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    padding: 2px;
+    line-height: 0;
+    border-radius: 3px;
+    font-weight: 300;
+    font-size: 26px;
+
+    &:hover {
+        background-color: #e0e0e0;
+        color: #000;
+    }
 }
