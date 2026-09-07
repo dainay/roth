@@ -99,18 +99,18 @@ export default function Model(props) {
     const choosenVipanelNiche = cleanedData?.vipanels?.find((item) => item.decor === vipanelNiche)
 
 
-    const vipanelCoverGeometry = useMemo(() => {
-        const geometry = nodes.vipanel_1500x2550x3016.geometry.clone()
-        const uv = geometry.attributes.uv
+    // const vipanelCoverGeometry = useMemo(() => {
+    //     const geometry = nodes.vipanel_1500x2550x3016.geometry.clone()
+    //     const uv = geometry.attributes.uv
 
-        for (let i = 0; i < uv.count; i++) {
-            uv.setX(i, uv.getX(i) * 0.9)
-        }
+    //     for (let i = 0; i < uv.count; i++) {
+    //         uv.setX(i, uv.getX(i) * 0.9)
+    //     }
 
-        uv.needsUpdate = true
+    //     uv.needsUpdate = true
 
-        return geometry
-    }, [nodes])
+    //     return geometry
+    // }, [nodes])
 
     const vipanelRight1Geometry = useMemo(() => {
         const geometry = nodes.vipanel_1500x2550x3011.geometry.clone()
@@ -255,7 +255,7 @@ export default function Model(props) {
                 scale={[5, 1, 1]}
             /> */}
 
-            {(sizeReceveur === 1000 &&
+            {/* {(sizeReceveur === 1000 &&
                 <mesh
 
                     receiveShadow
@@ -264,7 +264,7 @@ export default function Model(props) {
                     position={[-0.22, 0.917, -2.552]}
                     scale={[1, 1, 0.001]}
                 />
-            )}
+            )} */}
             <mesh
                 castShadow
                 receiveShadow
